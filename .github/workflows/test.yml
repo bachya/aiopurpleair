@@ -54,6 +54,7 @@ jobs:
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
+          poetry install --no-interaction
 
       - name: 🚀 Run pytest
         run: poetry run pytest tests
@@ -99,6 +100,7 @@ jobs:
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
+          poetry install --no-interaction
 
       - name: 🚀 Run pytest
         run: >-
