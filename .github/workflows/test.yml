@@ -30,10 +30,24 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 🏗 Set up Python 3.11
-        id: python
+        id: setup-python
         uses: actions/setup-python@v4
         with:
           python-version: 3.11
+
+      - name: ⤵️ Get pip cache directory
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: ⤵️ Establish pip cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: "${{ runner.os }}-pip-
+            ${{ hashFiles('.github/workflows/requirements.txt') }}"
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: 🏗 Install workflow dependencies
         run: |
