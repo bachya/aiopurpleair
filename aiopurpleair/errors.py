@@ -1,7 +1,7 @@
 """Define package exceptions."""
 
 
-class PackageNameError(Exception):
+class PurpleAirError(Exception):
     """Define a base exception."""
 
     pass

@@ -1,16 +1,17 @@
-# 🚰 package_name: DESCRIPTION
+# 🚰 aiopurpleair: DESCRIPTION
 
-[![CI](https://github.com/bachya/package_name/workflows/CI/badge.svg)](https://github.com/bachya/package_name/actions)
-[![PyPi](https://img.shields.io/pypi/v/package_name.svg)](https://pypi.python.org/pypi/package_name)
-[![Version](https://img.shields.io/pypi/pyversions/package_name.svg)](https://pypi.python.org/pypi/package_name)
-[![License](https://img.shields.io/pypi/l/package_name.svg)](https://github.com/bachya/package_name/blob/main/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/package_name/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/package_name)
-[![Maintainability](https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability)](https://codeclimate.com/github/bachya/package_name/maintainability)
+[![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
+[![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
+[![Version](https://img.shields.io/pypi/pyversions/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
+[![License](https://img.shields.io/pypi/l/aiopurpleair.svg)](https://github.com/bachya/aiopurpleair/blob/main/LICENSE)
+[![Code Coverage](https://codecov.io/gh/bachya/aiopurpleair/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aiopurpleair)
+[![Maintainability](https://api.codeclimate.com/v1/badges/40e0f45570a0eb9aab24/maintainability)](https://codeclimate.com/github/bachya/aiopurpleair/maintainability)
 [![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-DESCRIPTION
+`aiopurpleair` is a Python 3, asyncio-based library to interact with the
+[PurpleAir](https://www2.purpleair.com/) API.
 
 - [Installation](#installation)
 - [Python Versions](#python-versions)
@@ -20,12 +21,12 @@ DESCRIPTION
 # Installation
 
 ```python
-pip install package_name
+pip install aiopurpleair
 ```
 
 # Python Versions
 
-`package_name` is currently supported on:
+`aiopurpleair` is currently supported on:
 
 * Python 3.9
 * Python 3.10
@@ -35,9 +36,9 @@ pip install package_name
 
 # Contributing
 
-1. [Check for open features/bugs](https://github.com/bachya/package_name/issues)
-  or [initiate a discussion on one](https://github.com/bachya/package_name/issues/new).
-2. [Fork the repository](https://github.com/bachya/package_name/fork).
+1. [Check for open features/bugs](https://github.com/bachya/aiopurpleair/issues)
+  or [initiate a discussion on one](https://github.com/bachya/aiopurpleair/issues/new).
+2. [Fork the repository](https://github.com/bachya/aiopurpleair/fork).
 3. (_optional, but highly recommended_) Create a virtual environment: `python3 -m venv .venv`
 4. (_optional, but highly recommended_) Enter the virtual environment: `source ./.venv/bin/activate`
 5. Install the dev environment: `script/setup`
