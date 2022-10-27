@@ -22,23 +22,22 @@ jobs:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v3
 
-      - name: 🏗 Set up Python 3.11
+      - name: 🏗 Set up Python 3.9
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: 3.9
 
       - name: ⤵️ Get pip cache directory
         id: pip-cache
         run: |
-          echo "::set-output name=dir::$(pip cache dir)"
+          echo "{dir}=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: ⤵️ Establish pip cache
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: "${{ runner.os }}-pip-
-            ${{ hashFiles('.github/workflows/requirements.txt') }}"
+          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
