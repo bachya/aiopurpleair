@@ -1,0 +1,6 @@
+{
+  "api_version": "V1.0.11-0.0.41",
+  "time_stamp": 1666903245,
+  "error": "ApiKeyInvalidError",
+  "description": "The provided api_key was not valid."
+}

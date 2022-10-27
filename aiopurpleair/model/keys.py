@@ -46,3 +46,14 @@ class GetKeysResponse(BaseModel):
             raise ValueError(f"{value} is an unknown API key type") from err
 
     validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
+
+
+class InvalidApiKeyResponse(BaseModel):
+    """Define an invalid API key error response for GET /keys."""
+
+    api_version: str
+    time_stamp: int
+    error: str
+    description: str
+
+    validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
