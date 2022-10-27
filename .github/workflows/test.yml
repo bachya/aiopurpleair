@@ -56,4 +56,59 @@ jobs:
           poetry config virtualenvs.in-project true
 
       - name: 🚀 Run pytest
-        run: nox -rs tests
+        run: poetry run pytest tests
+
+  coverage:
+    name: Code Coverage
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v3
+
+      - name: 🏗 Set up Python 3.11
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: ⤵️ Get pip cache directory
+        id: pip-cache
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: ⤵️ Establish pip cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: "${{ runner.os }}-pip-
+            ${{ hashFiles('.github/workflows/requirements.txt') }}"
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 🏗 Install workflow dependencies
+        run: |
+          pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+
+      - name: 🚀 Run pytest
+        run: >-
+          poetry run pytest
+          --cov=aiopurpleair
+          --cov-report=term-missing
+          --cov-report=xml
+          tests
+
+      - name: 📊 Upload coverage info to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
