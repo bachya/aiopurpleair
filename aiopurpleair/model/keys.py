@@ -27,9 +27,19 @@ class GetKeysResponse(BaseModel):
     api_key_type: str
 
     @validator("api_key_type")
-    @classmethod
-    def validate_api_key_type(cls, value: str) -> ApiKeyType:
-        """Validate the API key type."""
+    @staticmethod
+    def validate_api_key_type(value: str) -> ApiKeyType:
+        """Validate the API key type.
+
+        Args:
+            value: An API key to validate.
+
+        Returns:
+            A parsed ApiKeyType.
+
+        Raises:
+            ValueError: An invalid API key type was received.
+        """
         try:
             return ApiKeyType(value)
         except ValueError as err:

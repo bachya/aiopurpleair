@@ -1,4 +1,4 @@
-# 🚰 aiopurpleair: DESCRIPTION
+# 🚰 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
 
 [![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
 [![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
@@ -10,7 +10,7 @@
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-`aiopurpleair` is a Python 3, asyncio-based library to interact with the
+`aiopurpleair` is a Python3, asyncio-based library to interact with the
 [PurpleAir](https://www2.purpleair.com/) API.
 
 - [Installation](#installation)
