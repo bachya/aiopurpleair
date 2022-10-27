@@ -19,17 +19,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: 🏗 Set up Python 3.11
+        id: python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-          architecture: x64
+          python-version: 3.11
 
-      - run: |
-          pip install nox==2022.1.7 poetry==1.1.13
-          nox -rs coverage
+      - name: 🏗 Install workflow dependencies
+        run: |
+          pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
 
-      - uses: codecov/codecov-action@v3
+      - name: 🚀 Run coverage
+        run: nox -rs coverage
+
+      - name: 📊 Upload coverage info to codecov.io
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

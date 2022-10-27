@@ -26,13 +26,20 @@ jobs:
           - "3.11"
 
     steps:
-      - uses: actions/checkout@v3
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - name: 🏗 Set up Python 3.11
+        id: python
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-          architecture: x64
+          python-version: 3.11
 
-      - run: |
-          pip install nox==2022.1.7 poetry==1.1.13
-          nox -rs tests
+      - name: 🏗 Install workflow dependencies
+        run: |
+          pip install -r .github/workflows/requirements.txt
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+
+      - name: 🚀 Run pytest
+        run: nox -rs tests
