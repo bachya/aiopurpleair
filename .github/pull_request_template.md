@@ -2,7 +2,7 @@
 
 **Does this fix a specific issue?**
 
-Fixes https://github.com/bachya/package_name/issues/<ISSUE ID>
+Fixes https://github.com/bachya/aiopurpleair/issues/<ISSUE ID>
 
 **Checklist:**
 
