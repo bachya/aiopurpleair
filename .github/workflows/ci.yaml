@@ -38,7 +38,6 @@ jobs:
           nox -rs tests
 
   coverage:
-
     name: Test Coverage
 
     runs-on: ubuntu-latest
@@ -60,7 +59,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
-
     name: "Linting & Static Analysis"
 
     runs-on: ubuntu-latest
