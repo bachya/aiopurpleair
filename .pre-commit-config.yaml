@@ -166,9 +166,3 @@ repos:
     hooks:
       - id: prettier
         name: 💄 Ensuring files are prettier
-
-  - repo: https://github.com/necaris/pre-commit-pyright
-    rev: "1.1.34"
-    hooks:
-      - id: pyright
-        name: 🆎 Static type checking using pyright
