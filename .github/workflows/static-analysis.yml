@@ -31,7 +31,7 @@ jobs:
       - name: ⤵️ Get pip cache directory
         id: pip-cache
         run: |
-          echo "{dir}={$(pip cache dir)}" >> $GITHUB_OUTPUT
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: ⤵️ Establish pip cache
         uses: actions/cache@v3
