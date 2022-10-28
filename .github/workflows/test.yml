@@ -120,7 +120,11 @@ jobs:
           restore-keys: |
             venv-${{ steps.setup-python.outputs.python-version }}-
 
-      - name: 🚀 Run pytest
+      - name: 🏗 Install package dependencies
+        run: |
+          poetry install --no-interaction
+
+      - name: 🚀 Run pytest with coverage metrics
         run: >-
           poetry run pytest
           --cov=aiopurpleair
