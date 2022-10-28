@@ -44,7 +44,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/requirements.txt') }}
+          key: "${{ runner.os }}-pip-\
+            ${{ hashFiles('.github/workflows/requirements.txt') }}"
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -53,6 +54,18 @@ jobs:
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
+
+      - name: ⤵️ Establish poetry cache
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: "venv-${{ steps.setup-python.outputs.python-version }}-\
+            ${{ hashFiles('poetry.lock') }}"
+          restore-keys: |
+            venv-${{ steps.setup-python.outputs.python-version }}-
+
+      - name: 🏗 Install package dependencies
+        run: |
           poetry install --no-interaction
 
       - name: 🚀 Run pytest
@@ -87,7 +100,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/requirements.txt') }}
+          key: "${{ runner.os }}-pip-\
+            ${{ hashFiles('.github/workflows/requirements.txt') }}"
           restore-keys: |
             ${{ runner.os }}-pip-
 
@@ -96,7 +110,15 @@ jobs:
           pip install -r .github/workflows/requirements.txt
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
-          poetry install --no-interaction
+
+      - name: ⤵️ Establish poetry cache
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: "venv-${{ steps.setup-python.outputs.python-version }}-\
+            ${{ hashFiles('poetry.lock') }}"
+          restore-keys: |
+            venv-${{ steps.setup-python.outputs.python-version }}-
 
       - name: 🚀 Run pytest
         run: >-
