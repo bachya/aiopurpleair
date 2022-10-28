@@ -1,4 +1,4 @@
-# 🚰 aiopurpleair: DESCRIPTION
+# 🚰 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
 
 [![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
 [![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
@@ -10,7 +10,7 @@
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-`aiopurpleair` is a Python 3, asyncio-based library to interact with the
+`aiopurpleair` is a Python3, asyncio-based library to interact with the
 [PurpleAir](https://www2.purpleair.com/) API.
 
 - [Installation](#installation)
@@ -44,7 +44,7 @@ pip install aiopurpleair
 5. Install the dev environment: `script/setup`
 6. Code your new feature or bug fix.
 7. Write tests that cover your new functionality.
-8. Run tests and ensure 100% code coverage: `nox -rs coverage`
+8. Run tests and ensure 100% code coverage: `poetry run pytest test`
 9. Update `README.md` with any new documentation.
 10. Add yourself to `AUTHORS.md`.
 11. Submit a pull request!

@@ -29,6 +29,7 @@ follow_imports = "silent"
 ignore_missing_imports = true
 no_implicit_optional = true
 platform = "linux"
+plugins = ["pydantic.mypy"]
 python_version = "3.10"
 show_error_codes = true
 strict_equality = true
@@ -82,7 +83,6 @@ flake8-markdown = "^0.3.0"
 flake8-simplify = "^0.19.3"
 isort = "^5.10.1"
 mypy = "^0.982"
-nox = "^2022.1.7"
 pre-commit = "^2.20.0"
 pre-commit-hooks = "^4.3.0"
 pylint = "^2.15.5"
@@ -109,6 +109,9 @@ max-attributes = 20
 max-line-length = 88
 
 [tool.pylint.MASTER]
+extension-pkg-whitelist = [
+  "pydantic",
+]
 ignore = [
   "tests",
 ]

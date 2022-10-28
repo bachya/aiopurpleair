@@ -97,7 +97,6 @@ repos:
         name: 👔 Enforcing style guide with flake8
         language: system
         types: [python]
-        exclude: ^noxfile\.py$
         entry: poetry run flake8
         require_serial: true
       - id: isort
@@ -109,7 +108,6 @@ repos:
         name: 🆎 Performing static type checking using mypy
         language: system
         types: [python]
-        exclude: ^noxfile\.py$
         entry: poetry run mypy
         require_serial: true
       - id: no-commit-to-branch
