@@ -38,12 +38,12 @@ jobs:
       - name: ⤵️ Get pip cache directory
         id: pip-cache
         run: |
-          echo "{dir}=$(pip cache dir)" >> $GITHUB_OUTPUT
+          echo "{pip_dir}=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: ⤵️ Establish pip cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.pip-cache.outputs.dir }}
+          path: ${{ env.pip_dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
@@ -81,12 +81,12 @@ jobs:
       - name: ⤵️ Get pip cache directory
         id: pip-cache
         run: |
-          echo "{dir}=$(pip cache dir)" >> $GITHUB_OUTPUT
+          echo "{pip_dir}=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: ⤵️ Establish pip cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.pip-cache.outputs.dir }}
+          path: ${{ env.pip_dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('.github/workflows/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
