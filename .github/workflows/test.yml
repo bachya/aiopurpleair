@@ -126,11 +126,7 @@ jobs:
 
       - name: 🚀 Run pytest with coverage metrics
         run: >-
-          poetry run pytest
-          --cov=aiopurpleair
-          --cov-report=term-missing
-          --cov-report=xml
-          tests
+          poetry run pytest --cov
 
       - name: 📊 Upload coverage info to codecov.io
         uses: codecov/codecov-action@v3
