@@ -27,8 +27,8 @@ class GetKeysResponse(BaseModel):
     api_key_type: str
 
     @validator("api_key_type")
-    @staticmethod
-    def validate_api_key_type(value: str) -> ApiKeyType:
+    @classmethod
+    def validate_api_key_type(cls, value: str) -> ApiKeyType:  # noqa: F841
         """Validate the API key type.
 
         Args:
