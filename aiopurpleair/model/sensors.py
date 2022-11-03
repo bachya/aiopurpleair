@@ -137,7 +137,7 @@ SENSOR_FIELDS = {
 }
 
 
-class LocationType(Enum):
+class LocationType(int, Enum):
     """Define a location type."""
 
     OUTSIDE = 0
