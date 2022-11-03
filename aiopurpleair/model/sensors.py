@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, root_validator, validator
 
@@ -148,7 +148,7 @@ class GetSensorsRequest(BaseModel):
     """Define a request to GET /v1/sensors."""
 
     fields: list[str]
-    location_type: Optional[LocationType] = None
+    location_type: LocationType = LocationType.OUTSIDE
     read_keys: list[str] | None = None
     show_only: list[int] | None = None
     modified_since: datetime | None = None
