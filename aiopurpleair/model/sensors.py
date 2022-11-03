@@ -164,6 +164,10 @@ class GetSensorsRequest(BaseModel):
     def remove_both_location_type(cls, values: dict[str, Any]) -> dict[str, Any]:
         """Remove LocationType.BOTH if it exists.
 
+        LocationType.BOTH purely exists because Python 3.9 struggles with the typing
+        necessary to do LocationType | None (which is what the API expects for all
+        sensors). If it's passed, we pull it from the final values.
+
         Args:
             values: The fields passed into the model.
 
