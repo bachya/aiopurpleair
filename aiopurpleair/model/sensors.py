@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, root_validator, validator
+from pydantic import BaseModel, Optional, root_validator, validator
 
 from aiopurpleair.model.validator import validate_latitude, validate_longitude
 from aiopurpleair.util.dt import utc_to_timestamp
@@ -142,43 +142,23 @@ class LocationType(Enum):
 
     OUTSIDE = 0
     INSIDE = 1
-    BOTH = 2
 
 
 class GetSensorsRequest(BaseModel):
     """Define a request to GET /v1/sensors."""
 
     fields: list[str]
-    location_type: LocationType = LocationType.BOTH
-    read_keys: list[str] | None = None
-    show_only: list[int] | None = None
-    modified_since: datetime | None = None
-    max_age: int = 0
-    nwlng: float | None = None
-    nwlat: float | None = None
-    selng: float | None = None
-    selat: float | None = None
+    location_type: Optional[LocationType] = None
+    read_keys: Optional[list[str]] = None
+    show_only: Optional[list[int]] = None
+    modified_since: Optional[datetime] = None
+    max_age: Optional[int] = 0
+    nwlng: Optional[float] = None
+    nwlat: Optional[float] = None
+    selng: Optional[float] = None
+    selat: Optional[float] = None
 
-    @root_validator(pre=True)
-    @classmethod
-    def remove_both_location_type(cls, values: dict[str, Any]) -> dict[str, Any]:
-        """Remove LocationType.BOTH if it exists.
-
-        LocationType.BOTH purely exists because Python 3.9 struggles with the typing
-        necessary to do LocationType | None (which is what the API expects for all
-        sensors). If it's passed, we pull it from the final values.
-
-        Args:
-            values: The fields passed into the model.
-
-        Returns:
-            The fields.
-        """
-        if values.get("location_type") == LocationType.BOTH:
-            values.pop("location_type")
-        return values
-
-    @root_validator(pre=True)
+    @root_validator
     @classmethod
     def validate_bounding_box_missing_or_complete(
         cls, values: dict[str, Any]
