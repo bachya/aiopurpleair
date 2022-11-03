@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
-from pydantic import BaseModel, Optional, root_validator, validator
+from pydantic import BaseModel, root_validator, validator
 
 from aiopurpleair.model.validator import validate_latitude, validate_longitude
 from aiopurpleair.util.dt import utc_to_timestamp
