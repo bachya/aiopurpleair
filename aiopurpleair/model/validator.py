@@ -11,4 +11,4 @@ def validate_timestamp(value: int) -> datetime:
     Returns:
         A parsed datetime.datetime object.
     """
-    return datetime.fromtimestamp(value)
+    return datetime.utcfromtimestamp(value)
