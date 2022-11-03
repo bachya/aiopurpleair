@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, root_validator, validator
+from pydantic import BaseModel, Field, root_validator, validator
 
 from aiopurpleair.model.validator import validate_latitude, validate_longitude
 from aiopurpleair.util.dt import utc_to_timestamp
@@ -137,7 +137,7 @@ SENSOR_FIELDS = {
 }
 
 
-class LocationType(int, Enum):
+class LocationType(Enum):
     """Define a location type."""
 
     OUTSIDE = 0
@@ -148,15 +148,15 @@ class GetSensorsRequest(BaseModel):
     """Define a request to GET /v1/sensors."""
 
     fields: list[str]
-    location_type: LocationType | None = None
-    read_keys: list[str] | None = None
-    show_only: list[int] | None = None
-    modified_since: datetime | None = None
+    location_type: LocationType | None = Field(None)
+    read_keys: list[str] | None = Field(None)
+    show_only: list[int] | None = Field(None)
+    modified_since: datetime | None = Field(None)
     max_age: int = 0
-    nwlng: float | None = None
-    nwlat: float | None = None
-    selng: float | None = None
-    selat: float | None = None
+    nwlng: float | None = Field(None)
+    nwlat: float | None = Field(None)
+    selng: float | None = Field(None)
+    selat: float | None = Field(None)
 
     @root_validator
     @classmethod
