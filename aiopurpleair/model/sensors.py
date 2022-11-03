@@ -142,13 +142,14 @@ class LocationType(Enum):
 
     OUTSIDE = 0
     INSIDE = 1
+    BOTH = 2
 
 
 class GetSensorsRequest(BaseModel):
     """Define a request to GET /v1/sensors."""
 
     fields: list[str]
-    location_type: LocationType = LocationType.OUTSIDE
+    location_type: LocationType = LocationType.BOTH
     read_keys: list[str] | None = None
     show_only: list[int] | None = None
     modified_since: datetime | None = None
@@ -158,7 +159,22 @@ class GetSensorsRequest(BaseModel):
     selng: float | None = None
     selat: float | None = None
 
-    @root_validator
+    @root_validator(pre=True)
+    @classmethod
+    def remove_both_location_type(cls, values: dict[str, Any]) -> dict[str, Any]:
+        """Remove LocationType.BOTH if it exists.
+
+        Args:
+            values: The fields passed into the model.
+
+        Returns:
+            The fields.
+        """
+        if values.get("location_type") == LocationType.BOTH:
+            values.pop("location_type")
+        return values
+
+    @root_validator(pre=True)
     @classmethod
     def validate_bounding_box_missing_or_complete(
         cls, values: dict[str, Any]
