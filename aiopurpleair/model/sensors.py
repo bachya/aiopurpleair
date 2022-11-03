@@ -7,7 +7,8 @@ from typing import Any
 
 from pydantic import BaseModel, root_validator, validator
 
-from .validator import validate_latitude, validate_longitude
+from aiopurpleair.model.validator import validate_latitude, validate_longitude
+from aiopurpleair.util.dt import utc_to_timestamp
 
 SENSOR_FIELDS = {
     "0.3_um_count",
@@ -225,12 +226,12 @@ class GetSensorsRequest(BaseModel):
         """Validate the "modified since" datetime.
 
         Args:
-            value: A "modified since" datetime object.
+            value: A "modified since" datetime object (in UTC).
 
         Returns:
             The timestamp of the datetime object.
         """
-        return round(value.timestamp())
+        return round(utc_to_timestamp(value))
 
     validate_nwlat = validator("nwlat", allow_reuse=True)(validate_latitude)
     validate_nwlng = validator("nwlng", allow_reuse=True)(validate_longitude)

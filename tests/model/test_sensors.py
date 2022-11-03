@@ -62,7 +62,7 @@ from aiopurpleair.model.sensors import GetSensorsRequest, LocationType
                 "location_type": 1,
                 "read_keys": "abc,def",
                 "show_only": "123,456",
-                "modified_since": 1667511981,
+                "modified_since": 1667490381,
                 "max_age": 1200,
                 "nwlng": -0.2416796,
                 "nwlat": 51.5285582,
