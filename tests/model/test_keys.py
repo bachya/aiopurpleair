@@ -21,7 +21,7 @@ def test_invalid_api_key_response(
     response = InvalidApiKeyResponse.parse_obj(error_invalid_api_key_response)
     assert response.dict() == {
         "api_version": "V1.0.11-0.0.41",
-        "time_stamp": datetime(2022, 10, 27, 14, 40, 45),
+        "time_stamp": datetime(2022, 10, 27, 20, 40, 45),
         "error": "ApiKeyInvalidError",
         "description": "The provided api_key was not valid.",
     }
@@ -36,7 +36,7 @@ def test_get_keys_response(get_keys_response: dict[str, Any]) -> None:
     response = GetKeysResponse.parse_obj(get_keys_response)
     assert response.dict() == {
         "api_version": "V1.0.11-0.0.41",
-        "time_stamp": datetime(2022, 10, 27, 12, 25, 41),
+        "time_stamp": datetime(2022, 10, 27, 18, 25, 41),
         "api_key_type": ApiKeyType.READ,
     }
 
