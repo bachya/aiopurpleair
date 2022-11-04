@@ -1,4 +1,4 @@
-"""Define tests key models."""
+"""Define tests for key models."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -16,7 +16,7 @@ def test_invalid_api_key_response(
     """Test the InvalidApiKeyResponse model.
 
     Args:
-        error_invalid_api_key_response: A dict of response data from GET /keys.
+        error_invalid_api_key_response: A dict of response data from GET /v1/keys.
     """
     response = InvalidApiKeyResponse.parse_obj(error_invalid_api_key_response)
     assert response.dict() == {
@@ -31,7 +31,7 @@ def test_get_keys_response(get_keys_response: dict[str, Any]) -> None:
     """Test the GetKeysResponse model.
 
     Args:
-        get_keys_response: A dict of response data from GET /keys.
+        get_keys_response: A dict of response data from GET /v1/keys.
     """
     response = GetKeysResponse.parse_obj(get_keys_response)
     assert response.dict() == {
@@ -58,7 +58,7 @@ def test_get_keys_response_errors(get_keys_response: dict[str, Any]) -> None:
     """Test errors for the GetKeysResponse model.
 
     Args:
-        get_keys_response: A dict of response data from GET /keys.
+        get_keys_response: A dict of response data from GET /v1/keys.
     """
     with pytest.raises(ValidationError):
         _ = GetKeysResponse.parse_obj(get_keys_response)

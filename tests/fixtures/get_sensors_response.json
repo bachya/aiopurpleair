@@ -1,0 +1,13 @@
+{
+  "api_version": "V1.0.11-0.0.41",
+  "time_stamp": 1667503589,
+  "data_time_stamp": 1667503531,
+  "location_type": 0,
+  "max_age": 604800,
+  "firmware_default_version": "7.02",
+  "fields": ["sensor_index", "name"],
+  "data": [
+    [131075, "Mariners Bluff"],
+    [131079, "BRSKBV-outside"]
+  ]
+}

@@ -1,0 +1,7 @@
+cls  # unused variable (aiopurpleair/model/keys.py:30)
+cls  # unused variable (aiopurpleair/model/sensors.py:163)
+cls  # unused variable (aiopurpleair/model/sensors.py:191)
+cls  # unused variable (aiopurpleair/model/sensors.py:211)
+cls  # unused variable (aiopurpleair/model/sensors.py:224)
+cls  # unused variable (aiopurpleair/model/sensors.py:240)
+cls  # unused variable (aiopurpleair/model/sensors.py:256)

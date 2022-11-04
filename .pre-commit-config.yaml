@@ -98,6 +98,7 @@ repos:
         language: system
         types: [python]
         entry: poetry run flake8
+        exclude: ^vulture_whitelist.py$
         require_serial: true
       - id: isort
         name: 🔀 Sorting all imports with isort
@@ -109,6 +110,7 @@ repos:
         language: system
         types: [python]
         entry: poetry run mypy
+        exclude: ^vulture_whitelist.py$
         require_serial: true
       - id: no-commit-to-branch
         name: 🛑 Checking for commit to protected branch
@@ -130,6 +132,7 @@ repos:
         language: system
         types: [python]
         entry: poetry run pylint
+        exclude: ^vulture_whitelist.py$
       - id: pytest
         name: 🧪 Running tests and test coverage with pytest
         language: system
@@ -152,7 +155,7 @@ repos:
         name: 🔍 Finding unused Python code with Vulture
         language: system
         types: [python]
-        entry: poetry run vulture
+        entry: poetry run vulture vulture_whitelist.py
         pass_filenames: false
         require_serial: true
       - id: yamllint

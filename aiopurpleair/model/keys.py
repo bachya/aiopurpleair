@@ -1,5 +1,4 @@
 """Define request and response models for keys."""
-# pylint: disable=too-few-public-methods
 from __future__ import annotations
 
 from enum import Enum
@@ -20,7 +19,7 @@ class ApiKeyType(str, Enum):
 
 
 class GetKeysResponse(BaseModel):
-    """Define a response to GET /keys."""
+    """Define a response to GET /v1/keys."""
 
     api_version: str
     time_stamp: int
@@ -28,7 +27,7 @@ class GetKeysResponse(BaseModel):
 
     @validator("api_key_type")
     @classmethod
-    def validate_api_key_type(cls, value: str) -> ApiKeyType:  # noqa: F841
+    def validate_api_key_type(cls, value: str) -> ApiKeyType:
         """Validate the API key type.
 
         Args:
@@ -49,7 +48,7 @@ class GetKeysResponse(BaseModel):
 
 
 class InvalidApiKeyResponse(BaseModel):
-    """Define an invalid API key error response for GET /keys."""
+    """Define an invalid API key error response for GET /v1/keys."""
 
     api_version: str
     time_stamp: int

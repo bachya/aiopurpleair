@@ -128,8 +128,10 @@ load-plugins = [
 
 [tool.pylint."MESSAGES CONTROL"]
 # Reasons disabled:
+# consider-alternative-union-syntax - Pydantic + Python 3.9 struggles with | operators
 # unnecessary-pass - This can hurt readability
 disable = [
+  "consider-alternative-union-syntax",
   "unnecessary-pass"
 ]
 
