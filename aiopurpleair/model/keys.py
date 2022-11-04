@@ -1,14 +1,13 @@
 """Define request and response models for keys."""
 from __future__ import annotations
 
-from enum import Enum
-
 from pydantic import BaseModel, validator
 
-from .validator import validate_timestamp
+from aiopurpleair.backports.enum import StrEnum
+from aiopurpleair.model.validator import validate_timestamp
 
 
-class ApiKeyType(str, Enum):
+class ApiKeyType(StrEnum):
     """Define an API key type."""
 
     READ = "READ"
