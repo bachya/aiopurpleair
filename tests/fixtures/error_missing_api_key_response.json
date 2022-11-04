@@ -1,0 +1,6 @@
+{
+  "api_version": "V1.0.11-0.0.41",
+  "time_stamp": 1667594193,
+  "error": "ApiKeyMissingError",
+  "description": "No API key was found in the request."
+}

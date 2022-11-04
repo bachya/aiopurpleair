@@ -1,6 +1,8 @@
 """Define common test utilities."""
 import os
 
+TEST_API_KEY = "abcde12345"
+
 
 def load_fixture(filename: str) -> str:
     """Load a fixture.
