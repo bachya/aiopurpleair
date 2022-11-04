@@ -152,11 +152,11 @@ class GetSensorsRequest(BaseModel):
     read_keys: Optional[list[str]] = None
     show_only: Optional[list[int]] = None
     modified_since: Optional[datetime] = None
-    max_age: Optional[int] = 0
-    nwlng: Optional[float] = None
-    nwlat: Optional[float] = None
-    selng: Optional[float] = None
-    selat: Optional[float] = None
+    max_age: int = 0
+    nwlng: float | None = None
+    nwlat: float | None = None
+    selng: float | None = None
+    selat: float | None = None
 
     @root_validator
     @classmethod
