@@ -3,11 +3,11 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, root_validator, validator
 
-from aiopurpleair.model.validator import validate_latitude, validate_longitude
+from aiopurpleair.model.validator import validate_timestamp
 from aiopurpleair.util.dt import utc_to_timestamp
 
 SENSOR_FIELDS = {
@@ -124,6 +124,7 @@ SENSOR_FIELDS = {
     "secondary_id_b",
     "secondary_key_a",
     "secondary_key_b",
+    "sensor_index",
     "temperature",
     "temperature_a",
     "temperature_b",
@@ -137,6 +138,40 @@ SENSOR_FIELDS = {
 }
 
 
+def validate_latitude(value: float) -> float:
+    """Validate a latitude.
+
+    Args:
+        value: An float to evaluate.
+
+    Returns:
+        The float, if valid.
+
+    Raises:
+        ValueError: Raised on an invalid latitude.
+    """
+    if value < -90 or value > 90:
+        raise ValueError(f"{value} is an invalid latitude")
+    return value
+
+
+def validate_longitude(value: float) -> float:
+    """Validate a longitude.
+
+    Args:
+        value: An float to evaluate.
+
+    Returns:
+        The float, if valid.
+
+    Raises:
+        ValueError: Raised on an invalid longitude.
+    """
+    if value < -180 or value > 180:
+        raise ValueError(f"{value} is an invalid longitude")
+    return value
+
+
 class LocationType(Enum):
     """Define a location type."""
 
@@ -148,17 +183,18 @@ class GetSensorsRequest(BaseModel):
     """Define a request to GET /v1/sensors."""
 
     fields: list[str]
-    location_type: Optional[LocationType] = None
-    read_keys: Optional[list[str]] = None
-    show_only: Optional[list[int]] = None
-    modified_since: Optional[datetime] = None
-    max_age: Optional[int] = 0
-    nwlng: Optional[float] = None
-    nwlat: Optional[float] = None
-    selng: Optional[float] = None
-    selat: Optional[float] = None
 
-    @root_validator
+    location_type: Optional[LocationType] = None
+    max_age: Optional[int] = 0
+    modified_since: Optional[datetime] = None
+    nwlat: Optional[float] = None
+    nwlng: Optional[float] = None
+    read_keys: Optional[list[str]] = None
+    selat: Optional[float] = None
+    selng: Optional[float] = None
+    show_only: Optional[list[int]] = None
+
+    @root_validator(pre=True)
     @classmethod
     def validate_bounding_box_missing_or_complete(
         cls, values: dict[str, Any]
@@ -264,3 +300,102 @@ class GetSensorsRequest(BaseModel):
             A comma-separate string of sensor IDs.
         """
         return ",".join([str(i) for i in value])
+
+
+def convert_sensor_response(
+    fields: list[str], field_values: list[Any]
+) -> dict[str, Any]:
+    """Convert sensor fields into an easier-to-parse dictionary.
+
+    Args:
+        fields: A list of sensor types.
+        field_values: A raw list of sensor fields.
+
+    Returns:
+        A dictionary of sensor data.
+    """
+    return dict(zip(fields, field_values))
+
+
+class GetSensorsResponse(BaseModel):
+    """Define a response to GET /v1/sensors."""
+
+    fields: list[str]
+    data: list[list[Any]]
+
+    api_version: str
+    data_time_stamp: int
+    firmware_default_version: str
+    max_age: int
+    time_stamp: int
+
+    channel_flags: Optional[
+        Literal["Normal", "A-Downgraded", "B-Downgraded", "A+B-Downgraded"]
+    ] = None
+    channel_states: Optional[Literal["No PM", "PM-A", "PM-B", "PM-A+PM-B"]] = None
+    location_type: Optional[int] = None
+    location_types: Optional[Literal["inside", "outside"]] = None
+
+    @validator("data")
+    @classmethod
+    def validate_data(
+        cls, value: list[list[Any]], values: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Validate the data.
+
+        Args:
+            value: The pre-validated data payload.
+            values: The fields passed into the model.
+
+        Returns:
+            A better format for the data.
+        """
+        return {
+            sensor_values[0]: convert_sensor_response(values["fields"], sensor_values)
+            for sensor_values in value
+        }
+
+    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True)(
+        validate_timestamp
+    )
+
+    @root_validator(pre=True)
+    @classmethod
+    def validate_fields_are_valid(cls, values: dict[str, Any]) -> dict[str, Any]:
+        """Validate the fields string.
+
+        Args:
+            values: The fields passed into the model.
+
+        Returns:
+            The fields passed into the model.
+
+        Raises:
+            ValueError: An invalid API key type was received.
+        """
+        values["fields"] = values["fields"].split(",")
+        for field in values["fields"]:
+            if field not in SENSOR_FIELDS:
+                raise ValueError(f"{field} is an unknown field")
+        return values
+
+    @validator("location_type")
+    @classmethod
+    def validate_location_type(cls, value: int) -> LocationType:
+        """Validate the location type.
+
+        Args:
+            value: The integer-based interpretation of a location type.
+
+        Returns:
+            A LocationType value.
+
+        Raises:
+            ValueError: Raised upon an unknown location type.
+        """
+        try:
+            return LocationType(value)
+        except ValueError as err:
+            raise ValueError(f"{value} is an unknown location type") from err
+
+    validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
