@@ -3,4 +3,4 @@ from typing import TypeVar
 
 from pydantic import BaseModel
 
-ResponseModelT = TypeVar("ResponseModelT", bound=BaseModel)
+ModelT = TypeVar("ModelT", bound=BaseModel)
