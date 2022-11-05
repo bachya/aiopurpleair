@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from aiopurpleair.model.sensors import (
+from aiopurpleair.models.sensors import (
     GetSensorsRequest,
     GetSensorsResponse,
     LocationType,

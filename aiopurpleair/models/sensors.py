@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, root_validator, validator
 
-from aiopurpleair.model.validator import validate_timestamp
+from aiopurpleair.models.validator import validate_timestamp
 from aiopurpleair.util.dt import utc_to_timestamp
 
 SENSOR_FIELDS = {

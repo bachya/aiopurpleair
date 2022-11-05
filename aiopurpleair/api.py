@@ -9,7 +9,7 @@ from pydantic import BaseModel, ValidationError
 
 from aiopurpleair.const import LOGGER
 from aiopurpleair.errors import RequestError, raise_error
-from aiopurpleair.model.keys import GetKeysResponse
+from aiopurpleair.models.keys import GetKeysResponse
 
 API_URL_BASE = "https://api.purpleair.com/v1"
 

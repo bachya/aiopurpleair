@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from aiopurpleair.model.keys import ApiKeyType, GetKeysResponse
+from aiopurpleair.models.keys import ApiKeyType, GetKeysResponse
 
 
 def test_get_keys_response(get_keys_response: dict[str, Any]) -> None:

@@ -10,7 +10,7 @@ from aresponses import ResponsesMockServer
 
 from aiopurpleair import API
 from aiopurpleair.errors import InvalidApiKeyError, RequestError
-from aiopurpleair.model.keys import ApiKeyType, GetKeysResponse
+from aiopurpleair.models.keys import ApiKeyType, GetKeysResponse
 from tests.common import TEST_API_KEY, load_fixture
 
 
