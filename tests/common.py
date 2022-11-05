@@ -1,5 +1,9 @@
 """Define common test utilities."""
+from __future__ import annotations
+
 import os
+
+TEST_API_KEY = "abcde12345"
 
 
 def load_fixture(filename: str) -> str:

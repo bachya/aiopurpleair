@@ -34,6 +34,57 @@ pip install aiopurpleair
 
 # Usage
 
+## Checking an API Key
+
+To check whether an API key is valid and what properties it has:
+
+```python
+import asyncio
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    response = await API.async_check_api_key("<API KEY>")
+    # >>> response.api_version == "V1.0.11-0.0.41"
+    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)
+    # >>> response.api_key_type == ApiKeyType.READ
+
+
+asyncio.run(main())
+```
+
+## Connection Pooling
+
+By default, the library creates a new connection to the PurpleAir API with each
+coroutine. If you are calling a large number of coroutines (or merely want to squeeze
+out every second of runtime savings possible), an
+[`aiohttp`](https://github.com/aio-libs/aiohttp) `ClientSession` can be used for connection
+pooling:
+
+```python
+import asyncio
+
+from aiohttp import ClientSession
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    async with ClientSession() as session:
+        api = await API("<API KEY>")
+
+        # Get to work...
+
+
+asyncio.run(main())
+```
+
+Check out the examples, the tests, and the source files themselves for method
+signatures and more examples.
+
 # Contributing
 
 1. [Check for open features/bugs](https://github.com/bachya/aiopurpleair/issues)
