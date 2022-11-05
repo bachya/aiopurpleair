@@ -1,4 +1,4 @@
-"""Define validators to use across models."""
+"""Define Pydantic validator helpers."""
 from datetime import datetime
 
 

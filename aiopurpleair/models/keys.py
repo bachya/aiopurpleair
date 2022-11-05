@@ -6,7 +6,7 @@ from datetime import datetime
 from pydantic import BaseModel, validator
 
 from aiopurpleair.backports.enum import StrEnum
-from aiopurpleair.models.validator import validate_timestamp
+from aiopurpleair.helpers.validators import validate_timestamp
 
 
 class ApiKeyType(StrEnum):
