@@ -55,7 +55,7 @@ async def main() -> None:
     """Run."""
     response = await API.async_check_api_key("<API KEY>")
     # >>> response.api_version == "V1.0.11-0.0.41"
-    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)
+    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)  # UTC
     # >>> response.api_key_type == ApiKeyType.READ
 
 
@@ -75,8 +75,8 @@ async def main() -> None:
     api = API("<API_KEY>")
     response = await api.sensors.async_get_sensors(["name"])
     # >>> response.api_version == "V1.0.11-0.0.41"
-    # >>> response.time_stamp == datetime(2022, 11, 3, 19, 26, 29)
-    # >>> response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)
+    # >>> response.time_stamp == datetime(2022, 11, 3, 19, 26, 29)  # UTC
+    # >>> response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)  # UTC
     # >>> response.firmware_default_version == "7.02"
     # >>> response.max_age == 604800
     # >>> response.channel_flags is None
@@ -104,7 +104,7 @@ asyncio.run(main())
 - `fields`: The sensor data fields to include.
 - `location_type`: An optional LocationType to filter by.
 - `max_age`: Filter results modified within these seconds.
-- `modified_since`: Filter results modified since a datetime.
+- `modified_since`: Filter results modified since a UTC datetime.
 - `read_keys`: Optional read keys for private sensors.
 - `sensor_indices`: Filter results by sensor index.
 
