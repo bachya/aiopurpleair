@@ -1,4 +1,5 @@
 """Define request and response models for sensors."""
+# pylint: disable=too-few-public-methods
 from __future__ import annotations
 
 from datetime import datetime
@@ -7,169 +8,14 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, root_validator, validator
 
+from aiopurpleair.const import SENSOR_FIELDS
 from aiopurpleair.helpers.validators import validate_timestamp
+from aiopurpleair.helpers.validators.sensors import (
+    validate_fields_request,
+    validate_latitude,
+    validate_longitude,
+)
 from aiopurpleair.util.dt import utc_to_timestamp
-
-SENSOR_FIELDS = {
-    "0.3_um_count",
-    "0.3_um_count_a",
-    "0.3_um_count_b",
-    "0.5_um_count",
-    "0.5_um_count_a",
-    "0.5_um_count_b",
-    "1.0_um_count",
-    "1.0_um_count_a",
-    "1.0_um_count_b",
-    "10.0_um_count 10.0_um_count_a",
-    "10.0_um_count_b",
-    "2.5_um_count",
-    "2.5_um_count_a",
-    "2.5_um_count_b",
-    "5.0_um_count",
-    "5.0_um_count_a",
-    "5.0_um_count_b",
-    "altitude",
-    "analog_input",
-    "channel_flags",
-    "channel_flags_auto",
-    "channel_flags_manual",
-    "channel_state",
-    "confidence",
-    "confidence_auto",
-    "confidence_manual",
-    "date_created",
-    "deciviews",
-    "deciviews_a",
-    "deciviews_b",
-    "firmware_upgrade",
-    "firmware_version",
-    "hardware",
-    "humidity",
-    "humidity_a",
-    "humidity_b",
-    "icon",
-    "last_modified",
-    "last_seen",
-    "latitude",
-    "led_brightness",
-    "location_type",
-    "longitude",
-    "memory",
-    "model",
-    "name",
-    "ozone1",
-    "pa_latency",
-    "pm1.0",
-    "pm1.0_a",
-    "pm1.0_atm",
-    "pm1.0_atm_a",
-    "pm1.0_atm_b",
-    "pm1.0_b",
-    "pm1.0_cf_1",
-    "pm1.0_cf_1_a",
-    "pm1.0_cf_1_b",
-    "pm10.0",
-    "pm10.0_a",
-    "pm10.0_atm",
-    "pm10.0_atm_a",
-    "pm10.0_atm_b",
-    "pm10.0_b",
-    "pm10.0_cf_1",
-    "pm10.0_cf_1_a",
-    "pm10.0_cf_1_b",
-    "pm2.5",
-    "pm2.5_10minute",
-    "pm2.5_10minute_a",
-    "pm2.5_10minute_b",
-    "pm2.5_1week",
-    "pm2.5_1week_a",
-    "pm2.5_1week_b",
-    "pm2.5_24hour",
-    "pm2.5_24hour_a",
-    "pm2.5_24hour_b",
-    "pm2.5_30minute",
-    "pm2.5_30minute_a",
-    "pm2.5_30minute_b",
-    "pm2.5_60minute",
-    "pm2.5_60minute_a",
-    "pm2.5_60minute_b",
-    "pm2.5_6hour",
-    "pm2.5_6hour_a",
-    "pm2.5_6hour_b",
-    "pm2.5_a",
-    "pm2.5_alt",
-    "pm2.5_alt_a",
-    "pm2.5_alt_b",
-    "pm2.5_atm",
-    "pm2.5_atm_a",
-    "pm2.5_atm_b",
-    "pm2.5_b",
-    "pm2.5_cf_1",
-    "pm2.5_cf_1_a",
-    "pm2.5_cf_1_b",
-    "position_rating",
-    "pressure",
-    "pressure_a",
-    "pressure_b",
-    "primary_id_a",
-    "primary_id_b",
-    "primary_key_a",
-    "primary_key_b",
-    "private",
-    "rssi",
-    "scattering_coefficient",
-    "scattering_coefficient_a",
-    "scattering_coefficient_b",
-    "secondary_id_a",
-    "secondary_id_b",
-    "secondary_key_a",
-    "secondary_key_b",
-    "sensor_index",
-    "temperature",
-    "temperature_a",
-    "temperature_b",
-    "uptime",
-    "visual_range",
-    "visual_range_a",
-    "visual_range_b",
-    "voc",
-    "voc_a",
-    "voc_b",
-}
-
-
-def validate_latitude(value: float) -> float:
-    """Validate a latitude.
-
-    Args:
-        value: An float to evaluate.
-
-    Returns:
-        The float, if valid.
-
-    Raises:
-        ValueError: Raised on an invalid latitude.
-    """
-    if value < -90 or value > 90:
-        raise ValueError(f"{value} is an invalid latitude")
-    return value
-
-
-def validate_longitude(value: float) -> float:
-    """Validate a longitude.
-
-    Args:
-        value: An float to evaluate.
-
-    Returns:
-        The float, if valid.
-
-    Raises:
-        ValueError: Raised on an invalid longitude.
-    """
-    if value < -180 or value > 180:
-        raise ValueError(f"{value} is an invalid longitude")
-    return value
 
 
 class LocationType(Enum):
@@ -177,6 +23,42 @@ class LocationType(Enum):
 
     OUTSIDE = 0
     INSIDE = 1
+
+
+class GetSensorRequest(BaseModel):
+    """Define a request to GET /v1/sensor/:sensor_index."""
+
+    fields: Optional[list[str]] = None
+    read_key: Optional[str] = None
+
+    class Config:
+        """Define configuration for this model."""
+
+        frozen = True
+
+    validate_fields = validator("fields", allow_reuse=True)(validate_fields_request)
+
+
+class GetSensorResponse(BaseModel):
+    """Define a response to GET /v1/sensor/:sensor_index."""
+
+    api_version: str
+    time_stamp: datetime
+    data_time_stamp: datetime
+    sensor: dict[str, Any]
+
+    class Config:
+        """Define configuration for this model."""
+
+        frozen = True
+
+    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True, pre=True)(
+        validate_timestamp
+    )
+
+    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
+        validate_timestamp
+    )
 
 
 class GetSensorsRequest(BaseModel):
@@ -194,7 +76,7 @@ class GetSensorsRequest(BaseModel):
     selng: Optional[float] = None
     show_only: Optional[list[int]] = None
 
-    class Config:  # pylint: disable=too-few-public-methods
+    class Config:
         """Define configuration for this model."""
 
         frozen = True
@@ -228,25 +110,7 @@ class GetSensorsRequest(BaseModel):
 
         return values
 
-    @validator("fields")
-    @classmethod
-    def validate_fields(cls, value: list[str]) -> str:
-        """Validate the fields.
-
-        Args:
-            value: A list of field strings.
-
-        Returns:
-            A comma-separate string of fields.
-
-        Raises:
-            ValueError: An invalid API key type was received.
-        """
-        for field in value:
-            if field not in SENSOR_FIELDS:
-                raise ValueError(f"{field} is an unknown field")
-
-        return ",".join(value)
+    validate_fields = validator("fields", allow_reuse=True)(validate_fields_request)
 
     @validator("location_type")
     @classmethod
@@ -329,10 +193,10 @@ class GetSensorsResponse(BaseModel):
     data: dict[int, dict[str, Any]]
 
     api_version: str
-    data_time_stamp: datetime
-    firmware_default_version: str
-    max_age: int
     time_stamp: datetime
+    data_time_stamp: datetime
+    max_age: int
+    firmware_default_version: str
 
     channel_flags: Optional[
         Literal["Normal", "A-Downgraded", "B-Downgraded", "A+B-Downgraded"]
@@ -341,7 +205,7 @@ class GetSensorsResponse(BaseModel):
     location_type: Optional[LocationType] = None
     location_types: Optional[Literal["inside", "outside"]] = None
 
-    class Config:  # pylint: disable=too-few-public-methods
+    class Config:
         """Define configuration for this model."""
 
         frozen = True
@@ -371,7 +235,7 @@ class GetSensorsResponse(BaseModel):
 
     @root_validator(pre=True)
     @classmethod
-    def validate_fields_are_valid(cls, values: dict[str, Any]) -> dict[str, Any]:
+    def validate_fields(cls, values: dict[str, Any]) -> dict[str, Any]:
         """Validate the fields string.
 
         Args:

@@ -1,31 +1,48 @@
 """Define an API endpoint for requests related to sensors."""
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable
 from datetime import datetime
-from typing import Any, cast
 
-from pydantic import ValidationError
-
-from aiopurpleair.errors import InvalidRequestError
-from aiopurpleair.helpers.typing import ResponseModelT
+from aiopurpleair.endpoints import APIEndpointsBase
 from aiopurpleair.models.sensors import (
+    GetSensorRequest,
+    GetSensorResponse,
     GetSensorsRequest,
     GetSensorsResponse,
     LocationType,
 )
 
 
-class SensorsEndpoints:  # pylint: disable=too-few-public-methods
+class SensorsEndpoints(APIEndpointsBase):
     """Define the API manager object."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ResponseModelT]]) -> None:
-        """Initialize.
+    async def async_get_sensor(
+        self,
+        sensor_index: int,
+        *,
+        fields: list[str] | None = None,
+        read_key: str | None = None,
+    ) -> GetSensorResponse:
+        """Get all sensors.
 
         Args:
-            async_request: The request method from the API object.
+            sensor_index: The sensor index to get data for.
+            fields: The optional sensor data fields to include.
+            read_key: An optional read key for private sensors.
+
+        Returns:
+            An API response payload in the form of a Pydantic model.
         """
-        self._async_request = async_request
+        response: GetSensorResponse = await self._async_endpoint_request(
+            f"/sensor/{sensor_index}",
+            (
+                ("fields", fields),
+                ("read_key", read_key),
+            ),
+            GetSensorRequest,
+            GetSensorResponse,
+        )
+        return response
 
     async def async_get_sensors(
         self,
@@ -49,32 +66,18 @@ class SensorsEndpoints:  # pylint: disable=too-few-public-methods
 
         Returns:
             An API response payload in the form of a Pydantic model.
-
-        Raises:
-            InvalidRequestError: Raised on invalid parameters.
         """
-        payload: dict[str, Any] = {"fields": fields}
-
-        for api_query_param, func_param in (
-            ("location_type", location_type),
-            ("max_age", max_age),
-            ("modified_since", modified_since),
-            ("read_keys", read_keys),
-            ("show_only", sensor_indices),
-        ):
-            if not func_param:
-                continue
-            payload[api_query_param] = func_param
-
-        try:
-            request = GetSensorsRequest.parse_obj(payload)
-        except ValidationError as err:
-            raise InvalidRequestError(err) from err
-
-        response = await self._async_request(
-            "get",
+        response: GetSensorsResponse = await self._async_endpoint_request(
             "/sensors",
+            (
+                ("fields", fields),
+                ("location_type", location_type),
+                ("max_age", max_age),
+                ("modified_since", modified_since),
+                ("read_keys", read_keys),
+                ("show_only", sensor_indices),
+            ),
+            GetSensorsRequest,
             GetSensorsResponse,
-            params=request.dict(exclude_none=True),
         )
-        return cast(GetSensorsResponse, response)
+        return response

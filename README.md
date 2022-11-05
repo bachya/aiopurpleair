@@ -18,6 +18,7 @@
 - [Usage](#usage)
   - [Checking an API Key](#checking-an-api-key)
   - [Getting Sensors](#getting-sensors)
+  - [Getting a Single Sensor](#getting-a-single-sensor)
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
@@ -101,12 +102,42 @@ asyncio.run(main())
 
 `API.sensors.async_get_sensors` takes several parameters:
 
-- `fields`: The sensor data fields to include.
-- `location_type`: An optional LocationType to filter by.
-- `max_age`: Filter results modified within these seconds.
-- `modified_since`: Filter results modified since a UTC datetime.
-- `read_keys`: Optional read keys for private sensors.
-- `sensor_indices`: Filter results by sensor index.
+- `fields` (required): The sensor data fields to include.
+- `location_type` (optional): An LocationType to filter by.
+- `max_age` (optional): Filter results modified within these seconds.
+- `modified_since` (optional): Filter results modified since a UTC datetime.
+- `read_keys` (optional): Read keys for private sensors.
+- `sensor_indices` (optional): Filter results by sensor index.
+
+## Getting a Single Sensor
+
+```python
+import asyncio
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    api = API("<API_KEY>")
+    response = await api.sensors.async_get_sensor("<SENSOR INDEX>")
+    # >>> response.api_version == "V1.0.11-0.0.41"
+    # >>> response.time_stamp == datetime(2022, 11, 5, 16, 37, 3)
+    # >>> response.data_time_stamp == datetime(2022, 11, 5, 16, 36, 21)
+    # >>> response.sensor == {
+    # >>>     "sensor_index": 131075,
+    # >>>     "last_modified": 1635632829,
+    # >>>     ...
+    # >>> }
+
+
+asyncio.run(main())
+```
+
+`API.sensors.async_get_sensor` takes several parameters:
+
+- `fields` (optional): The sensor data fields to include.
+- `read_key` (optional): A read key for a private sensor.
 
 ## Connection Pooling
 

@@ -9,6 +9,6 @@ def validate_timestamp(value: int) -> datetime:
         value: An integer (epoch datetime) to evaluate.
 
     Returns:
-        A parsed datetime.datetime object.
+        A parsed datetime.datetime object (UTC).
     """
     return datetime.utcfromtimestamp(value)

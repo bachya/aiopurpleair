@@ -10,7 +10,7 @@ from pydantic import BaseModel, ValidationError
 from aiopurpleair.const import LOGGER
 from aiopurpleair.endpoints.sensors import SensorsEndpoints
 from aiopurpleair.errors import RequestError, raise_error
-from aiopurpleair.helpers.typing import ResponseModelT
+from aiopurpleair.helpers.typing import ModelT
 from aiopurpleair.models.keys import GetKeysResponse
 
 API_URL_BASE = "https://api.purpleair.com/v1"
@@ -60,7 +60,7 @@ class API:  # pylint: disable=too-few-public-methods
         endpoint: str,
         response_model: type[BaseModel],
         **kwargs: dict[str, Any],
-    ) -> ResponseModelT:
+    ) -> ModelT:
         """Make an API request.
 
         Args:
@@ -106,7 +106,7 @@ class API:  # pylint: disable=too-few-public-methods
         LOGGER.debug("Data received for %s: %s", endpoint, data)
 
         try:
-            return cast(ResponseModelT, response_model.parse_obj(data))
+            return cast(ModelT, response_model.parse_obj(data))
         except ValidationError as err:
             raise RequestError(
                 f"Error while parsing response from {endpoint}: {err}"
