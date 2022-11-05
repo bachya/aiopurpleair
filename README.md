@@ -16,6 +16,9 @@
 - [Installation](#installation)
 - [Python Versions](#python-versions)
 - [Usage](#usage)
+  - [Checking an API Key](#checking-an-api-key)
+  - [Getting Sensors](#getting-sensors)
+  - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
 # Installation
@@ -34,6 +37,10 @@ pip install aiopurpleair
 
 # Usage
 
+In-depth documentation on the API can be found here:
+https://api.purpleair.com/#api-welcome. Unless otherwise noted, `aiopurpleair` endeavors
+to follow the API as closely as possible.
+
 ## Checking an API Key
 
 To check whether an API key is valid and what properties it has:
@@ -48,12 +55,58 @@ async def main() -> None:
     """Run."""
     response = await API.async_check_api_key("<API KEY>")
     # >>> response.api_version == "V1.0.11-0.0.41"
-    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)
+    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)  # UTC
     # >>> response.api_key_type == ApiKeyType.READ
 
 
 asyncio.run(main())
 ```
+
+## Getting Sensors
+
+```python
+import asyncio
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    api = API("<API_KEY>")
+    response = await api.sensors.async_get_sensors(["name"])
+    # >>> response.api_version == "V1.0.11-0.0.41"
+    # >>> response.time_stamp == datetime(2022, 11, 3, 19, 26, 29)  # UTC
+    # >>> response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)  # UTC
+    # >>> response.firmware_default_version == "7.02"
+    # >>> response.max_age == 604800
+    # >>> response.channel_flags is None
+    # >>> response.channel_states is None
+    # >>> response.location_type is LocationType.OUTSIDE
+    # >>> response.location_types is None
+    # >>> response.fields == ["sensor_index", "name"]
+    # >>> response.data == {
+    # >>>     131075: {
+    # >>>         "sensor_index": 131075,
+    # >>>         "name": "Mariners Bluff",
+    # >>>     },
+    # >>>     131079: {
+    # >>>         "sensor_index": 131079,
+    # >>>         "name": "BRSKBV-outside",
+    # >>>     },
+    # >>> }
+
+
+asyncio.run(main())
+```
+
+`API.sensors.async_get_sensors` takes several parameters:
+
+- `fields`: The sensor data fields to include.
+- `location_type`: An optional LocationType to filter by.
+- `max_age`: Filter results modified within these seconds.
+- `modified_since`: Filter results modified since a UTC datetime.
+- `read_keys`: Optional read keys for private sensors.
+- `sensor_indices`: Filter results by sensor index.
 
 ## Connection Pooling
 
@@ -81,9 +134,6 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-
-Check out the examples, the tests, and the source files themselves for method
-signatures and more examples.
 
 # Contributing
 

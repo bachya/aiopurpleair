@@ -185,7 +185,7 @@ class GetSensorsRequest(BaseModel):
     fields: list[str]
 
     location_type: Optional[LocationType] = None
-    max_age: Optional[int] = 0
+    max_age: Optional[int] = None
     modified_since: Optional[datetime] = None
     nwlat: Optional[float] = None
     nwlng: Optional[float] = None
@@ -193,6 +193,11 @@ class GetSensorsRequest(BaseModel):
     selat: Optional[float] = None
     selng: Optional[float] = None
     show_only: Optional[list[int]] = None
+
+    class Config:  # pylint: disable=too-few-public-methods
+        """Define configuration for this model."""
+
+        frozen = True
 
     @root_validator(pre=True)
     @classmethod
@@ -321,22 +326,27 @@ class GetSensorsResponse(BaseModel):
     """Define a response to GET /v1/sensors."""
 
     fields: list[str]
-    data: list[list[Any]]
+    data: dict[int, dict[str, Any]]
 
     api_version: str
-    data_time_stamp: int
+    data_time_stamp: datetime
     firmware_default_version: str
     max_age: int
-    time_stamp: int
+    time_stamp: datetime
 
     channel_flags: Optional[
         Literal["Normal", "A-Downgraded", "B-Downgraded", "A+B-Downgraded"]
     ] = None
     channel_states: Optional[Literal["No PM", "PM-A", "PM-B", "PM-A+PM-B"]] = None
-    location_type: Optional[int] = None
+    location_type: Optional[LocationType] = None
     location_types: Optional[Literal["inside", "outside"]] = None
 
-    @validator("data")
+    class Config:  # pylint: disable=too-few-public-methods
+        """Define configuration for this model."""
+
+        frozen = True
+
+    @validator("data", pre=True)
     @classmethod
     def validate_data(
         cls, value: list[list[Any]], values: dict[str, Any]
@@ -355,7 +365,7 @@ class GetSensorsResponse(BaseModel):
             for sensor_values in value
         }
 
-    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True)(
+    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True, pre=True)(
         validate_timestamp
     )
 
@@ -373,13 +383,12 @@ class GetSensorsResponse(BaseModel):
         Raises:
             ValueError: An invalid API key type was received.
         """
-        values["fields"] = values["fields"].split(",")
         for field in values["fields"]:
             if field not in SENSOR_FIELDS:
                 raise ValueError(f"{field} is an unknown field")
         return values
 
-    @validator("location_type")
+    @validator("location_type", pre=True)
     @classmethod
     def validate_location_type(cls, value: int) -> LocationType:
         """Validate the location type.
@@ -398,4 +407,6 @@ class GetSensorsResponse(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown location type") from err
 
-    validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
+    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
+        validate_timestamp
+    )

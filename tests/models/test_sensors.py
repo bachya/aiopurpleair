@@ -20,37 +20,6 @@ from aiopurpleair.models.sensors import (
         (
             {
                 "fields": ["name", "icon"],
-            },
-            {
-                "fields": "name,icon",
-                "max_age": 0,
-            },
-        ),
-        (
-            {
-                "fields": ["name", "icon"],
-                "location_type": LocationType.OUTSIDE,
-            },
-            {
-                "fields": "name,icon",
-                "location_type": 0,
-                "max_age": 0,
-            },
-        ),
-        (
-            {
-                "fields": ["name", "icon"],
-                "location_type": LocationType.INSIDE,
-            },
-            {
-                "fields": "name,icon",
-                "location_type": 1,
-                "max_age": 0,
-            },
-        ),
-        (
-            {
-                "fields": ["name", "icon"],
                 "location_type": LocationType.INSIDE,
                 "read_keys": ["abc", "def"],
                 "show_only": [123, 456],
@@ -100,7 +69,7 @@ def test_get_sensors_request(
                 "location_type": 0,
                 "max_age": 604800,
                 "firmware_default_version": "7.02",
-                "fields": "sensor_index,name,icon",
+                "fields": ["sensor_index", "name", "icon"],
                 "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
             },
             {
@@ -151,7 +120,7 @@ def test_get_sensors_response(
                 "location_type": 0,
                 "max_age": 604800,
                 "firmware_default_version": "7.02",
-                "fields": "name,foobar",
+                "fields": ["name", "foobar"],
                 "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
             },
             "foobar is an unknown field",
@@ -164,7 +133,7 @@ def test_get_sensors_response(
                 "location_type": 2,
                 "max_age": 604800,
                 "firmware_default_version": "7.02",
-                "fields": "name,icon",
+                "fields": ["name", "icon"],
                 "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
             },
             "2 is an unknown location type",

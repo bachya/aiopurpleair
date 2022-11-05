@@ -26,6 +26,11 @@ class GetKeysResponse(BaseModel):
     time_stamp: datetime
     api_key_type: str
 
+    class Config:  # pylint: disable=too-few-public-methods
+        """Define configuration for this model."""
+
+        frozen = True
+
     @validator("api_key_type")
     @classmethod
     def validate_api_key_type(cls, value: str) -> ApiKeyType:

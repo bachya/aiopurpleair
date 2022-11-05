@@ -1,1 +1,1 @@
-"""Define library examples."""
+"""Define examples."""
