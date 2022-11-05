@@ -13,6 +13,12 @@ class PurpleAirError(Exception):
     pass
 
 
+class InvalidRequestError(PurpleAirError):
+    """Define an invalid request."""
+
+    pass
+
+
 class RequestError(PurpleAirError):
     """Define a general HTTP request error."""
 

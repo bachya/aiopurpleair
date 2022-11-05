@@ -1,21 +1,21 @@
 """Define an API client."""
 from __future__ import annotations
 
-from typing import Any, TypeVar, cast
+from typing import Any, cast
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
 from pydantic import BaseModel, ValidationError
 
 from aiopurpleair.const import LOGGER
+from aiopurpleair.endpoints.sensors import SensorsEndpoints
 from aiopurpleair.errors import RequestError, raise_error
+from aiopurpleair.helpers.typing import ResponseModelT
 from aiopurpleair.models.keys import GetKeysResponse
 
 API_URL_BASE = "https://api.purpleair.com/v1"
 
 DEFAULT_TIMEOUT = 10
-
-_ResponseModelT = TypeVar("_ResponseModelT", bound=BaseModel)
 
 
 class API:  # pylint: disable=too-few-public-methods
@@ -35,6 +35,8 @@ class API:  # pylint: disable=too-few-public-methods
         """
         self._api_key = api_key
         self._session = session
+
+        self.sensors = SensorsEndpoints(self.async_request)
 
     @classmethod
     async def async_check_api_key(
@@ -58,7 +60,7 @@ class API:  # pylint: disable=too-few-public-methods
         endpoint: str,
         response_model: type[BaseModel],
         **kwargs: dict[str, Any],
-    ) -> _ResponseModelT:
+    ) -> ResponseModelT:
         """Make an API request.
 
         Args:
@@ -68,7 +70,7 @@ class API:  # pylint: disable=too-few-public-methods
             **kwargs: Additional kwargs to send with the request.
 
         Returns:
-            Either a Pydantic model or a JSON API response payload.
+            An API response payload in the form of a Pydantic model.
 
         Raises:
             RequestError: Raised when response data can't be validated.
@@ -104,7 +106,7 @@ class API:  # pylint: disable=too-few-public-methods
         LOGGER.debug("Data received for %s: %s", endpoint, data)
 
         try:
-            return cast(_ResponseModelT, response_model.parse_obj(data))
+            return cast(ResponseModelT, response_model.parse_obj(data))
         except ValidationError as err:
             raise RequestError(
                 f"Error while parsing response from {endpoint}: {err}"
