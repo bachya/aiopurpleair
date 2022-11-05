@@ -34,6 +34,10 @@ pip install aiopurpleair
 
 # Usage
 
+## Checking an API Key
+
+To check whether an API key is valid and what properties it has:
+
 ```python
 import asyncio
 
@@ -42,14 +46,16 @@ from aiopurpleair import API
 
 async def main() -> None:
     """Run."""
-    api = await API("<API KEY>")
-
-    # Check the validity of the API key:
-    data = await api.keys.async_check_api_key()
+    response = await API.async_check_api_key("<API KEY>")
+    # >>> response.api_version == "V1.0.11-0.0.41"
+    # >>> response.time_stamp == datetime(2022, 10, 27, 18, 25, 41)
+    # >>> response.api_key_type == ApiKeyType.READ
 
 
 asyncio.run(main())
 ```
+
+## Connection Pooling
 
 By default, the library creates a new connection to the PurpleAir API with each
 coroutine. If you are calling a large number of coroutines (or merely want to squeeze

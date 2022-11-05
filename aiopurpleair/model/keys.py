@@ -1,6 +1,8 @@
 """Define request and response models for keys."""
 from __future__ import annotations
 
+from datetime import datetime
+
 from pydantic import BaseModel, validator
 
 from aiopurpleair.backports.enum import StrEnum
@@ -21,7 +23,7 @@ class GetKeysResponse(BaseModel):
     """Define a response to GET /v1/keys."""
 
     api_version: str
-    time_stamp: int
+    time_stamp: datetime
     api_key_type: str
 
     @validator("api_key_type")
@@ -43,15 +45,6 @@ class GetKeysResponse(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown API key type") from err
 
-    validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
-
-
-class InvalidApiKeyResponse(BaseModel):
-    """Define an invalid API key error response for GET /v1/keys."""
-
-    api_version: str
-    time_stamp: int
-    error: str
-    description: str
-
-    validate_time_stamp = validator("time_stamp", allow_reuse=True)(validate_timestamp)
+    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
+        validate_timestamp
+    )
