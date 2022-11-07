@@ -28,24 +28,25 @@ class SensorModelStats(BaseModel):
     pm2_5_30minute: float
     pm2_5_60minute: float
     pm2_5_6hour: float
-    time_stamp: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
         fields = {
-            "pm2_5": "pm2.5",
-            "pm2_5_10minute": "pm2.5_10minute",
-            "pm2_5_1week": "pm2.5_1week",
-            "pm2_5_24hour": "pm2.5_24hour",
-            "pm2_5_30minute": "pm2.5_30minute",
-            "pm2_5_60minute": "pm2.5_60minute",
-            "pm2_5_6hour": "pm2.5_6hour",
+            "pm2_5": {"alias": "pm2.5"},
+            "pm2_5_10minute": {"alias": "pm2.5_10minute"},
+            "pm2_5_1week": {"alias": "pm2.5_1week"},
+            "pm2_5_24hour": {"alias": "pm2.5_24hour"},
+            "pm2_5_30minute": {"alias": "pm2.5_30minute"},
+            "pm2_5_60minute": {"alias": "pm2.5_60minute"},
+            "pm2_5_6hour": {"alias": "pm2.5_6hour"},
+            "timestamp_utc": {"alias": "time_stamp"},
         }
         frozen = True
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -364,23 +365,27 @@ class GetSensorResponse(BaseModel):
     """Define a response to GET /v1/sensor/:sensor_index."""
 
     api_version: str
-    time_stamp: datetime
-    data_time_stamp: datetime
     sensor: SensorModel
+    data_timestamp_utc: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "data_timestamp_utc": {"alias": "data_time_stamp"},
+            "timestamp_utc": {"alias": "time_stamp"},
+        }
         frozen = True
 
-    validate_data_time_stamp = validator(
-        "data_time_stamp",
+    validate_data_timestamp_utc = validator(
+        "data_timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -520,14 +525,18 @@ class GetSensorsResponse(BaseModel):
     data: dict[int, SensorModel]
 
     api_version: str
-    time_stamp: datetime
-    data_time_stamp: datetime
-    max_age: int
     firmware_default_version: str
+    max_age: int
+    data_timestamp_utc: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "data_timestamp_utc": {"alias": "data_time_stamp"},
+            "timestamp_utc": {"alias": "time_stamp"},
+        }
         frozen = True
 
     @validator("data", pre=True)
@@ -551,8 +560,8 @@ class GetSensorsResponse(BaseModel):
             for sensor_values in value
         }
 
-    validate_data_time_stamp = validator(
-        "data_time_stamp",
+    validate_data_timestamp_utc = validator(
+        "data_timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -576,8 +585,8 @@ class GetSensorsResponse(BaseModel):
                 raise ValueError(f"{field} is an unknown field")
         return values
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
