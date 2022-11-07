@@ -1,7 +1,34 @@
 """Define package constants."""
 import logging
+from enum import Enum
 
 LOGGER = logging.getLogger(__package__)
+
+
+class ChannelFlag(Enum):
+    """Define a channel flag."""
+
+    NORMAL = 0
+    A_DOWNGRADED = 1
+    B_DOWNGRADED = 2
+    A_B_DOWNGRADED = 3
+
+
+class ChannelState(Enum):
+    """Define a channel state."""
+
+    NO_PM = 0
+    PM_A = 1
+    PM_B = 2
+    PM_A_PM_B = 3
+
+
+class LocationType(Enum):
+    """Define a location type."""
+
+    OUTSIDE = 0
+    INSIDE = 1
+
 
 SENSOR_FIELDS = {
     "0.3_um_count",

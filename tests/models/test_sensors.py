@@ -59,102 +59,6 @@ def test_get_sensors_request(
 
 
 @pytest.mark.parametrize(
-    "input_payload,output_payload",
-    [
-        (
-            {
-                "api_version": "V1.0.11-0.0.41",
-                "time_stamp": 1667533097,
-                "data_time_stamp": 1667533091,
-                "location_type": 0,
-                "max_age": 604800,
-                "firmware_default_version": "7.02",
-                "fields": ["sensor_index", "name", "icon"],
-                "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
-            },
-            {
-                "api_version": "V1.0.11-0.0.41",
-                "time_stamp": datetime(2022, 11, 4, 3, 38, 17),
-                "data_time_stamp": datetime(2022, 11, 4, 3, 38, 11),
-                "location_type": LocationType.OUTSIDE,
-                "max_age": 604800,
-                "firmware_default_version": "7.02",
-                "fields": ["sensor_index", "name", "icon"],
-                "data": {
-                    131075: {
-                        "sensor_index": 131075,
-                        "name": "Mariners Bluff",
-                        "icon": 0,
-                    },
-                    131079: {
-                        "sensor_index": 131079,
-                        "name": "BRSKBV-outside",
-                        "icon": 0,
-                    },
-                },
-            },
-        ),
-    ],
-)
-def test_get_sensors_response(
-    input_payload: dict[str, Any], output_payload: dict[str, Any]
-) -> None:
-    """Test the GetSensorsResponse model.
-
-    Args:
-        input_payload: input_payload parameters for the model.
-        output_payload: A parsed model dictionary output_payload.
-    """
-    request = GetSensorsResponse.parse_obj(input_payload)
-    assert request.dict(exclude_none=True) == output_payload
-
-
-@pytest.mark.parametrize(
-    "payload,error_string",
-    [
-        (
-            {
-                "api_version": "V1.0.11-0.0.41",
-                "time_stamp": 1667533097,
-                "data_time_stamp": 1667533091,
-                "location_type": 0,
-                "max_age": 604800,
-                "firmware_default_version": "7.02",
-                "fields": ["name", "foobar"],
-                "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
-            },
-            "foobar is an unknown field",
-        ),
-        (
-            {
-                "api_version": "V1.0.11-0.0.41",
-                "time_stamp": 1667533097,
-                "data_time_stamp": 1667533091,
-                "location_type": 2,
-                "max_age": 604800,
-                "firmware_default_version": "7.02",
-                "fields": ["name", "icon"],
-                "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
-            },
-            "2 is an unknown location type",
-        ),
-    ],
-)
-def test_get_sensors_response_errors(
-    error_string: str, payload: dict[str, Any]
-) -> None:
-    """Test that an invalid GetSensorsResponse payload raises an error.
-
-    Args:
-        error_string: The error string that gets raised.
-        payload: The payload to test.
-    """
-    with pytest.raises(ValidationError) as err:
-        _ = GetSensorsResponse.parse_obj(payload)
-    assert error_string in str(err.value)
-
-
-@pytest.mark.parametrize(
     "payload,error_string",
     [
         (
@@ -201,4 +105,134 @@ def test_get_sensors_request_errors(error_string: str, payload: dict[str, Any]) 
     """
     with pytest.raises(ValidationError) as err:
         _ = GetSensorsRequest.parse_obj(payload)
+    assert error_string in str(err.value)
+
+
+@pytest.mark.parametrize(
+    "input_payload,output_payload",
+    [
+        (
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": 1667533097,
+                "data_time_stamp": 1667533091,
+                "location_type": 0,
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "icon"],
+                "data": [[131075, "Mariners Bluff", 0], [131079, "BRSKBV-outside", 0]],
+            },
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": datetime(2022, 11, 4, 3, 38, 17),
+                "data_time_stamp": datetime(2022, 11, 4, 3, 38, 11),
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "icon"],
+                "data": {
+                    131075: {
+                        "sensor_index": 131075,
+                        "name": "Mariners Bluff",
+                        "icon": 0,
+                    },
+                    131079: {
+                        "sensor_index": 131079,
+                        "name": "BRSKBV-outside",
+                        "icon": 0,
+                    },
+                },
+            },
+        ),
+    ],
+)
+def test_get_sensors_response(
+    input_payload: dict[str, Any], output_payload: dict[str, Any]
+) -> None:
+    """Test the GetSensorsResponse model.
+
+    Args:
+        input_payload: input_payload parameters for the model.
+        output_payload: A parsed model dictionary output_payload.
+    """
+    request = GetSensorsResponse.parse_obj(input_payload)
+    assert request.dict(exclude_none=True) == output_payload
+
+
+@pytest.mark.parametrize(
+    "payload,error_string",
+    [
+        (
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": 1667533097,
+                "data_time_stamp": 1667533091,
+                "location_type": 0,
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "foobar"],
+                "data": [
+                    [131075, "Mariners Bluff", 0],
+                    [131079, "BRSKBV-outside", 0],
+                ],
+            },
+            "foobar is an unknown field",
+        ),
+        (
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": 1667533097,
+                "data_time_stamp": 1667533091,
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "icon", "location_type"],
+                "data": [
+                    [131075, "Mariners Bluff", 0, 0],
+                    [131079, "BRSKBV-outside", 0, 2],
+                ],
+            },
+            "2 is an unknown location type",
+        ),
+        (
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": 1667533097,
+                "data_time_stamp": 1667533091,
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "icon", "channel_flags"],
+                "data": [
+                    [131075, "Mariners Bluff", 0, 0],
+                    [131079, "BRSKBV-outside", 0, 7],
+                ],
+            },
+            "7 is an unknown channel flag",
+        ),
+        (
+            {
+                "api_version": "V1.0.11-0.0.41",
+                "time_stamp": 1667533097,
+                "data_time_stamp": 1667533091,
+                "max_age": 604800,
+                "firmware_default_version": "7.02",
+                "fields": ["sensor_index", "name", "icon", "channel_state"],
+                "data": [
+                    [131075, "Mariners Bluff", 0, 0],
+                    [131079, "BRSKBV-outside", 0, 7],
+                ],
+            },
+            "7 is an unknown channel state",
+        ),
+    ],
+)
+def test_get_sensors_response_errors(
+    error_string: str, payload: dict[str, Any]
+) -> None:
+    """Test that an invalid GetSensorsResponse payload raises an error.
+
+    Args:
+        error_string: The error string that gets raised.
+        payload: The payload to test.
+    """
+    with pytest.raises(ValidationError) as err:
+        _ = GetSensorsResponse.parse_obj(payload)
     assert error_string in str(err.value)

@@ -80,20 +80,10 @@ async def main() -> None:
     # >>> response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)  # UTC
     # >>> response.firmware_default_version == "7.02"
     # >>> response.max_age == 604800
-    # >>> response.channel_flags is None
-    # >>> response.channel_states is None
-    # >>> response.location_type is LocationType.OUTSIDE
-    # >>> response.location_types is None
     # >>> response.fields == ["sensor_index", "name"]
     # >>> response.data == {
-    # >>>     131075: {
-    # >>>         "sensor_index": 131075,
-    # >>>         "name": "Mariners Bluff",
-    # >>>     },
-    # >>>     131079: {
-    # >>>         "sensor_index": 131079,
-    # >>>         "name": "BRSKBV-outside",
-    # >>>     },
+    # >>>     131075: SensorModel(sensor_index=131075, name=Mariners Bluff),
+    # >>>     131079: SensorModel(sensor_index=131079, name=BRSKBV-outside),
     # >>> }
 
 
@@ -124,11 +114,7 @@ async def main() -> None:
     # >>> response.api_version == "V1.0.11-0.0.41"
     # >>> response.time_stamp == datetime(2022, 11, 5, 16, 37, 3)
     # >>> response.data_time_stamp == datetime(2022, 11, 5, 16, 36, 21)
-    # >>> response.sensor == {
-    # >>>     "sensor_index": 131075,
-    # >>>     "last_modified": 1635632829,
-    # >>>     ...
-    # >>> }
+    # >>> response.sensor == SensorModel(sensor_index=131075, ...),
 
 
 asyncio.run(main())

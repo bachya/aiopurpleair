@@ -1,5 +1,23 @@
-"""Define Pydantic validors for sensors."""
-from aiopurpleair.const import SENSOR_FIELDS
+"""Define reusable Pydantic validors for sensors."""
+from aiopurpleair.const import SENSOR_FIELDS, ChannelFlag
+
+
+def validate_channel_flag(value: int) -> ChannelFlag:
+    """Validate the channel flag.
+
+    Args:
+        value: The integer-based interpretation of a channel flag.
+
+    Returns:
+        A ChannelFlag value.
+
+    Raises:
+        ValueError: Raised upon an unknown location type.
+    """
+    try:
+        return ChannelFlag(value)
+    except ValueError as err:
+        raise ValueError(f"{value} is an unknown channel flag") from err
 
 
 def validate_fields_request(value: list[str]) -> str:
