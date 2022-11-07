@@ -55,9 +55,9 @@ from aiopurpleair import API
 async def main() -> None:
     """Run."""
     response = await API.async_check_api_key("<API KEY>")
+    # >>> response.api_key_type == ApiKeyType.READ
     # >>> response.api_version == "V1.0.11-0.0.41"
     # >>> response.timestamp_utc == datetime(2022, 10, 27, 18, 25, 41)
-    # >>> response.api_key_type == ApiKeyType.READ
 
 
 asyncio.run(main())
@@ -76,15 +76,15 @@ async def main() -> None:
     api = API("<API_KEY>")
     response = await api.sensors.async_get_sensors(["name"])
     # >>> response.api_version == "V1.0.11-0.0.41"
-    # >>> response.timestamp_utc == datetime(2022, 11, 3, 19, 26, 29)
-    # >>> response.data_timestamp_utc == datetime(2022, 11, 3, 19, 25, 31)
-    # >>> response.firmware_default_version == "7.02"
-    # >>> response.max_age == 604800
-    # >>> response.fields == ["sensor_index", "name"]
     # >>> response.data == {
     # >>>     131075: SensorModel(sensor_index=131075, name=Mariners Bluff),
     # >>>     131079: SensorModel(sensor_index=131079, name=BRSKBV-outside),
     # >>> }
+    # >>> response.data_timestamp_utc == datetime(2022, 11, 3, 19, 25, 31)
+    # >>> response.fields == ["sensor_index", "name"]
+    # >>> response.firmware_default_version == "7.02"
+    # >>> response.max_age == 604800
+    # >>> response.timestamp_utc == datetime(2022, 11, 3, 19, 26, 29)
 
 
 asyncio.run(main())
@@ -112,9 +112,9 @@ async def main() -> None:
     api = API("<API_KEY>")
     response = await api.sensors.async_get_sensor(131075)
     # >>> response.api_version == "V1.0.11-0.0.41"
-    # >>> response.timestamp_utc == datetime(2022, 11, 5, 16, 37, 3)
     # >>> response.data_timestamp_utc == datetime(2022, 11, 5, 16, 36, 21)
     # >>> response.sensor == SensorModel(sensor_index=131075, ...),
+    # >>> response.timestamp_utc == datetime(2022, 11, 5, 16, 37, 3)
 
 
 asyncio.run(main())
