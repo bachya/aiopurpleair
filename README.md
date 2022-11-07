@@ -1,4 +1,4 @@
-# 🚰 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
+# 🟣 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
 
 [![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
 [![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
