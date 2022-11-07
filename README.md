@@ -110,7 +110,7 @@ from aiopurpleair import API
 async def main() -> None:
     """Run."""
     api = API("<API_KEY>")
-    response = await api.sensors.async_get_sensor("<SENSOR INDEX>")
+    response = await api.sensors.async_get_sensor(131075)
     # >>> response.api_version == "V1.0.11-0.0.41"
     # >>> response.time_stamp == datetime(2022, 11, 5, 16, 37, 3)
     # >>> response.data_time_stamp == datetime(2022, 11, 5, 16, 36, 21)
@@ -122,6 +122,7 @@ asyncio.run(main())
 
 `API.sensors.async_get_sensor` takes several parameters:
 
+- `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
 - `read_key` (optional): A read key for a private sensor.
 
