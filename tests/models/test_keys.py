@@ -18,9 +18,9 @@ def test_get_keys_response(get_keys_response: dict[str, Any]) -> None:
     """
     response = GetKeysResponse.parse_obj(get_keys_response)
     assert response.dict() == {
-        "api_version": "V1.0.11-0.0.41",
-        "time_stamp": datetime(2022, 10, 27, 18, 25, 41),
         "api_key_type": ApiKeyType.READ,
+        "api_version": "V1.0.11-0.0.41",
+        "timestamp_utc": datetime(2022, 10, 27, 18, 25, 41),
     }
 
 
@@ -31,9 +31,9 @@ def test_get_keys_response(get_keys_response: dict[str, Any]) -> None:
             "Foo": "Bar",
         },
         {
-            "api_version": "V1.0.11-0.0.41",
-            "time_stamp": 1666895141,
             "api_key_type": "FAKE_TYPE",
+            "api_version": "V1.0.11-0.0.41",
+            "timestamp_utc": 1666895141,
         },
     ],
 )

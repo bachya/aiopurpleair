@@ -28,24 +28,25 @@ class SensorModelStats(BaseModel):
     pm2_5_30minute: float
     pm2_5_60minute: float
     pm2_5_6hour: float
-    time_stamp: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
         fields = {
-            "pm2_5": "pm2.5",
-            "pm2_5_10minute": "pm2.5_10minute",
-            "pm2_5_1week": "pm2.5_1week",
-            "pm2_5_24hour": "pm2.5_24hour",
-            "pm2_5_30minute": "pm2.5_30minute",
-            "pm2_5_60minute": "pm2.5_60minute",
-            "pm2_5_6hour": "pm2.5_6hour",
+            "pm2_5": {"alias": "pm2.5"},
+            "pm2_5_10minute": {"alias": "pm2.5_10minute"},
+            "pm2_5_1week": {"alias": "pm2.5_1week"},
+            "pm2_5_24hour": {"alias": "pm2.5_24hour"},
+            "pm2_5_30minute": {"alias": "pm2.5_30minute"},
+            "pm2_5_60minute": {"alias": "pm2.5_60minute"},
+            "pm2_5_6hour": {"alias": "pm2.5_6hour"},
+            "timestamp_utc": {"alias": "time_stamp"},
         }
         frozen = True
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -65,7 +66,7 @@ class SensorModel(BaseModel):
     confidence: Optional[float] = None
     confidence_auto: Optional[float] = None
     confidence_manual: Optional[float] = None
-    date_created: Optional[datetime] = None
+    date_created_utc: Optional[datetime] = None
     deciviews: Optional[float] = None
     deciviews_a: Optional[float] = None
     deciviews_b: Optional[float] = None
@@ -77,8 +78,8 @@ class SensorModel(BaseModel):
     humidity_b: Optional[float] = None
     icon: Optional[int] = None
     is_owner: Optional[bool] = None
-    last_modified: Optional[datetime] = None
-    last_seen: Optional[datetime] = None
+    last_modified_utc: Optional[datetime] = None
+    last_seen_utc: Optional[datetime] = None
     latitude: Optional[float] = None
     led_brightness: Optional[float] = None
     location_type: Optional[LocationType] = None
@@ -189,6 +190,9 @@ class SensorModel(BaseModel):
         """Define configuration for this model."""
 
         fields = {
+            "date_created_utc": {"alias": "date_created"},
+            "last_modified_utc": {"alias": "last_modified"},
+            "last_seen_utc": {"alias": "last_seen"},
             "pm0_3_um_count": {"alias": "0.3_um_count"},
             "pm0_3_um_count_a": {"alias": "0.3_um_count_a"},
             "pm0_3_um_count_b": {"alias": "0.3_um_count_b"},
@@ -295,14 +299,20 @@ class SensorModel(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown channel state") from err
 
-    validate_last_modified = validator(
-        "last_modified",
+    validate_date_created_utc = validator(
+        "date_created_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
 
-    validate_last_seen = validator(
-        "last_seen",
+    validate_last_modified_utc = validator(
+        "last_modified_utc",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
+
+    validate_last_seen_utc = validator(
+        "last_seen_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -336,12 +346,6 @@ class SensorModel(BaseModel):
         allow_reuse=True,
     )(validate_longitude)
 
-    validate_date_created = validator(
-        "date_created",
-        allow_reuse=True,
-        pre=True,
-    )(validate_timestamp)
-
 
 class GetSensorRequest(BaseModel):
     """Define a request to GET /v1/sensor/:sensor_index."""
@@ -364,23 +368,27 @@ class GetSensorResponse(BaseModel):
     """Define a response to GET /v1/sensor/:sensor_index."""
 
     api_version: str
-    time_stamp: datetime
-    data_time_stamp: datetime
     sensor: SensorModel
+    data_timestamp_utc: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "data_timestamp_utc": {"alias": "data_time_stamp"},
+            "timestamp_utc": {"alias": "time_stamp"},
+        }
         frozen = True
 
-    validate_data_time_stamp = validator(
-        "data_time_stamp",
+    validate_data_timestamp_utc = validator(
+        "data_timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -404,6 +412,9 @@ class GetSensorsRequest(BaseModel):
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "modified_since": {"alias": "modified_since_utc"},
+        }
         frozen = True
 
     @root_validator(pre=True)
@@ -520,14 +531,18 @@ class GetSensorsResponse(BaseModel):
     data: dict[int, SensorModel]
 
     api_version: str
-    time_stamp: datetime
-    data_time_stamp: datetime
-    max_age: int
     firmware_default_version: str
+    max_age: int
+    data_timestamp_utc: datetime
+    timestamp_utc: datetime
 
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "data_timestamp_utc": {"alias": "data_time_stamp"},
+            "timestamp_utc": {"alias": "time_stamp"},
+        }
         frozen = True
 
     @validator("data", pre=True)
@@ -551,8 +566,8 @@ class GetSensorsResponse(BaseModel):
             for sensor_values in value
         }
 
-    validate_data_time_stamp = validator(
-        "data_time_stamp",
+    validate_data_timestamp_utc = validator(
+        "data_timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -576,8 +591,8 @@ class GetSensorsResponse(BaseModel):
                 raise ValueError(f"{field} is an unknown field")
         return values
 
-    validate_time_stamp = validator(
-        "time_stamp",
+    validate_timestamp_utc = validator(
+        "timestamp_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)

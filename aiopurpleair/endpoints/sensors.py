@@ -50,7 +50,7 @@ class SensorsEndpoints(APIEndpointsBase):
         *,
         location_type: LocationType | None = None,
         max_age: int | None = None,
-        modified_since: datetime | None = None,
+        modified_since_utc: datetime | None = None,
         read_keys: list[str] | None = None,
         sensor_indices: list[int] | None = None,
     ) -> GetSensorsResponse:
@@ -60,7 +60,7 @@ class SensorsEndpoints(APIEndpointsBase):
             fields: The sensor data fields to include.
             location_type: An optional LocationType to filter by.
             max_age: Filter results modified within these seconds.
-            modified_since: Filter results modified since a datetime.
+            modified_since_utc: Filter results modified since a datetime.
             read_keys: Optional read keys for private sensors.
             sensor_indices: Filter results by sensor index.
 
@@ -73,7 +73,7 @@ class SensorsEndpoints(APIEndpointsBase):
                 ("fields", fields),
                 ("location_type", location_type),
                 ("max_age", max_age),
-                ("modified_since", modified_since),
+                ("modified_since", modified_since_utc),
                 ("read_keys", read_keys),
                 ("show_only", sensor_indices),
             ),

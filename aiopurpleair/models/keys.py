@@ -22,13 +22,16 @@ class ApiKeyType(StrEnum):
 class GetKeysResponse(BaseModel):
     """Define a response to GET /v1/keys."""
 
-    api_version: str
-    time_stamp: datetime
     api_key_type: str
+    api_version: str
+    timestamp_utc: datetime
 
     class Config:  # pylint: disable=too-few-public-methods
         """Define configuration for this model."""
 
+        fields = {
+            "timestamp_utc": {"alias": "time_stamp"},
+        }
         frozen = True
 
     @validator("api_key_type")
@@ -50,6 +53,6 @@ class GetKeysResponse(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown API key type") from err
 
-    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
+    validate_utc_timestamp = validator("timestamp_utc", allow_reuse=True, pre=True)(
         validate_timestamp
     )
