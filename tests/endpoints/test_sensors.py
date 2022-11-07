@@ -49,15 +49,15 @@ async def test_get_sensor(  # pylint: disable=too-many-statements
         assert response.sensor.confidence == 100
         assert response.sensor.confidence_auto == 100
         assert response.sensor.confidence_manual == 100
-        assert response.sensor.date_created == datetime(2021, 9, 29, 22, 46, 14)
+        assert response.sensor.date_created_utc == datetime(2021, 9, 29, 22, 46, 14)
         assert response.sensor.firmware_version == "7.02"
         assert response.sensor.hardware == "2.0+BME280+PMSX003-B+PMSX003-A"
         assert response.sensor.humidity == 33
         assert response.sensor.humidity_a == 33
         assert response.sensor.icon == 0
         assert response.sensor.is_owner is False
-        assert response.sensor.last_modified == datetime(2021, 10, 30, 22, 27, 9)
-        assert response.sensor.last_seen == datetime(2022, 11, 5, 16, 36, 2)
+        assert response.sensor.last_modified_utc == datetime(2021, 10, 30, 22, 27, 9)
+        assert response.sensor.last_seen_utc == datetime(2022, 11, 5, 16, 36, 2)
         assert response.sensor.latitude == 33.51511
         assert response.sensor.led_brightness == 35
         assert response.sensor.location_type == LocationType.OUTSIDE

@@ -23,7 +23,7 @@ from aiopurpleair.models.sensors import (
                 "location_type": LocationType.INSIDE,
                 "read_keys": ["abc", "def"],
                 "show_only": [123, 456],
-                "modified_since": datetime(2022, 11, 3, 15, 46, 21),
+                "modified_since_utc": datetime(2022, 11, 3, 15, 46, 21),
                 "max_age": 1200,
                 "nwlng": -0.2416796,
                 "nwlat": 51.5285582,

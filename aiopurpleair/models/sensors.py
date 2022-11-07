@@ -66,7 +66,7 @@ class SensorModel(BaseModel):
     confidence: Optional[float] = None
     confidence_auto: Optional[float] = None
     confidence_manual: Optional[float] = None
-    date_created: Optional[datetime] = None
+    date_created_utc: Optional[datetime] = None
     deciviews: Optional[float] = None
     deciviews_a: Optional[float] = None
     deciviews_b: Optional[float] = None
@@ -78,8 +78,8 @@ class SensorModel(BaseModel):
     humidity_b: Optional[float] = None
     icon: Optional[int] = None
     is_owner: Optional[bool] = None
-    last_modified: Optional[datetime] = None
-    last_seen: Optional[datetime] = None
+    last_modified_utc: Optional[datetime] = None
+    last_seen_utc: Optional[datetime] = None
     latitude: Optional[float] = None
     led_brightness: Optional[float] = None
     location_type: Optional[LocationType] = None
@@ -190,6 +190,9 @@ class SensorModel(BaseModel):
         """Define configuration for this model."""
 
         fields = {
+            "date_created_utc": {"alias": "date_created"},
+            "last_modified_utc": {"alias": "last_modified"},
+            "last_seen_utc": {"alias": "last_seen"},
             "pm0_3_um_count": {"alias": "0.3_um_count"},
             "pm0_3_um_count_a": {"alias": "0.3_um_count_a"},
             "pm0_3_um_count_b": {"alias": "0.3_um_count_b"},
@@ -296,14 +299,20 @@ class SensorModel(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown channel state") from err
 
-    validate_last_modified = validator(
-        "last_modified",
+    validate_date_created_utc = validator(
+        "date_created_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
 
-    validate_last_seen = validator(
-        "last_seen",
+    validate_last_modified_utc = validator(
+        "last_modified_utc",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
+
+    validate_last_seen_utc = validator(
+        "last_seen_utc",
         allow_reuse=True,
         pre=True,
     )(validate_timestamp)
@@ -336,12 +345,6 @@ class SensorModel(BaseModel):
         "longitude",
         allow_reuse=True,
     )(validate_longitude)
-
-    validate_date_created = validator(
-        "date_created",
-        allow_reuse=True,
-        pre=True,
-    )(validate_timestamp)
 
 
 class GetSensorRequest(BaseModel):
@@ -409,6 +412,9 @@ class GetSensorsRequest(BaseModel):
     class Config:
         """Define configuration for this model."""
 
+        fields = {
+            "modified_since": {"alias": "modified_since_utc"},
+        }
         frozen = True
 
     @root_validator(pre=True)
