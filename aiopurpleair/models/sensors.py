@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
-from typing import Any, Literal, Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, root_validator, validator
 
-from aiopurpleair.const import SENSOR_FIELDS
+from aiopurpleair.const import SENSOR_FIELDS, ChannelFlag, ChannelState, LocationType
 from aiopurpleair.helpers.validators import validate_timestamp
 from aiopurpleair.helpers.validators.sensors import (
+    validate_channel_flag,
     validate_fields_request,
     validate_latitude,
     validate_longitude,
@@ -18,11 +18,329 @@ from aiopurpleair.helpers.validators.sensors import (
 from aiopurpleair.util.dt import utc_to_timestamp
 
 
-class LocationType(Enum):
-    """Define a location type."""
+class SensorModelStats(BaseModel):
+    """Define a model for sensor statistics."""
 
-    OUTSIDE = 0
-    INSIDE = 1
+    pm2_5: float
+    pm2_5_10minute: float
+    pm2_5_1week: float
+    pm2_5_24hour: float
+    pm2_5_30minute: float
+    pm2_5_60minute: float
+    pm2_5_6hour: float
+    time_stamp: datetime
+
+    class Config:
+        """Define configuration for this model."""
+
+        fields = {
+            "pm2_5": "pm2.5",
+            "pm2_5_10minute": "pm2.5_10minute",
+            "pm2_5_1week": "pm2.5_1week",
+            "pm2_5_24hour": "pm2.5_24hour",
+            "pm2_5_30minute": "pm2.5_30minute",
+            "pm2_5_60minute": "pm2.5_60minute",
+            "pm2_5_6hour": "pm2.5_6hour",
+        }
+        frozen = True
+
+    validate_time_stamp = validator(
+        "time_stamp",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
+
+
+class SensorModel(BaseModel):
+    """Define a model for a sensor."""
+
+    sensor_index: int
+
+    altitude: Optional[float] = None
+    analog_input: Optional[float] = None
+    channel_flags: Optional[ChannelFlag] = None
+    channel_flags_auto: Optional[ChannelFlag] = None
+    channel_flags_manual: Optional[ChannelFlag] = None
+    channel_state: Optional[ChannelState] = None
+    confidence: Optional[float] = None
+    confidence_auto: Optional[float] = None
+    confidence_manual: Optional[float] = None
+    date_created: Optional[datetime] = None
+    deciviews: Optional[float] = None
+    deciviews_a: Optional[float] = None
+    deciviews_b: Optional[float] = None
+    firmware_upgrade: Optional[str] = None
+    firmware_version: Optional[str] = None
+    hardware: Optional[str] = None
+    humidity: Optional[float] = None
+    humidity_a: Optional[float] = None
+    humidity_b: Optional[float] = None
+    icon: Optional[int] = None
+    is_owner: Optional[bool] = None
+    last_modified: Optional[datetime] = None
+    last_seen: Optional[datetime] = None
+    latitude: Optional[float] = None
+    led_brightness: Optional[float] = None
+    location_type: Optional[LocationType] = None
+    longitude: Optional[float] = None
+    memory: Optional[float] = None
+    model: Optional[str] = None
+    name: Optional[str] = None
+    ozone1: Optional[float] = None
+    pa_latency: Optional[int] = None
+    pm0_3_um_count: Optional[float] = None
+    pm0_3_um_count_a: Optional[float] = None
+    pm0_3_um_count_b: Optional[float] = None
+    pm0_5_um_count: Optional[float] = None
+    pm0_5_um_count_a: Optional[float] = None
+    pm0_5_um_count_b: Optional[float] = None
+    pm10_0: Optional[float] = None
+    pm10_0_a: Optional[float] = None
+    pm10_0_atm: Optional[float] = None
+    pm10_0_atm_a: Optional[float] = None
+    pm10_0_atm_b: Optional[float] = None
+    pm10_0_b: Optional[float] = None
+    pm10_0_cf_1: Optional[float] = None
+    pm10_0_cf_1_a: Optional[float] = None
+    pm10_0_cf_1_b: Optional[float] = None
+    pm10_0_um_count: Optional[float] = None
+    pm10_0_um_count_a: Optional[float] = None
+    pm10_0_um_count_b: Optional[float] = None
+    pm1_0: Optional[float] = None
+    pm1_0_a: Optional[float] = None
+    pm1_0_atm: Optional[float] = None
+    pm1_0_atm_a: Optional[float] = None
+    pm1_0_atm_b: Optional[float] = None
+    pm1_0_b: Optional[float] = None
+    pm1_0_cf_1: Optional[float] = None
+    pm1_0_cf_1_a: Optional[float] = None
+    pm1_0_cf_1_b: Optional[float] = None
+    pm1_0_um_count: Optional[float] = None
+    pm1_0_um_count_a: Optional[float] = None
+    pm1_0_um_count_b: Optional[float] = None
+    pm2_5: Optional[float] = None
+    pm2_5_10minute: Optional[float] = None
+    pm2_5_10minute_a: Optional[float] = None
+    pm2_5_10minute_b: Optional[float] = None
+    pm2_5_1week: Optional[float] = None
+    pm2_5_1week_a: Optional[float] = None
+    pm2_5_1week_b: Optional[float] = None
+    pm2_5_24hour: Optional[float] = None
+    pm2_5_24hour_a: Optional[float] = None
+    pm2_5_24hour_b: Optional[float] = None
+    pm2_5_30minute: Optional[float] = None
+    pm2_5_30minute_a: Optional[float] = None
+    pm2_5_30minute_b: Optional[float] = None
+    pm2_5_60minute: Optional[float] = None
+    pm2_5_60minute_a: Optional[float] = None
+    pm2_5_60minute_b: Optional[float] = None
+    pm2_5_6hour: Optional[float] = None
+    pm2_5_6hour_a: Optional[float] = None
+    pm2_5_6hour_b: Optional[float] = None
+    pm2_5_a: Optional[float] = None
+    pm2_5_alt: Optional[float] = None
+    pm2_5_alt_a: Optional[float] = None
+    pm2_5_alt_b: Optional[float] = None
+    pm2_5_atm: Optional[float] = None
+    pm2_5_atm_a: Optional[float] = None
+    pm2_5_atm_b: Optional[float] = None
+    pm2_5_b: Optional[float] = None
+    pm2_5_cf_1: Optional[float] = None
+    pm2_5_cf_1_a: Optional[float] = None
+    pm2_5_cf_1_b: Optional[float] = None
+    pm2_5_um_count: Optional[float] = None
+    pm2_5_um_count_a: Optional[float] = None
+    pm2_5_um_count_b: Optional[float] = None
+    pm5_0_um_count: Optional[float] = None
+    pm5_0_um_count_a: Optional[float] = None
+    pm5_0_um_count_b: Optional[float] = None
+    position_rating: Optional[int] = None
+    pressure: Optional[float] = None
+    pressure_a: Optional[float] = None
+    pressure_b: Optional[float] = None
+    primary_id_a: Optional[int] = None
+    primary_id_b: Optional[int] = None
+    primary_key_a: Optional[str] = None
+    primary_key_b: Optional[str] = None
+    private: Optional[bool] = None
+    rssi: Optional[int] = None
+    scattering_coefficient: Optional[float] = None
+    scattering_coefficient_a: Optional[float] = None
+    scattering_coefficient_b: Optional[float] = None
+    secondary_id_a: Optional[int] = None
+    secondary_id_b: Optional[int] = None
+    secondary_key_a: Optional[str] = None
+    secondary_key_b: Optional[str] = None
+    stats: Optional[SensorModelStats] = None
+    stats_a: Optional[SensorModelStats] = None
+    stats_b: Optional[SensorModelStats] = None
+    temperature: Optional[float] = None
+    temperature_a: Optional[float] = None
+    temperature_b: Optional[float] = None
+    uptime: Optional[int] = None
+    visual_range: Optional[float] = None
+    visual_range_a: Optional[float] = None
+    visual_range_b: Optional[float] = None
+    voc: Optional[float] = None
+    voc_a: Optional[float] = None
+    voc_b: Optional[float] = None
+
+    class Config:
+        """Define configuration for this model."""
+
+        fields = {
+            "pm0_3_um_count": {"alias": "0.3_um_count"},
+            "pm0_3_um_count_a": {"alias": "0.3_um_count_a"},
+            "pm0_3_um_count_b": {"alias": "0.3_um_count_b"},
+            "pm0_5_um_count": {"alias": "0.5_um_count"},
+            "pm0_5_um_count_a": {"alias": "0.5_um_count_a"},
+            "pm0_5_um_count_b": {"alias": "0.5_um_count_b"},
+            "pm10_0": {"alias": "pm10.0"},
+            "pm10_0_a": {"alias": "pm10.0_a"},
+            "pm10_0_atm": {"alias": "pm10.0_atm"},
+            "pm10_0_atm_a": {"alias": "pm10.0_atm_a"},
+            "pm10_0_atm_b": {"alias": "pm10.0_atm_b"},
+            "pm10_0_b": {"alias": "pm10.0_b"},
+            "pm10_0_cf_1": {"alias": "pm10.0_cf_1"},
+            "pm10_0_cf_1_a": {"alias": "pm10.0_cf_1_a"},
+            "pm10_0_cf_1_b": {"alias": "pm10.0_cf_1_b"},
+            "pm10_0_um_count": {"alias": "10.0_um_count"},
+            "pm10_0_um_count_a": {"alias": "10.0_um_count_a"},
+            "pm10_0_um_count_b": {"alias": "10.0_um_count_b"},
+            "pm1_0": {"alias": "pm1.0"},
+            "pm1_0_a": {"alias": "pm1.0_a"},
+            "pm1_0_atm": {"alias": "pm1.0_atm"},
+            "pm1_0_atm_a": {"alias": "pm1.0_atm_a"},
+            "pm1_0_atm_b": {"alias": "pm1.0_atm_b"},
+            "pm1_0_b": {"alias": "pm1.0_b"},
+            "pm1_0_cf_1": {"alias": "pm1.0_cf_1"},
+            "pm1_0_cf_1_a": {"alias": "pm1.0_cf_1_a"},
+            "pm1_0_cf_1_b": {"alias": "pm1.0_cf_1_b"},
+            "pm1_0_um_count": {"alias": "1.0_um_count"},
+            "pm1_0_um_count_a": {"alias": "1.0_um_count_a"},
+            "pm1_0_um_count_b": {"alias": "1.0_um_count_b"},
+            "pm2_5": {"alias": "pm2.5"},
+            "pm2_5_10minute": {"alias": "pm2.5_10minute"},
+            "pm2_5_10minute_a": {"alias": "pm2.5_10minute_a"},
+            "pm2_5_10minute_b": {"alias": "pm2.5_10minute_b"},
+            "pm2_5_1week": {"alias": "pm2.5_1week"},
+            "pm2_5_1week_a": {"alias": "pm2.5_1week_a"},
+            "pm2_5_1week_b": {"alias": "pm2.5_1week_b"},
+            "pm2_5_24hour": {"alias": "pm2.5_24hour"},
+            "pm2_5_24hour_a": {"alias": "pm2.5_24hour_a"},
+            "pm2_5_24hour_b": {"alias": "pm2.5_24hour_b"},
+            "pm2_5_30minute": {"alias": "pm2.5_30minute"},
+            "pm2_5_30minute_a": {"alias": "pm2.5_30minute_a"},
+            "pm2_5_30minute_b": {"alias": "pm2.5_30minute_b"},
+            "pm2_5_60minute": {"alias": "pm2.5_60minute"},
+            "pm2_5_60minute_a": {"alias": "pm2.5_60minute_a"},
+            "pm2_5_60minute_b": {"alias": "pm2.5_60minute_b"},
+            "pm2_5_6hour": {"alias": "pm2.5_6hour"},
+            "pm2_5_6hour_a": {"alias": "pm2.5_6hour_a"},
+            "pm2_5_6hour_b": {"alias": "pm2.5_6hour_b"},
+            "pm2_5_a": {"alias": "pm2.5_a"},
+            "pm2_5_alt": {"alias": "pm2.5_alt"},
+            "pm2_5_alt_a": {"alias": "pm2.5_alt_a"},
+            "pm2_5_alt_b": {"alias": "pm2.5_alt_b"},
+            "pm2_5_atm": {"alias": "pm2.5_atm"},
+            "pm2_5_atm_a": {"alias": "pm2.5_atm_a"},
+            "pm2_5_atm_b": {"alias": "pm2.5_atm_b"},
+            "pm2_5_b": {"alias": "pm2.5_b"},
+            "pm2_5_cf_1": {"alias": "pm2.5_cf_1"},
+            "pm2_5_cf_1_a": {"alias": "pm2.5_cf_1_a"},
+            "pm2_5_cf_1_b": {"alias": "pm2.5_cf_1_b"},
+            "pm2_5_um_count": {"alias": "2.5_um_count"},
+            "pm2_5_um_count_a": {"alias": "2.5_um_count_a"},
+            "pm2_5_um_count_b": {"alias": "2.5_um_count_b"},
+            "pm5_0_um_count": {"alias": "5.0_um_count"},
+            "pm5_0_um_count_a": {"alias": "5.0_um_count_a"},
+            "pm5_0_um_count_b": {"alias": "5.0_um_count_b"},
+        }
+        frozen = True
+
+    validate_channel_flags = validator(
+        "channel_flags",
+        allow_reuse=True,
+        pre=True,
+    )(validate_channel_flag)
+
+    validate_channel_flags_auto = validator(
+        "channel_flags_auto",
+        allow_reuse=True,
+        pre=True,
+    )(validate_channel_flag)
+
+    validate_channel_flags_manual = validator(
+        "channel_flags_manual",
+        allow_reuse=True,
+        pre=True,
+    )(validate_channel_flag)
+
+    @validator("channel_state", pre=True)
+    @classmethod
+    def validate_channel_state(cls, value: int) -> ChannelState:
+        """Validate the channel state.
+
+        Args:
+            value: The integer-based interpretation of a channel state.
+
+        Returns:
+            A ChannelState value.
+
+        Raises:
+            ValueError: Raised upon an unknown location type.
+        """
+        try:
+            return ChannelState(value)
+        except ValueError as err:
+            raise ValueError(f"{value} is an unknown channel state") from err
+
+    validate_last_modified = validator(
+        "last_modified",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
+
+    validate_last_seen = validator(
+        "last_seen",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
+
+    validate_latitude = validator(
+        "latitude",
+        allow_reuse=True,
+    )(validate_latitude)
+
+    @validator("location_type", pre=True)
+    @classmethod
+    def validate_location_type_response(cls, value: int) -> LocationType:
+        """Validate a location type for a request payload.
+
+        Args:
+            value: The integer-based interpretation of a location type.
+
+        Returns:
+            A LocationType value.
+
+        Raises:
+            ValueError: Raised upon an unknown location type.
+        """
+        try:
+            return LocationType(value)
+        except ValueError as err:
+            raise ValueError(f"{value} is an unknown location type") from err
+
+    validate_longitude = validator(
+        "longitude",
+        allow_reuse=True,
+    )(validate_longitude)
+
+    validate_date_created = validator(
+        "date_created",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
 
 
 class GetSensorRequest(BaseModel):
@@ -36,7 +354,10 @@ class GetSensorRequest(BaseModel):
 
         frozen = True
 
-    validate_fields = validator("fields", allow_reuse=True)(validate_fields_request)
+    validate_fields = validator(
+        "fields",
+        allow_reuse=True,
+    )(validate_fields_request)
 
 
 class GetSensorResponse(BaseModel):
@@ -45,20 +366,24 @@ class GetSensorResponse(BaseModel):
     api_version: str
     time_stamp: datetime
     data_time_stamp: datetime
-    sensor: dict[str, Any]
+    sensor: SensorModel
 
     class Config:
         """Define configuration for this model."""
 
         frozen = True
 
-    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True, pre=True)(
-        validate_timestamp
-    )
+    validate_data_time_stamp = validator(
+        "data_time_stamp",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
 
-    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
-        validate_timestamp
-    )
+    validate_time_stamp = validator(
+        "time_stamp",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
 
 
 class GetSensorsRequest(BaseModel):
@@ -110,7 +435,10 @@ class GetSensorsRequest(BaseModel):
 
         return values
 
-    validate_fields = validator("fields", allow_reuse=True)(validate_fields_request)
+    validate_fields = validator(
+        "fields",
+        allow_reuse=True,
+    )(validate_fields_request)
 
     @validator("location_type")
     @classmethod
@@ -138,8 +466,15 @@ class GetSensorsRequest(BaseModel):
         """
         return round(utc_to_timestamp(value))
 
-    validate_nwlat = validator("nwlat", allow_reuse=True)(validate_latitude)
-    validate_nwlng = validator("nwlng", allow_reuse=True)(validate_longitude)
+    validate_nwlat = validator(
+        "nwlat",
+        allow_reuse=True,
+    )(validate_latitude)
+
+    validate_nwlng = validator(
+        "nwlng",
+        allow_reuse=True,
+    )(validate_longitude)
 
     @validator("read_keys")
     @classmethod
@@ -154,8 +489,15 @@ class GetSensorsRequest(BaseModel):
         """
         return ",".join(value)
 
-    validate_selat = validator("selat", allow_reuse=True)(validate_latitude)
-    validate_selng = validator("selng", allow_reuse=True)(validate_longitude)
+    validate_selat = validator(
+        "selat",
+        allow_reuse=True,
+    )(validate_latitude)
+
+    validate_selng = validator(
+        "selng",
+        allow_reuse=True,
+    )(validate_longitude)
 
     @validator("show_only")
     @classmethod
@@ -171,39 +513,17 @@ class GetSensorsRequest(BaseModel):
         return ",".join([str(i) for i in value])
 
 
-def convert_sensor_response(
-    fields: list[str], field_values: list[Any]
-) -> dict[str, Any]:
-    """Convert sensor fields into an easier-to-parse dictionary.
-
-    Args:
-        fields: A list of sensor types.
-        field_values: A raw list of sensor fields.
-
-    Returns:
-        A dictionary of sensor data.
-    """
-    return dict(zip(fields, field_values))
-
-
 class GetSensorsResponse(BaseModel):
     """Define a response to GET /v1/sensors."""
 
     fields: list[str]
-    data: dict[int, dict[str, Any]]
+    data: dict[int, SensorModel]
 
     api_version: str
     time_stamp: datetime
     data_time_stamp: datetime
     max_age: int
     firmware_default_version: str
-
-    channel_flags: Optional[
-        Literal["Normal", "A-Downgraded", "B-Downgraded", "A+B-Downgraded"]
-    ] = None
-    channel_states: Optional[Literal["No PM", "PM-A", "PM-B", "PM-A+PM-B"]] = None
-    location_type: Optional[LocationType] = None
-    location_types: Optional[Literal["inside", "outside"]] = None
 
     class Config:
         """Define configuration for this model."""
@@ -225,13 +545,17 @@ class GetSensorsResponse(BaseModel):
             A better format for the data.
         """
         return {
-            sensor_values[0]: convert_sensor_response(values["fields"], sensor_values)
+            sensor_values[0]: SensorModel.parse_obj(
+                dict(zip(values["fields"], sensor_values))
+            )
             for sensor_values in value
         }
 
-    validate_data_time_stamp = validator("data_time_stamp", allow_reuse=True, pre=True)(
-        validate_timestamp
-    )
+    validate_data_time_stamp = validator(
+        "data_time_stamp",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)
 
     @root_validator(pre=True)
     @classmethod
@@ -252,25 +576,8 @@ class GetSensorsResponse(BaseModel):
                 raise ValueError(f"{field} is an unknown field")
         return values
 
-    @validator("location_type", pre=True)
-    @classmethod
-    def validate_location_type(cls, value: int) -> LocationType:
-        """Validate the location type.
-
-        Args:
-            value: The integer-based interpretation of a location type.
-
-        Returns:
-            A LocationType value.
-
-        Raises:
-            ValueError: Raised upon an unknown location type.
-        """
-        try:
-            return LocationType(value)
-        except ValueError as err:
-            raise ValueError(f"{value} is an unknown location type") from err
-
-    validate_time_stamp = validator("time_stamp", allow_reuse=True, pre=True)(
-        validate_timestamp
-    )
+    validate_time_stamp = validator(
+        "time_stamp",
+        allow_reuse=True,
+        pre=True,
+    )(validate_timestamp)

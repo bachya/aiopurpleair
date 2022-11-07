@@ -9,13 +9,16 @@ import pytest
 from aresponses import ResponsesMockServer
 
 from aiopurpleair import API
+from aiopurpleair.const import ChannelFlag, ChannelState, LocationType
 from aiopurpleair.errors import InvalidRequestError
-from aiopurpleair.models.sensors import LocationType
+from aiopurpleair.models.sensors import SensorModel
 from tests.common import TEST_API_KEY, load_fixture
 
 
 @pytest.mark.asyncio
-async def test_get_sensor(aresponses: ResponsesMockServer) -> None:
+async def test_get_sensor(  # pylint: disable=too-many-statements
+    aresponses: ResponsesMockServer,
+) -> None:
     """Test the GET /sensor/:sensor_index endpoint.
 
     Args:
@@ -36,129 +39,127 @@ async def test_get_sensor(aresponses: ResponsesMockServer) -> None:
         assert response.api_version == "V1.0.11-0.0.41"
         assert response.time_stamp == datetime(2022, 11, 5, 16, 37, 3)
         assert response.data_time_stamp == datetime(2022, 11, 5, 16, 36, 21)
-        assert response.sensor == {
-            "sensor_index": 131075,
-            "last_modified": 1635632829,
-            "date_created": 1632955574,
-            "last_seen": 1667666162,
-            "private": 0,
-            "is_owner": 0,
-            "name": "Mariners Bluff",
-            "icon": 0,
-            "location_type": 0,
-            "model": "PA-II",
-            "hardware": "2.0+BME280+PMSX003-B+PMSX003-A",
-            "led_brightness": 35,
-            "firmware_version": "7.02",
-            "rssi": -67,
-            "uptime": 15682,
-            "pa_latency": 992,
-            "memory": 16008,
-            "position_rating": 5,
-            "latitude": 33.51511,
-            "longitude": -117.67972,
-            "altitude": 569,
-            "channel_state": 3,
-            "channel_flags": 0,
-            "channel_flags_manual": 0,
-            "channel_flags_auto": 0,
-            "confidence": 100,
-            "confidence_auto": 100,
-            "confidence_manual": 100,
-            "humidity": 33,
-            "humidity_a": 33,
-            "temperature": 69,
-            "temperature_a": 69,
-            "pressure": 1001.66,
-            "pressure_a": 1001.66,
-            "analog_input": 0.03,
-            "pm1.0": 0.0,
-            "pm1.0_a": 0.0,
-            "pm1.0_b": 0.0,
-            "pm2.5": 0.0,
-            "pm2.5_a": 0.0,
-            "pm2.5_b": 0.0,
-            "pm2.5_alt": 0.4,
-            "pm2.5_alt_a": 0.3,
-            "pm2.5_alt_b": 0.4,
-            "pm10.0": 0.0,
-            "pm10.0_a": 0.0,
-            "pm10.0_b": 0.0,
-            "0.3_um_count": 75,
-            "0.3_um_count_a": 65,
-            "0.3_um_count_b": 86,
-            "0.5_um_count": 65,
-            "0.5_um_count_a": 58,
-            "0.5_um_count_b": 73,
-            "1.0_um_count": 0,
-            "1.0_um_count_a": 0,
-            "1.0_um_count_b": 0,
-            "2.5_um_count": 0,
-            "2.5_um_count_a": 0,
-            "2.5_um_count_b": 0,
-            "5.0_um_count": 0,
-            "5.0_um_count_a": 0,
-            "5.0_um_count_b": 0,
-            "10.0_um_count": 0,
-            "10.0_um_count_a": 0,
-            "10.0_um_count_b": 0,
-            "pm1.0_cf_1": 0.0,
-            "pm1.0_cf_1_a": 0.0,
-            "pm1.0_cf_1_b": 0.0,
-            "pm1.0_atm": 0.0,
-            "pm1.0_atm_a": 0.0,
-            "pm1.0_atm_b": 0.0,
-            "pm2.5_atm": 0.0,
-            "pm2.5_atm_a": 0.0,
-            "pm2.5_atm_b": 0.0,
-            "pm2.5_cf_1": 0.0,
-            "pm2.5_cf_1_a": 0.0,
-            "pm2.5_cf_1_b": 0.0,
-            "pm10.0_atm": 0.0,
-            "pm10.0_atm_a": 0.0,
-            "pm10.0_atm_b": 0.0,
-            "pm10.0_cf_1": 0.0,
-            "pm10.0_cf_1_a": 0.0,
-            "pm10.0_cf_1_b": 0.0,
-            "primary_id_a": 1522282,
-            "primary_key_a": "FVXH9TQTQGG2CHEY",
-            "primary_id_b": 1522284,
-            "primary_key_b": "31ZHIMYRBK62KPY1",
-            "secondary_id_a": 1522283,
-            "secondary_key_a": "UVKQCKBKJATTQGCX",
-            "secondary_id_b": 1522285,
-            "secondary_key_b": "DT8UOXHFJS1JDONG",
-            "stats": {
-                "pm2.5": 0.0,
-                "pm2.5_10minute": 0.2,
-                "pm2.5_30minute": 1.0,
-                "pm2.5_60minute": 1.2,
-                "pm2.5_6hour": 1.2,
-                "pm2.5_24hour": 1.8,
-                "pm2.5_1week": 5.8,
-                "time_stamp": 1667666162,
-            },
-            "stats_a": {
-                "pm2.5": 0.0,
-                "pm2.5_10minute": 0.1,
-                "pm2.5_30minute": 0.9,
-                "pm2.5_60minute": 1.0,
-                "pm2.5_6hour": 1.0,
-                "pm2.5_24hour": 1.4,
-                "pm2.5_1week": 4.8,
-                "time_stamp": 1667666162,
-            },
-            "stats_b": {
-                "pm2.5": 0.0,
-                "pm2.5_10minute": 0.2,
-                "pm2.5_30minute": 1.2,
-                "pm2.5_60minute": 1.3,
-                "pm2.5_6hour": 1.5,
-                "pm2.5_24hour": 2.2,
-                "pm2.5_1week": 6.7,
-                "time_stamp": 1667666162,
-            },
-        }
+        assert response.sensor.sensor_index == 131075
+        assert response.sensor.altitude == 569
+        assert response.sensor.analog_input == 0.03
+        assert response.sensor.channel_flags == ChannelFlag.NORMAL
+        assert response.sensor.channel_flags_auto == ChannelFlag.NORMAL
+        assert response.sensor.channel_flags_manual == ChannelFlag.NORMAL
+        assert response.sensor.channel_state == ChannelState.PM_A_PM_B
+        assert response.sensor.confidence == 100
+        assert response.sensor.confidence_auto == 100
+        assert response.sensor.confidence_manual == 100
+        assert response.sensor.date_created == datetime(2021, 9, 29, 22, 46, 14)
+        assert response.sensor.firmware_version == "7.02"
+        assert response.sensor.hardware == "2.0+BME280+PMSX003-B+PMSX003-A"
+        assert response.sensor.humidity == 33
+        assert response.sensor.humidity_a == 33
+        assert response.sensor.icon == 0
+        assert response.sensor.is_owner is False
+        assert response.sensor.last_modified == datetime(2021, 10, 30, 22, 27, 9)
+        assert response.sensor.last_seen == datetime(2022, 11, 5, 16, 36, 2)
+        assert response.sensor.latitude == 33.51511
+        assert response.sensor.led_brightness == 35
+        assert response.sensor.location_type == LocationType.OUTSIDE
+        assert response.sensor.longitude == -117.67972
+        assert response.sensor.memory == 16008
+        assert response.sensor.model == "PA-II"
+        assert response.sensor.name == "Mariners Bluff"
+        assert response.sensor.pa_latency == 992
+        assert response.sensor.pm0_3_um_count == 75
+        assert response.sensor.pm0_3_um_count_a == 65
+        assert response.sensor.pm0_3_um_count_b == 86
+        assert response.sensor.pm0_5_um_count == 65
+        assert response.sensor.pm0_5_um_count_a == 58
+        assert response.sensor.pm0_5_um_count_b == 73
+        assert response.sensor.pm10_0_cf_1_a == 0.0
+        assert response.sensor.pm10_0_cf_1_b == 0.0
+        assert response.sensor.pm10_0 == 0.0
+        assert response.sensor.pm10_0_a == 0.0
+        assert response.sensor.pm10_0_atm == 0.0
+        assert response.sensor.pm10_0_atm_a == 0.0
+        assert response.sensor.pm10_0_atm_b == 0.0
+        assert response.sensor.pm10_0_b == 0.0
+        assert response.sensor.pm10_0_cf_1 == 0.0
+        assert response.sensor.pm10_0_um_count == 0
+        assert response.sensor.pm10_0_um_count_a == 0
+        assert response.sensor.pm10_0_um_count_b == 0
+        assert response.sensor.pm1_0 == 0.0
+        assert response.sensor.pm1_0_a == 0.0
+        assert response.sensor.pm1_0_atm == 0.0
+        assert response.sensor.pm1_0_atm_a == 0.0
+        assert response.sensor.pm1_0_atm_b == 0.0
+        assert response.sensor.pm1_0_b == 0.0
+        assert response.sensor.pm1_0_cf_1 == 0.0
+        assert response.sensor.pm1_0_cf_1_a == 0.0
+        assert response.sensor.pm1_0_cf_1_b == 0.0
+        assert response.sensor.pm1_0_um_count == 0
+        assert response.sensor.pm1_0_um_count_a == 0
+        assert response.sensor.pm1_0_um_count_b == 0
+        assert response.sensor.pm2_5 == 0.0
+        assert response.sensor.pm2_5_a == 0.0
+        assert response.sensor.pm2_5_alt == 0.4
+        assert response.sensor.pm2_5_alt_a == 0.3
+        assert response.sensor.pm2_5_alt_b == 0.4
+        assert response.sensor.pm2_5_atm == 0.0
+        assert response.sensor.pm2_5_atm_a == 0.0
+        assert response.sensor.pm2_5_atm_b == 0.0
+        assert response.sensor.pm2_5_b == 0.0
+        assert response.sensor.pm2_5_cf_1 == 0.0
+        assert response.sensor.pm2_5_cf_1_a == 0.0
+        assert response.sensor.pm2_5_cf_1_b == 0.0
+        assert response.sensor.pm2_5_um_count == 0
+        assert response.sensor.pm2_5_um_count_a == 0
+        assert response.sensor.pm2_5_um_count_b == 0
+        assert response.sensor.pm5_0_um_count == 0
+        assert response.sensor.pm5_0_um_count_a == 0
+        assert response.sensor.pm5_0_um_count_b == 0
+        assert response.sensor.position_rating == 5
+        assert response.sensor.pressure == 1001.66
+        assert response.sensor.pressure_a == 1001.66
+        assert response.sensor.primary_id_a == 1522282
+        assert response.sensor.primary_id_b == 1522284
+        assert response.sensor.primary_key_a == "FVXH9TQTQGG2CHEY"
+        assert response.sensor.primary_key_b == "31ZHIMYRBK62KPY1"
+        assert response.sensor.private is False
+        assert response.sensor.rssi == -67
+        assert response.sensor.secondary_id_a == 1522283
+        assert response.sensor.secondary_id_b == 1522285
+        assert response.sensor.secondary_key_a == "UVKQCKBKJATTQGCX"
+        assert response.sensor.secondary_key_b == "DT8UOXHFJS1JDONG"
+        assert response.sensor.temperature == 69
+        assert response.sensor.temperature_a == 69
+        assert response.sensor.uptime == 15682
+
+        assert response.sensor.stats
+        assert response.sensor.stats.pm2_5 == 0.0
+        assert response.sensor.stats.pm2_5_10minute == 0.2
+        assert response.sensor.stats.pm2_5_30minute == 1.0
+        assert response.sensor.stats.pm2_5_60minute == 1.2
+        assert response.sensor.stats.pm2_5_6hour == 1.2
+        assert response.sensor.stats.pm2_5_24hour == 1.8
+        assert response.sensor.stats.pm2_5_1week == 5.8
+        assert response.sensor.stats.time_stamp == datetime(2022, 11, 5, 16, 36, 2)
+
+        assert response.sensor.stats_a
+        assert response.sensor.stats_a.pm2_5 == 0.0
+        assert response.sensor.stats_a.pm2_5_10minute == 0.1
+        assert response.sensor.stats_a.pm2_5_30minute == 0.9
+        assert response.sensor.stats_a.pm2_5_60minute == 1.0
+        assert response.sensor.stats_a.pm2_5_6hour == 1.0
+        assert response.sensor.stats_a.pm2_5_24hour == 1.4
+        assert response.sensor.stats_a.pm2_5_1week == 4.8
+        assert response.sensor.stats_a.time_stamp == datetime(2022, 11, 5, 16, 36, 2)
+
+        assert response.sensor.stats_b
+        assert response.sensor.stats_b.pm2_5 == 0.0
+        assert response.sensor.stats_b.pm2_5_10minute == 0.2
+        assert response.sensor.stats_b.pm2_5_30minute == 1.2
+        assert response.sensor.stats_b.pm2_5_60minute == 1.3
+        assert response.sensor.stats_b.pm2_5_6hour == 1.5
+        assert response.sensor.stats_b.pm2_5_24hour == 2.2
+        assert response.sensor.stats_b.pm2_5_1week == 6.7
+        assert response.sensor.stats_b.time_stamp == datetime(2022, 11, 5, 16, 36, 2)
 
     aresponses.assert_plan_strictly_followed()
 
@@ -205,20 +206,20 @@ async def test_get_sensors(aresponses: ResponsesMockServer) -> None:
         assert response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)
         assert response.firmware_default_version == "7.02"
         assert response.max_age == 604800
-        assert response.channel_flags is None
-        assert response.channel_states is None
-        assert response.location_type is LocationType.OUTSIDE
-        assert response.location_types is None
         assert response.fields == ["sensor_index", "name"]
         assert response.data == {
-            131075: {
-                "sensor_index": 131075,
-                "name": "Mariners Bluff",
-            },
-            131079: {
-                "sensor_index": 131079,
-                "name": "BRSKBV-outside",
-            },
+            131075: SensorModel(
+                **{
+                    "sensor_index": 131075,
+                    "name": "Mariners Bluff",
+                }
+            ),
+            131079: SensorModel(
+                **{
+                    "sensor_index": 131079,
+                    "name": "BRSKBV-outside",
+                }
+            ),
         }
 
     aresponses.assert_plan_strictly_followed()

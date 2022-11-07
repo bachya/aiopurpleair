@@ -1,4 +1,4 @@
-# 🚰 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
+# 🟣 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
 
 [![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
 [![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
@@ -80,20 +80,10 @@ async def main() -> None:
     # >>> response.data_time_stamp == datetime(2022, 11, 3, 19, 25, 31)  # UTC
     # >>> response.firmware_default_version == "7.02"
     # >>> response.max_age == 604800
-    # >>> response.channel_flags is None
-    # >>> response.channel_states is None
-    # >>> response.location_type is LocationType.OUTSIDE
-    # >>> response.location_types is None
     # >>> response.fields == ["sensor_index", "name"]
     # >>> response.data == {
-    # >>>     131075: {
-    # >>>         "sensor_index": 131075,
-    # >>>         "name": "Mariners Bluff",
-    # >>>     },
-    # >>>     131079: {
-    # >>>         "sensor_index": 131079,
-    # >>>         "name": "BRSKBV-outside",
-    # >>>     },
+    # >>>     131075: SensorModel(sensor_index=131075, name=Mariners Bluff),
+    # >>>     131079: SensorModel(sensor_index=131079, name=BRSKBV-outside),
     # >>> }
 
 
@@ -120,15 +110,11 @@ from aiopurpleair import API
 async def main() -> None:
     """Run."""
     api = API("<API_KEY>")
-    response = await api.sensors.async_get_sensor("<SENSOR INDEX>")
+    response = await api.sensors.async_get_sensor(131075)
     # >>> response.api_version == "V1.0.11-0.0.41"
     # >>> response.time_stamp == datetime(2022, 11, 5, 16, 37, 3)
     # >>> response.data_time_stamp == datetime(2022, 11, 5, 16, 36, 21)
-    # >>> response.sensor == {
-    # >>>     "sensor_index": 131075,
-    # >>>     "last_modified": 1635632829,
-    # >>>     ...
-    # >>> }
+    # >>> response.sensor == SensorModel(sensor_index=131075, ...),
 
 
 asyncio.run(main())
@@ -136,6 +122,7 @@ asyncio.run(main())
 
 `API.sensors.async_get_sensor` takes several parameters:
 
+- `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
 - `read_key` (optional): A read key for a private sensor.
 
