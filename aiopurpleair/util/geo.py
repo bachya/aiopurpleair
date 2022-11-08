@@ -105,7 +105,7 @@ class GeoLocation:
                 box_minimum_longitude += 2 * math.pi
 
             box_maximum_longitude = self.longitude_radians + delta_longitude
-            if box_maximum_longitude > MAXIMUM_LATITUDE:
+            if box_maximum_longitude > MAXIMUM_LONGITUDE:
                 box_maximum_longitude -= 2 * math.pi
         else:
             # One of the poles is within the bounding box:
