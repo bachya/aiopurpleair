@@ -11,28 +11,28 @@ from aiopurpleair.util.geo import GeoLocation
             51.5285582,
             -0.2416796,
             5,
-            51.57347422476684,
-            -0.3138774212931301,
-            51.48364217523316,
-            -0.1694817787068699,
+            51.57347,
+            -0.31388,
+            51.48364,
+            -0.16948,
         ),
         (
             0.2,
             179.99999999999,
             500,
-            4.691602476684461,
-            175.5083701025645,
-            -4.291602476684461,
-            -175.5083701025845,
+            4.6916,
+            175.50837,
+            -4.2916,
+            -175.50837,
         ),
         (
             0.2,
             -179.99999999999,
             500,
-            4.691602476684461,
-            175.5083701025845,
-            -4.291602476684461,
-            -175.5083701025645,
+            4.6916,
+            175.50837,
+            -4.2916,
+            -175.50837,
         ),
         (
             89.9,
@@ -40,7 +40,7 @@ from aiopurpleair.util.geo import GeoLocation
             500,
             90.0,
             -180.0,
-            85.40839752331554,
+            85.4084,
             180.0,
         ),
     ],
@@ -67,10 +67,11 @@ def test_geo_location_bounding_box(  # pylint: disable=too-many-arguments
     """
     location = GeoLocation.from_degrees(latitude, longitude)
     nw_coordinate, se_coordinate = location.bounding_box(distance_km)
-    assert nw_coordinate.latitude_degrees == nw_latitude
-    assert nw_coordinate.longitude_degrees == nw_longitude
-    assert se_coordinate.latitude_degrees == se_latitude
-    assert se_coordinate.longitude_degrees == se_longitude
+    # We round to prevent floating point errors in CI:
+    assert round(nw_coordinate.latitude_degrees, 5) == nw_latitude
+    assert round(nw_coordinate.longitude_degrees, 5) == nw_longitude
+    assert round(se_coordinate.latitude_degrees, 5) == se_latitude
+    assert round(se_coordinate.longitude_degrees, 5) == se_longitude
 
 
 def test_geo_location_bounding_box_invalid_distance() -> None:
