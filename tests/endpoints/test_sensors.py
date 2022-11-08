@@ -16,6 +16,43 @@ from tests.common import TEST_API_KEY, load_fixture
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "limit_results,output",
+    [
+        (None, [131083, 131077, 131079, 131089, 131091, 131087, 131075]),
+        (3, [131083, 131077, 131079]),
+    ],
+)
+async def test_get_nearby_sensor_indicies(
+    aresponses: ResponsesMockServer, limit_results: int | None, output: list[int]
+) -> None:
+    """Test getting sensor indices within a bounding box around a latitude/longitude.
+
+    Args:
+        aresponses: An aresponses server.
+        limit_results: An optional limit.
+        output: The expected output.
+    """
+    aresponses.add(
+        "api.purpleair.com",
+        "/v1/sensors",
+        "get",
+        response=aiohttp.web_response.json_response(
+            json.loads(load_fixture("get_sensor_indices_response.json")), status=200
+        ),
+    )
+
+    async with aiohttp.ClientSession() as session:
+        api = API(TEST_API_KEY, session=session)
+        indices = await api.sensors.async_get_nearby_sensor_indices(
+            38.2858302, -122.4562015, 10, limit_results=limit_results
+        )
+        assert indices == output
+
+    aresponses.assert_plan_strictly_followed()
+
+
+@pytest.mark.asyncio
 async def test_get_sensor(  # pylint: disable=too-many-statements
     aresponses: ResponsesMockServer,
 ) -> None:

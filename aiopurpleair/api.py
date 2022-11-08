@@ -36,7 +36,9 @@ class API:  # pylint: disable=too-few-public-methods
         self._api_key = api_key
         self._session = session
 
-        self.sensors = SensorsEndpoints(self.async_request)
+        self.sensors = SensorsEndpoints(
+            self.async_request, self.async_request_with_response_model
+        )
 
     @classmethod
     async def async_check_api_key(
@@ -52,28 +54,22 @@ class API:  # pylint: disable=too-few-public-methods
             An API response payload.
         """
         instance = cls(api_key, session=session)
-        return await instance.async_request("get", "/keys", GetKeysResponse)
+        return await instance.async_request_with_response_model(
+            "get", "/keys", GetKeysResponse
+        )
 
     async def async_request(
-        self,
-        method: str,
-        endpoint: str,
-        response_model: type[BaseModel],
-        **kwargs: dict[str, Any],
-    ) -> ModelT:
+        self, method: str, endpoint: str, **kwargs: dict[str, Any]
+    ) -> dict[str, Any]:
         """Make an API request.
 
         Args:
             method: An HTTP method.
             endpoint: A relative API endpoint.
-            response_model: A Pydantic model to parse the response data.
             **kwargs: Additional kwargs to send with the request.
 
         Returns:
-            An API response payload in the form of a Pydantic model.
-
-        Raises:
-            RequestError: Raised when response data can't be validated.
+            An API response payload.
         """
         url: str = f"{API_URL_BASE}{endpoint}"
 
@@ -104,6 +100,31 @@ class API:  # pylint: disable=too-few-public-methods
                 await session.close()
 
         LOGGER.debug("Data received for %s: %s", endpoint, data)
+
+        return data
+
+    async def async_request_with_response_model(
+        self,
+        method: str,
+        endpoint: str,
+        response_model: type[BaseModel],
+        **kwargs: dict[str, Any],
+    ) -> ModelT:
+        """Make an API request.
+
+        Args:
+            method: An HTTP method.
+            endpoint: A relative API endpoint.
+            response_model: A Pydantic model to parse the response data.
+            **kwargs: Additional kwargs to send with the request.
+
+        Returns:
+            An API response payload in the form of a Pydantic model.
+
+        Raises:
+            RequestError: Raised when response data can't be validated.
+        """
+        data: dict[str, Any] = await self.async_request(method, endpoint, **kwargs)
 
         try:
             return cast(ModelT, response_model.parse_obj(data))
