@@ -21,6 +21,11 @@ async def main() -> None:
 
             sensors_response = await api.sensors.async_get_sensors(["name"])
             _LOGGER.info(sensors_response)
+
+            nearby_sensor_indices = await api.sensors.async_get_nearby_sensor_indices(
+                51.5285582, -0.2416796, 10
+            )
+            _LOGGER.info(nearby_sensor_indices)
         except PurpleAirError as err:
             _LOGGER.error("There was an error: %s", err)
 

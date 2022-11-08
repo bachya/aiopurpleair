@@ -19,6 +19,7 @@
   - [Checking an API Key](#checking-an-api-key)
   - [Getting Sensors](#getting-sensors)
   - [Getting a Single Sensor](#getting-a-single-sensor)
+  - [Getting Nearby Sensor Indices](#getting-nearby-sensor-indices)
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
@@ -90,8 +91,6 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-`API.sensors.async_get_sensors` takes several parameters:
-
 - `fields` (required): The sensor data fields to include.
 - `location_type` (optional): An LocationType to filter by.
 - `max_age` (optional): Filter results modified within these seconds.
@@ -120,11 +119,37 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-`API.sensors.async_get_sensor` takes several parameters:
-
 - `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
 - `read_key` (optional): A read key for a private sensor.
+
+## Getting Nearby Sensor Indices
+
+This method returns a list of sensor IDs that are within a bounding box around a given
+latitude/longitude pair. The list is sorted from nearest to furthest (i.e., the first
+index in the list is the closest to the latitude/longitude).
+
+```python
+import asyncio
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    api = API("<API_KEY>")
+    indices = await api.sensors.async_get_nearby_sensor_indices(
+        51.5285582, -0.2416796, 10
+    )
+    # >>> indices = [131083, 131077, 131079, 131089, 131091, 131087, 131075]
+
+
+asyncio.run(main())
+```
+
+- `latitude` (required): The latitude of the point to measure distance from.
+- `longitude` (required): The longitude of the point to measure distance from.
+- `distance` (required): The distance from the measured point to search (in kilometers).
 
 ## Connection Pooling
 

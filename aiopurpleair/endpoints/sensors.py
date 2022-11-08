@@ -11,6 +11,7 @@ from aiopurpleair.models.sensors import (
     GetSensorsResponse,
     LocationType,
 )
+from aiopurpleair.util.geo import GeoLocation
 
 
 class SensorsEndpoints(APIEndpointsBase):
@@ -33,7 +34,7 @@ class SensorsEndpoints(APIEndpointsBase):
         Returns:
             An API response payload in the form of a Pydantic model.
         """
-        response: GetSensorResponse = await self._async_endpoint_request(
+        response: GetSensorResponse = await self._async_endpoint_request_with_models(
             f"/sensor/{sensor_index}",
             (
                 ("fields", fields),
@@ -67,7 +68,7 @@ class SensorsEndpoints(APIEndpointsBase):
         Returns:
             An API response payload in the form of a Pydantic model.
         """
-        response: GetSensorsResponse = await self._async_endpoint_request(
+        response: GetSensorsResponse = await self._async_endpoint_request_with_models(
             "/sensors",
             (
                 ("fields", fields),
@@ -81,3 +82,52 @@ class SensorsEndpoints(APIEndpointsBase):
             GetSensorsResponse,
         )
         return response
+
+    async def async_get_nearby_sensor_indices(
+        self,
+        latitude: float,
+        longitude: float,
+        distance_km: float,
+        *,
+        limit_results: int | None = None,
+    ) -> list[int]:
+        """Get sensor indices near a coordinate pair within a distance (in kilometers).
+
+        The resulting list of indices is ordered from nearest to furthest within the
+        bounding box defined by the distance.
+
+        Args:
+            latitude: The latitude of the "search center."
+            longitude: The longitude of the "search center."
+            distance_km: The radius of the "search center."
+            limit_results: The number of results to limit.
+
+        Returns:
+            A sorted list of sensor indices.
+        """
+        center = GeoLocation.from_degrees(latitude, longitude)
+        nw_coordinate_pair, se_coordinate_pair = center.bounding_box(distance_km)
+
+        data = await self._async_request(
+            "get",
+            "/sensors",
+            params={
+                "fields": "latitude,longitude",
+                "nwlat": nw_coordinate_pair.latitude_degrees,
+                "nwlng": nw_coordinate_pair.longitude_degrees,
+                "selat": se_coordinate_pair.latitude_degrees,
+                "selng": se_coordinate_pair.longitude_degrees,
+            },
+        )
+
+        results = [
+            i[0]
+            for i in sorted(
+                (i for i in data["data"]),
+                key=lambda i: center.distance_to(GeoLocation.from_degrees(i[1], i[2])),
+            )
+        ]
+
+        if limit_results:
+            return results[:limit_results]
+        return results
