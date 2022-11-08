@@ -34,9 +34,8 @@ class GeoLocation:
             ("latitude", self.latitude_radians, MINIMUM_LATITUDE, MAXIMUM_LATITUDE),
             ("longitude", self.longitude_radians, MINIMUM_LONGITUDE, MAXIMUM_LONGITUDE),
         ):
-            if minimum <= value <= maximum:
-                continue
-            raise ValueError(f"Invalid {kind}: {value} radians")
+            if value < minimum or value > maximum:
+                raise ValueError(f"Invalid {kind}: {value} radians")
 
     @classmethod
     def from_degrees(
