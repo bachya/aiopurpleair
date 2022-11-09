@@ -40,21 +40,13 @@ class API:  # pylint: disable=too-few-public-methods
             self.async_request, self.async_request_with_response_model
         )
 
-    @classmethod
-    async def async_check_api_key(
-        cls, api_key: str, *, session: ClientSession | None = None
-    ) -> GetKeysResponse:
-        """Define a conveninece class method to check an API key.
-
-        Args:
-            api_key: The API key to check.
-            session: An optional aiohttp ClientSession.
+    async def async_check_api_key(self) -> GetKeysResponse:
+        """Check the validity of the API key.
 
         Returns:
             An API response payload.
         """
-        instance = cls(api_key, session=session)
-        return await instance.async_request_with_response_model(
+        return await self.async_request_with_response_model(
             "get", "/keys", GetKeysResponse
         )
 

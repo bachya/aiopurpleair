@@ -55,7 +55,8 @@ from aiopurpleair import API
 
 async def main() -> None:
     """Run."""
-    response = await API.async_check_api_key("<API KEY>")
+    api = API("<API KEY>")
+    response = await api.async_check_api_key()
     # >>> response.api_key_type == ApiKeyType.READ
     # >>> response.api_version == "V1.0.11-0.0.41"
     # >>> response.timestamp_utc == datetime(2022, 10, 27, 18, 25, 41)
