@@ -78,10 +78,11 @@ async def test_check_api_key(
 
     if use_session:
         async with aiohttp.ClientSession() as session:
-            response = await API.async_check_api_key(TEST_API_KEY, session=session)
+            api = API(TEST_API_KEY, session=session)
     else:
-        response = await API.async_check_api_key(TEST_API_KEY)
+        api = API(TEST_API_KEY)
 
+    response = await api.async_check_api_key()
     assert isinstance(response, GetKeysResponse)
     assert response.api_key_type == ApiKeyType.READ
     assert response.api_version == "V1.0.11-0.0.41"
@@ -109,7 +110,8 @@ async def test_check_api_key_validation_error(aresponses: ResponsesMockServer) -
 
     async with aiohttp.ClientSession() as session:
         with pytest.raises(RequestError) as err:
-            _ = await API.async_check_api_key(TEST_API_KEY, session=session)
+            api = API(TEST_API_KEY, session=session)
+            _ = await api.async_check_api_key()
         assert "FAKE is an unknown API key type" in str(err.value)
 
     aresponses.assert_plan_strictly_followed()
