@@ -49,15 +49,14 @@ class APIEndpointsBase:  # pylint: disable=too-few-public-methods
         Raises:
             InvalidRequestError: Raised on invalid parameters.
         """
-        payload: dict[str, Any] = {}
-
-        for api_query_param, func_param in query_param_map:
-            if not func_param:
-                continue
-            payload[api_query_param] = func_param
-
         try:
-            request = request_model.parse_obj(payload)
+            request = request_model.parse_obj(
+                {
+                    api_query_param: func_param
+                    for api_query_param, func_param in query_param_map
+                    if func_param is not None
+                }
+            )
         except ValidationError as err:
             raise InvalidRequestError(err) from err
 
