@@ -19,7 +19,7 @@
   - [Checking an API Key](#checking-an-api-key)
   - [Getting Sensors](#getting-sensors)
   - [Getting a Single Sensor](#getting-a-single-sensor)
-  - [Getting Nearby Sensor Indices](#getting-nearby-sensor-indices)
+  - [Getting Nearby Sensors](#getting-nearby-sensors)
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
@@ -124,11 +124,11 @@ asyncio.run(main())
 - `fields` (optional): The sensor data fields to include.
 - `read_key` (optional): A read key for a private sensor.
 
-## Getting Nearby Sensor Indices
+## Getting Nearby Sensors
 
-This method returns a list of sensor IDs that are within a bounding box around a given
-latitude/longitude pair. The list is sorted from nearest to furthest (i.e., the first
-index in the list is the closest to the latitude/longitude).
+This method returns a list of `SensorModel` objects that are within a bounding box around
+a given latitude/longitude pair. The list is sorted from nearest to furthest (i.e., the
+first index in the list is the closest to the latitude/longitude).
 
 ```python
 import asyncio
