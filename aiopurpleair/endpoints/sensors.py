@@ -35,7 +35,7 @@ class SensorsEndpoints(APIEndpointsBase):
             An API response payload in the form of a Pydantic model.
         """
         response: GetSensorResponse = await self._async_endpoint_request_with_models(
-            f"/sensor/{sensor_index}",
+            f"/sensors/{sensor_index}",
             (
                 ("fields", fields),
                 ("read_key", read_key),

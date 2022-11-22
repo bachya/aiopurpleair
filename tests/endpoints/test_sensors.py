@@ -56,14 +56,14 @@ async def test_get_nearby_sensor_indicies(
 async def test_get_sensor(  # pylint: disable=too-many-statements
     aresponses: ResponsesMockServer,
 ) -> None:
-    """Test the GET /sensor/:sensor_index endpoint.
+    """Test the GET /sensors/:sensor_index endpoint.
 
     Args:
         aresponses: An aresponses server.
     """
     aresponses.add(
         "api.purpleair.com",
-        "/v1/sensor/12345",
+        "/v1/sensors/12345",
         "get",
         response=aiohttp.web_response.json_response(
             json.loads(load_fixture("get_sensor_response.json")), status=200
@@ -203,7 +203,7 @@ async def test_get_sensor(  # pylint: disable=too-many-statements
 
 @pytest.mark.asyncio
 async def test_get_sensor_validation_error(aresponses: ResponsesMockServer) -> None:
-    """Test the GET /sensor/:sensor_index endpoint, returning a validation error.
+    """Test the GET /sensors/:sensor_index endpoint, returning a validation error.
 
     Args:
         aresponses: An aresponses server.
