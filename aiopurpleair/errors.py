@@ -13,6 +13,12 @@ class PurpleAirError(Exception):
     pass
 
 
+class NotFoundError(PurpleAirError):
+    """Define an unknown resource."""
+
+    pass
+
+
 class InvalidRequestError(PurpleAirError):
     """Define an invalid request."""
 
@@ -34,6 +40,7 @@ class InvalidApiKeyError(RequestError):
 ERROR_CODE_MAP = {
     "ApiKeyMissingError": InvalidApiKeyError,
     "ApiKeyInvalidError": InvalidApiKeyError,
+    "NotFoundError": NotFoundError,
 }
 
 
