@@ -139,18 +139,20 @@ from aiopurpleair import API
 async def main() -> None:
     """Run."""
     api = API("<API_KEY>")
-    indices = await api.sensors.async_get_nearby_sensor_indices(
-        51.5285582, -0.2416796, 10
+    sensors = await api.sensors.async_get_nearby_sensors(
+        ["name"], 51.5285582, -0.2416796, 10
     )
-    # >>> indices = [131083, 131077, 131079, 131089, 131091, 131087, 131075]
+    # >>> [SensorModel(...), SensorModel(...)]
 
 
 asyncio.run(main())
 ```
 
+- `fields` (required): The sensor data fields to include.
 - `latitude` (required): The latitude of the point to measure distance from.
 - `longitude` (required): The longitude of the point to measure distance from.
 - `distance` (required): The distance from the measured point to search (in kilometers).
+- `limit` (optional): Limit the results.
 
 ## Connection Pooling
 

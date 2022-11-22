@@ -13,20 +13,13 @@ from aiopurpleair.helpers.typing import ModelT
 class APIEndpointsBase:  # pylint: disable=too-few-public-methods
     """Define a base API endpoints manager."""
 
-    def __init__(
-        self,
-        async_request: Callable[..., Awaitable[dict[str, Any]]],
-        async_request_with_response_model: Callable[..., Awaitable[ModelT]],
-    ) -> None:
+    def __init__(self, async_request: Callable[..., Awaitable[ModelT]]) -> None:
         """Initialize.
 
         Args:
-            async_request: The request method that returns raw JSON.
-            async_request_with_response_model: The request method that returns a
-                Pydantic model.
+            async_request: The request method from the API object.
         """
         self._async_request = async_request
-        self._async_request_with_response_model = async_request_with_response_model
 
     async def _async_endpoint_request_with_models(
         self,
@@ -60,6 +53,6 @@ class APIEndpointsBase:  # pylint: disable=too-few-public-methods
         except ValidationError as err:
             raise InvalidRequestError(err) from err
 
-        return await self._async_request_with_response_model(
+        return await self._async_request(
             "get", endpoint, response_model, params=request.dict(exclude_none=True)
         )
