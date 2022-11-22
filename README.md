@@ -19,7 +19,7 @@
   - [Checking an API Key](#checking-an-api-key)
   - [Getting Sensors](#getting-sensors)
   - [Getting a Single Sensor](#getting-a-single-sensor)
-  - [Getting Nearby Sensor](#getting-nearby-sensors)
+  - [Getting Nearby Sensors](#getting-nearby-sensors)
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
