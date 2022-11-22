@@ -348,7 +348,7 @@ class SensorModel(BaseModel):
 
 
 class GetSensorRequest(BaseModel):
-    """Define a request to GET /v1/sensor/:sensor_index."""
+    """Define a request to GET /v1/sensors/:sensor_index."""
 
     fields: Optional[list[str]] = None
     read_key: Optional[str] = None
@@ -365,7 +365,7 @@ class GetSensorRequest(BaseModel):
 
 
 class GetSensorResponse(BaseModel):
-    """Define a response to GET /v1/sensor/:sensor_index."""
+    """Define a response to GET /v1/sensors/:sensor_index."""
 
     api_version: str
     sensor: SensorModel
