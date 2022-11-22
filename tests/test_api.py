@@ -9,7 +9,7 @@ import pytest
 from aresponses import ResponsesMockServer
 
 from aiopurpleair import API
-from aiopurpleair.errors import InvalidApiKeyError, RequestError
+from aiopurpleair.errors import InvalidApiKeyError, NotFoundError, RequestError
 from aiopurpleair.models.keys import ApiKeyType, GetKeysResponse
 from tests.common import TEST_API_KEY, load_fixture
 
@@ -20,6 +20,7 @@ from tests.common import TEST_API_KEY, load_fixture
     [
         ("error_invalid_api_key_response.json", InvalidApiKeyError, 403),
         ("error_missing_api_key_response.json", InvalidApiKeyError, 403),
+        ("error_not_found_response.json", NotFoundError, 404),
         ("error_unknown_response.json", RequestError, 500),
     ],
 )
