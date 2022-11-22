@@ -50,9 +50,7 @@ async def test_api_error(
     async with aiohttp.ClientSession() as session:
         api = API(TEST_API_KEY, session=session)
         with pytest.raises(err_type):
-            await api.async_request_with_response_model(
-                "get", "/bad_endpoint", GetKeysResponse
-            )
+            await api.async_request("get", "/bad_endpoint", GetKeysResponse)
 
     aresponses.assert_plan_strictly_followed()
 

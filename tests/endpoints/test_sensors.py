@@ -19,12 +19,62 @@ from tests.common import TEST_API_KEY, load_fixture
 @pytest.mark.parametrize(
     "limit_results,output",
     [
-        (None, [131083, 131077, 131079, 131089, 131091, 131087, 131075]),
-        (3, [131083, 131077, 131079]),
+        (
+            None,
+            [
+                SensorModel(
+                    **{
+                        "sensor_index": 131077,
+                        "name": "BEE Patio",
+                        "latitude": 37.93273,
+                        "longitude": -122.03972,
+                    }
+                ),
+                SensorModel(
+                    **{
+                        "sensor_index": 131079,
+                        "name": "BRSKBV-outside",
+                        "latitude": 37.75315,
+                        "longitude": -122.44364,
+                    }
+                ),
+                SensorModel(
+                    **{
+                        "sensor_index": 131083,
+                        "name": "Test Sensor",
+                        "latitude": 38.287594,
+                        "longitude": -122.46281,
+                    }
+                ),
+                SensorModel(
+                    **{
+                        "sensor_index": 131075,
+                        "name": "Mariners Bluff",
+                        "latitude": 33.51511,
+                        "longitude": -117.67972,
+                    }
+                ),
+            ],
+        ),
+        (
+            1,
+            [
+                SensorModel(
+                    **{
+                        "sensor_index": 131077,
+                        "name": "BEE Patio",
+                        "latitude": 37.93273,
+                        "longitude": -122.03972,
+                    }
+                )
+            ],
+        ),
     ],
 )
-async def test_get_nearby_sensor_indicies(
-    aresponses: ResponsesMockServer, limit_results: int | None, output: list[int]
+async def test_get_nearby_sensors(
+    aresponses: ResponsesMockServer,
+    limit_results: int | None,
+    output: list[SensorModel],
 ) -> None:
     """Test getting sensor indices within a bounding box around a latitude/longitude.
 
@@ -38,16 +88,20 @@ async def test_get_nearby_sensor_indicies(
         "/v1/sensors",
         "get",
         response=aiohttp.web_response.json_response(
-            json.loads(load_fixture("get_sensor_indices_response.json")), status=200
+            json.loads(load_fixture("get_sensors_response.json")), status=200
         ),
     )
 
     async with aiohttp.ClientSession() as session:
         api = API(TEST_API_KEY, session=session)
-        indices = await api.sensors.async_get_nearby_sensor_indices(
-            38.2858302, -122.4562015, 10, limit_results=limit_results
+        sensors = await api.sensors.async_get_nearby_sensors(
+            ["name", "latitude", "longitude"],
+            37.92122,
+            -122.01889,
+            10,
+            limit_results=limit_results,
         )
-        assert indices == output
+        assert sensors == output
 
     aresponses.assert_plan_strictly_followed()
 
@@ -243,18 +297,38 @@ async def test_get_sensors(aresponses: ResponsesMockServer) -> None:
         assert response.data_timestamp_utc == datetime(2022, 11, 3, 19, 25, 31)
         assert response.firmware_default_version == "7.02"
         assert response.max_age == 604800
-        assert response.fields == ["sensor_index", "name"]
+        assert response.fields == ["sensor_index", "name", "latitude", "longitude"]
         assert response.data == {
             131075: SensorModel(
                 **{
                     "sensor_index": 131075,
                     "name": "Mariners Bluff",
+                    "latitude": 33.51511,
+                    "longitude": -117.67972,
                 }
             ),
             131079: SensorModel(
                 **{
                     "sensor_index": 131079,
                     "name": "BRSKBV-outside",
+                    "latitude": 37.75315,
+                    "longitude": -122.44364,
+                }
+            ),
+            131077: SensorModel(
+                **{
+                    "sensor_index": 131077,
+                    "name": "BEE Patio",
+                    "latitude": 37.93273,
+                    "longitude": -122.03972,
+                }
+            ),
+            131083: SensorModel(
+                **{
+                    "sensor_index": 131083,
+                    "name": "Test Sensor",
+                    "latitude": 38.287594,
+                    "longitude": -122.46281,
                 }
             ),
         }

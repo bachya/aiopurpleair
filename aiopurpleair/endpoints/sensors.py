@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import cast
 
 from aiopurpleair.endpoints import APIEndpointsBase
 from aiopurpleair.models.sensors import (
@@ -10,6 +11,7 @@ from aiopurpleair.models.sensors import (
     GetSensorsRequest,
     GetSensorsResponse,
     LocationType,
+    SensorModel,
 )
 from aiopurpleair.util.geo import GeoLocation
 
@@ -52,7 +54,11 @@ class SensorsEndpoints(APIEndpointsBase):
         location_type: LocationType | None = None,
         max_age: int | None = None,
         modified_since_utc: datetime | None = None,
+        nw_latitude: float | None = None,
+        nw_longitude: float | None = None,
         read_keys: list[str] | None = None,
+        se_latitude: float | None = None,
+        se_longitude: float | None = None,
         sensor_indices: list[int] | None = None,
     ) -> GetSensorsResponse:
         """Get all sensors.
@@ -62,7 +68,11 @@ class SensorsEndpoints(APIEndpointsBase):
             location_type: An optional LocationType to filter by.
             max_age: Filter results modified within these seconds.
             modified_since_utc: Filter results modified since a datetime.
+            nw_latitude: The latitude of the NE corner of an optional bounding box.
+            nw_longitude: The longitude of the NE corner of an optional bounding box.
             read_keys: Optional read keys for private sensors.
+            se_latitude: The latitude of the SE corner of an optional bounding box.
+            se_longitude: The longitude of the SE corner of an optional bounding box.
             sensor_indices: Filter results by sensor index.
 
         Returns:
@@ -75,7 +85,11 @@ class SensorsEndpoints(APIEndpointsBase):
                 ("location_type", location_type),
                 ("max_age", max_age),
                 ("modified_since", modified_since_utc),
+                ("nwlat", nw_latitude),
+                ("nwlng", nw_longitude),
                 ("read_keys", read_keys),
+                ("selat", se_latitude),
+                ("selng", se_longitude),
                 ("show_only", sensor_indices),
             ),
             GetSensorsRequest,
@@ -83,51 +97,55 @@ class SensorsEndpoints(APIEndpointsBase):
         )
         return response
 
-    async def async_get_nearby_sensor_indices(
+    async def async_get_nearby_sensors(
         self,
+        fields: list[str],
         latitude: float,
         longitude: float,
         distance_km: float,
         *,
         limit_results: int | None = None,
-    ) -> list[int]:
-        """Get sensor indices near a coordinate pair within a distance (in kilometers).
+    ) -> list[SensorModel]:
+        """Get sensors near a coordinate pair within a distance (in kilometers).
 
-        The resulting list of indices is ordered from nearest to furthest within the
+        The resulting list of sensors is ordered from nearest to furthest within the
         bounding box defined by the distance.
 
         Args:
+            fields: The sensor data fields to include.
             latitude: The latitude of the "search center."
             longitude: The longitude of the "search center."
             distance_km: The radius of the "search center."
             limit_results: The number of results to limit.
 
         Returns:
-            A sorted list of sensor indices.
+            A sorted list of SensorModel objects.
         """
         center = GeoLocation.from_degrees(latitude, longitude)
         nw_coordinate_pair, se_coordinate_pair = center.bounding_box(distance_km)
 
-        data = await self._async_request(
-            "get",
-            "/sensors",
-            params={
-                "fields": "latitude,longitude",
-                "nwlat": nw_coordinate_pair.latitude_degrees,
-                "nwlng": nw_coordinate_pair.longitude_degrees,
-                "selat": se_coordinate_pair.latitude_degrees,
-                "selng": se_coordinate_pair.longitude_degrees,
-            },
+        # Ensure that latitude and longitude are included in the fields no matter what:
+        fields.extend(
+            field for field in ("latitude", "longitude") if field not in fields
         )
 
-        results = [
-            i[0]
-            for i in sorted(
-                (i for i in data["data"]),
-                key=lambda i: center.distance_to(GeoLocation.from_degrees(i[1], i[2])),
-            )
-        ]
+        sensors_response = await self.async_get_sensors(
+            fields,
+            nw_latitude=nw_coordinate_pair.latitude_degrees,
+            nw_longitude=nw_coordinate_pair.longitude_degrees,
+            se_latitude=se_coordinate_pair.latitude_degrees,
+            se_longitude=se_coordinate_pair.longitude_degrees,
+        )
+
+        sorted_list = sorted(
+            sensors_response.data.values(),
+            key=lambda sensor: center.distance_to(
+                GeoLocation.from_degrees(
+                    cast(float, sensor.latitude), cast(float, sensor.longitude)
+                )
+            ),
+        )
 
         if limit_results:
-            return results[:limit_results]
-        return results
+            return sorted_list[:limit_results]
+        return sorted_list

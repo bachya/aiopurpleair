@@ -5,9 +5,11 @@
   "location_type": 0,
   "max_age": 604800,
   "firmware_default_version": "7.02",
-  "fields": ["sensor_index", "name"],
+  "fields": ["sensor_index", "name", "latitude", "longitude"],
   "data": [
-    [131075, "Mariners Bluff"],
-    [131079, "BRSKBV-outside"]
+    [131075, "Mariners Bluff", 33.51511, -117.67972],
+    [131079, "BRSKBV-outside", 37.75315, -122.44364],
+    [131077, "BEE Patio", 37.93273, -122.03972],
+    [131083, "Test Sensor", 38.287594, -122.46281]
   ]
 }
