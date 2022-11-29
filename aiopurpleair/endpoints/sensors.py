@@ -59,7 +59,7 @@ class SensorsEndpoints(APIEndpointsBase):
         read_keys: list[str] | None = None,
         se_latitude: float | None = None,
         se_longitude: float | None = None,
-        sensor_indices: list[int] | None = None,
+        sensor_indicies: list[int] | None = None,
     ) -> GetSensorsResponse:
         """Get all sensors.
 
@@ -73,7 +73,7 @@ class SensorsEndpoints(APIEndpointsBase):
             read_keys: Optional read keys for private sensors.
             se_latitude: The latitude of the SE corner of an optional bounding box.
             se_longitude: The longitude of the SE corner of an optional bounding box.
-            sensor_indices: Filter results by sensor index.
+            sensor_indicies: Filter results by sensor index.
 
         Returns:
             An API response payload in the form of a Pydantic model.
@@ -90,7 +90,7 @@ class SensorsEndpoints(APIEndpointsBase):
                 ("read_keys", read_keys),
                 ("selat", se_latitude),
                 ("selng", se_longitude),
-                ("show_only", sensor_indices),
+                ("show_only", sensor_indicies),
             ),
             GetSensorsRequest,
             GetSensorsResponse,
