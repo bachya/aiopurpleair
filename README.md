@@ -97,7 +97,7 @@ asyncio.run(main())
 - `max_age` (optional): Filter results modified within these seconds.
 - `modified_since` (optional): Filter results modified since a UTC datetime.
 - `read_keys` (optional): Read keys for private sensors.
-- `sensor_indices` (optional): Filter results by sensor index.
+- `sensor_indicies` (optional): Filter results by sensor index.
 
 ## Getting a Single Sensor
 
