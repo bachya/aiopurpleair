@@ -92,6 +92,8 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+### Method Parameters
+
 - `fields` (required): The sensor data fields to include
 - `location_type` (optional): An LocationType to filter by
 - `max_age` (optional): Filter results modified within these seconds
@@ -119,6 +121,8 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### Method Parameters
 
 - `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
@@ -153,6 +157,8 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+### Method Parameters
 
 - `fields` (required): The sensor data fields to include
 - `latitude` (required): The latitude of the point to measure distance from
