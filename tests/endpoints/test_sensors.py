@@ -10,6 +10,7 @@ from aresponses import ResponsesMockServer
 
 from aiopurpleair import API
 from aiopurpleair.const import ChannelFlag, ChannelState, LocationType
+from aiopurpleair.endpoints.sensors import NearbySensorResult
 from aiopurpleair.errors import InvalidRequestError
 from aiopurpleair.models.sensors import SensorModel
 from tests.common import TEST_API_KEY, load_fixture
@@ -22,51 +23,66 @@ from tests.common import TEST_API_KEY, load_fixture
         (
             None,
             [
-                SensorModel(
-                    **{
-                        "sensor_index": 131077,
-                        "name": "BEE Patio",
-                        "latitude": 37.93273,
-                        "longitude": -122.03972,
-                    }
+                NearbySensorResult(
+                    sensor=SensorModel(
+                        **{
+                            "sensor_index": 131077,
+                            "name": "BEE Patio",
+                            "latitude": 37.93273,
+                            "longitude": -122.03972,
+                        }
+                    ),
+                    distance=2.2331696896024913,
                 ),
-                SensorModel(
-                    **{
-                        "sensor_index": 131079,
-                        "name": "BRSKBV-outside",
-                        "latitude": 37.75315,
-                        "longitude": -122.44364,
-                    }
+                NearbySensorResult(
+                    sensor=SensorModel(
+                        **{
+                            "sensor_index": 131079,
+                            "name": "BRSKBV-outside",
+                            "latitude": 37.75315,
+                            "longitude": -122.44364,
+                        }
+                    ),
+                    distance=41.766579532099314,
                 ),
-                SensorModel(
-                    **{
-                        "sensor_index": 131083,
-                        "name": "Test Sensor",
-                        "latitude": 38.287594,
-                        "longitude": -122.46281,
-                    }
+                NearbySensorResult(
+                    sensor=SensorModel(
+                        **{
+                            "sensor_index": 131083,
+                            "name": "Test Sensor",
+                            "latitude": 38.287594,
+                            "longitude": -122.46281,
+                        }
+                    ),
+                    distance=56.35082086588817,
                 ),
-                SensorModel(
-                    **{
-                        "sensor_index": 131075,
-                        "name": "Mariners Bluff",
-                        "latitude": 33.51511,
-                        "longitude": -117.67972,
-                    }
+                NearbySensorResult(
+                    sensor=SensorModel(
+                        **{
+                            "sensor_index": 131075,
+                            "name": "Mariners Bluff",
+                            "latitude": 33.51511,
+                            "longitude": -117.67972,
+                        }
+                    ),
+                    distance=627.8171580436522,
                 ),
             ],
         ),
         (
             1,
             [
-                SensorModel(
-                    **{
-                        "sensor_index": 131077,
-                        "name": "BEE Patio",
-                        "latitude": 37.93273,
-                        "longitude": -122.03972,
-                    }
-                )
+                NearbySensorResult(
+                    sensor=SensorModel(
+                        **{
+                            "sensor_index": 131077,
+                            "name": "BEE Patio",
+                            "latitude": 37.93273,
+                            "longitude": -122.03972,
+                        }
+                    ),
+                    distance=2.2331696896024913,
+                ),
             ],
         ),
     ],
@@ -74,7 +90,7 @@ from tests.common import TEST_API_KEY, load_fixture
 async def test_get_nearby_sensors(
     aresponses: ResponsesMockServer,
     limit_results: int | None,
-    output: list[SensorModel],
+    output: list[NearbySensorResult],
 ) -> None:
     """Test getting sensor indices within a bounding box around a latitude/longitude.
 
