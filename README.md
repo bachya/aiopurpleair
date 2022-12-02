@@ -92,12 +92,12 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-- `fields` (required): The sensor data fields to include.
-- `location_type` (optional): An LocationType to filter by.
-- `max_age` (optional): Filter results modified within these seconds.
-- `modified_since` (optional): Filter results modified since a UTC datetime.
-- `read_keys` (optional): Read keys for private sensors.
-- `sensor_indices` (optional): Filter results by sensor index.
+- `fields` (required): The sensor data fields to include
+- `location_type` (optional): An LocationType to filter by
+- `max_age` (optional): Filter results modified within these seconds
+- `modified_since` (optional): Filter results modified since a UTC datetime
+- `read_keys` (optional): Read keys for private sensors
+- `sensor_indices` (optional): Filter results by sensor index
 
 ## Getting a Single Sensor
 
@@ -126,9 +126,9 @@ asyncio.run(main())
 
 ## Getting Nearby Sensors
 
-This method returns a list of `SensorModel` objects that are within a bounding box around
-a given latitude/longitude pair. The list is sorted from nearest to furthest (i.e., the
-first index in the list is the closest to the latitude/longitude).
+This method returns a list of `NearbySensorResult` objects that are within a bounding box
+around a given latitude/longitude pair. The list is sorted from nearest to furthest
+(i.e., the first index in the list is the closest to the latitude/longitude).
 
 ```python
 import asyncio
@@ -142,17 +142,23 @@ async def main() -> None:
     sensors = await api.sensors.async_get_nearby_sensors(
         ["name"], 51.5285582, -0.2416796, 10
     )
-    # >>> [SensorModel(...), SensorModel(...)]
+    # >>> [NearbySensorResult(...), NearbySensorResult(...)]
 
 
 asyncio.run(main())
 ```
 
-- `fields` (required): The sensor data fields to include.
-- `latitude` (required): The latitude of the point to measure distance from.
-- `longitude` (required): The longitude of the point to measure distance from.
-- `distance` (required): The distance from the measured point to search (in kilometers).
-- `limit` (optional): Limit the results.
+`NearbySensorResult` objects have two properties:
+
+- `sensor`: the corresponding `SensorModel` object
+- `distance`: the calculated distance (in kilometers) between this sensor and the provided
+  latitude/longitude
+
+- `fields` (required): The sensor data fields to include
+- `latitude` (required): The latitude of the point to measure distance from
+- `longitude` (required): The longitude of the point to measure distance from
+- `distance` (required): The distance from the measured point to search (in kilometers)
+- `limit` (optional): Limit the results
 
 ## Connection Pooling
 

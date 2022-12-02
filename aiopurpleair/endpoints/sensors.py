@@ -1,6 +1,7 @@
 """Define an API endpoint for requests related to sensors."""
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import cast
 
@@ -14,6 +15,14 @@ from aiopurpleair.models.sensors import (
     SensorModel,
 )
 from aiopurpleair.util.geo import GeoLocation
+
+
+@dataclass
+class NearbySensorResult:
+    """Define a nearby sensor result."""
+
+    sensor: SensorModel
+    distance: float
 
 
 class SensorsEndpoints(APIEndpointsBase):
@@ -105,7 +114,7 @@ class SensorsEndpoints(APIEndpointsBase):
         distance_km: float,
         *,
         limit_results: int | None = None,
-    ) -> list[SensorModel]:
+    ) -> list[NearbySensorResult]:
         """Get sensors near a coordinate pair within a distance (in kilometers).
 
         The resulting list of sensors is ordered from nearest to furthest within the
@@ -119,7 +128,8 @@ class SensorsEndpoints(APIEndpointsBase):
             limit_results: The number of results to limit.
 
         Returns:
-            A sorted list of SensorModel objects.
+            A sorted list of NearbySensorResult objects (containing both the sensor and
+                the distance).
         """
         center = GeoLocation.from_degrees(latitude, longitude)
         nw_coordinate_pair, se_coordinate_pair = center.bounding_box(distance_km)
@@ -137,15 +147,20 @@ class SensorsEndpoints(APIEndpointsBase):
             se_longitude=se_coordinate_pair.longitude_degrees,
         )
 
-        sorted_list = sorted(
-            sensors_response.data.values(),
-            key=lambda sensor: center.distance_to(
-                GeoLocation.from_degrees(
-                    cast(float, sensor.latitude), cast(float, sensor.longitude)
-                )
-            ),
-        )
+        nearby_results = [
+            NearbySensorResult(
+                sensor=sensor,
+                distance=center.distance_to(
+                    GeoLocation.from_degrees(
+                        cast(float, sensor.latitude), cast(float, sensor.longitude)
+                    )
+                ),
+            )
+            for sensor in list(sensors_response.data.values())
+        ]
+
+        sorted_results = sorted(nearby_results, key=lambda result: result.distance)
 
         if limit_results:
-            return sorted_list[:limit_results]
-        return sorted_list
+            return sorted_results[:limit_results]
+        return sorted_results
