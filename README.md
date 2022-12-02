@@ -130,6 +130,12 @@ This method returns a list of `NearbySensorResult` objects that are within a bou
 around a given latitude/longitude pair. The list is sorted from nearest to furthest
 (i.e., the first index in the list is the closest to the latitude/longitude).
 
+`NearbySensorResult` objects have two properties:
+
+- `sensor`: the corresponding `SensorModel` object
+- `distance`: the calculated distance (in kilometers) between this sensor and the provided
+  latitude/longitude
+
 ```python
 import asyncio
 
@@ -147,12 +153,6 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-
-`NearbySensorResult` objects have two properties:
-
-- `sensor`: the corresponding `SensorModel` object
-- `distance`: the calculated distance (in kilometers) between this sensor and the provided
-  latitude/longitude
 
 - `fields` (required): The sensor data fields to include
 - `latitude` (required): The latitude of the point to measure distance from
