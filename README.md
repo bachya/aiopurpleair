@@ -1,12 +1,11 @@
 # 🟣 aiopurpleair: A Python3, asyncio-based library to interact with the PurpleAir API
 
-[![CI](https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg)](https://github.com/bachya/aiopurpleair/actions)
-[![PyPi](https://img.shields.io/pypi/v/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
-[![Version](https://img.shields.io/pypi/pyversions/aiopurpleair.svg)](https://pypi.python.org/pypi/aiopurpleair)
-[![License](https://img.shields.io/pypi/l/aiopurpleair.svg)](https://github.com/bachya/aiopurpleair/blob/main/LICENSE)
-[![Code Coverage](https://codecov.io/gh/bachya/aiopurpleair/branch/dev/graph/badge.svg)](https://codecov.io/gh/bachya/aiopurpleair)
-[![Maintainability](https://api.codeclimate.com/v1/badges/40e0f45570a0eb9aab24/maintainability)](https://codeclimate.com/github/bachya/aiopurpleair/maintainability)
-[![Say Thanks](https://img.shields.io/badge/SayThanks-!-1EAEDB.svg)](https://saythanks.io/to/bachya)
+[![CI][ci-badge]][ci]
+[![PyPI][pypi-badge]][pypi]
+[![Version][version-badge]][version]
+[![License][license-badge]][license]
+[![Code Coverage][codecov-badge]][codecov]
+[![Maintainability][maintainability-badge]][maintainability]
 
 <a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
@@ -39,9 +38,8 @@ pip install aiopurpleair
 
 # Usage
 
-In-depth documentation on the API can be found here:
-https://api.purpleair.com/#api-welcome. Unless otherwise noted, `aiopurpleair` endeavors
-to follow the API as closely as possible.
+In-depth documentation on the API can be found [here][purpleair-api]. Unless otherwise
+noted, `aiopurpleair` endeavors to follow the API as closely as possible.
 
 ## Checking an API Key
 
@@ -170,9 +168,8 @@ asyncio.run(main())
 
 By default, the library creates a new connection to the PurpleAir API with each
 coroutine. If you are calling a large number of coroutines (or merely want to squeeze
-out every second of runtime savings possible), an
-[`aiohttp`](https://github.com/aio-libs/aiohttp) `ClientSession` can be used for connection
-pooling:
+out every second of runtime savings possible), an [`aiohttp`][aiohttp] `ClientSession` can
+be used for connection pooling:
 
 ```python
 import asyncio
@@ -195,15 +192,37 @@ asyncio.run(main())
 
 # Contributing
 
-1. [Check for open features/bugs](https://github.com/bachya/aiopurpleair/issues)
-   or [initiate a discussion on one](https://github.com/bachya/aiopurpleair/issues/new).
-2. [Fork the repository](https://github.com/bachya/aiopurpleair/fork).
+Thanks to all of [our contributors][contributors] so far!
+
+1. [Check for open features/bugs][issues] or [initiate a discussion on one][new-issue].
+2. [Fork the repository][fork].
 3. (_optional, but highly recommended_) Create a virtual environment: `python3 -m venv .venv`
 4. (_optional, but highly recommended_) Enter the virtual environment: `source ./.venv/bin/activate`
 5. Install the dev environment: `script/setup`
-6. Code your new feature or bug fix.
+6. Code your new feature or bug fix on a new branch.
 7. Write tests that cover your new functionality.
 8. Run tests and ensure 100% code coverage: `poetry run pytest --cov aiopurpleair tests`
 9. Update `README.md` with any new documentation.
-10. Add yourself to `AUTHORS.md`.
-11. Submit a pull request!
+10. Submit a pull request!
+
+[aiohttp]: https://github.com/aio-libs/aiohttp
+[ci-badge]: https://github.com/bachya/aiopurpleair/workflows/CI/badge.svg
+[ci]: https://github.com/bachya/aiopurpleair/actions
+[codecov-badge]: https://codecov.io/gh/bachya/aiopurpleair/branch/dev/graph/badge.svg
+[codecov]: https://codecov.io/gh/bachya/aiopurpleair
+[contributors]: https://github.com/bachya/aiopurpleair/graphs/contributors
+[fork]: https://github.com/bachya/aiopurpleair/fork
+[issues]: https://github.com/bachya/aiopurpleair/issues
+[license-badge]: https://img.shields.io/pypi/l/aiopurpleair.svg
+[license]: https://github.com/bachya/aiopurpleair/blob/main/LICENSE
+[maintainability-badge]: https://api.codeclimate.com/v1/badges/a03c9e96f19a3dc37f98/maintainability
+[maintainability]: https://codeclimate.com/github/bachya/aiopurpleair/maintainability
+[new-issue]: https://github.com/bachya/aiopurpleair/issues/new
+[new-issue]: https://github.com/bachya/aiopurpleair/issues/new
+[notion]: https://getnotion.com
+[purpleair-api]: https://api.purpleair.com/#api-welcome
+[purpleair]: https://www2.purpleair.com/
+[pypi-badge]: https://img.shields.io/pypi/v/aiopurpleair.svg
+[pypi]: https://pypi.python.org/pypi/aiopurpleair
+[version-badge]: https://img.shields.io/pypi/pyversions/aiopurpleair.svg
+[version]: https://pypi.python.org/pypi/aiopurpleair
