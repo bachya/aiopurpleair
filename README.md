@@ -19,6 +19,7 @@
   - [Getting Sensors](#getting-sensors)
   - [Getting a Single Sensor](#getting-a-single-sensor)
   - [Getting Nearby Sensors](#getting-nearby-sensors)
+  - [Getting a Map URL](#getting-a-map-url)
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
@@ -163,6 +164,27 @@ asyncio.run(main())
 - `longitude` (required): The longitude of the point to measure distance from
 - `distance` (required): The distance from the measured point to search (in kilometers)
 - `limit` (optional): Limit the results
+
+## Getting a Map URL
+
+If you need to get the URL to a particular sensor index on the PurpleAir map website,
+simply pass the appropriate sensor index to the `get_map_url` method:
+
+```python
+import asyncio
+
+from aiopurpleair import API
+
+
+async def main() -> None:
+    """Run."""
+    api = API("<API_KEY>")
+    map_url = api.get_map_url(12345)
+    # >>> https://map.purpleair.com/1/mAQI/a10/p604800/cC0?select=12345
+
+
+asyncio.run(main())
+```
 
 ## Connection Pooling
 

@@ -17,6 +17,8 @@ API_URL_BASE = "https://api.purpleair.com/v1"
 
 DEFAULT_TIMEOUT = 10
 
+MAP_URL_BASE = "https://map.purpleair.com/1/mAQI/a10/p604800/cC0"
+
 
 class API:
     """Define the API object."""
@@ -103,3 +105,14 @@ class API:
             raise RequestError(
                 f"Error while parsing response from {endpoint}: {err}"
             ) from err
+
+    def get_map_url(self, sensor_index: int) -> str:
+        """Get the map URL for a sensor index.
+
+        Args:
+            sensor_index: The sensor index to get the map URL for.
+
+        Returns:
+            A MAP URL.
+        """
+        return f"{MAP_URL_BASE}?select={sensor_index}"
