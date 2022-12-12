@@ -114,3 +114,10 @@ async def test_check_api_key_validation_error(aresponses: ResponsesMockServer) -
         assert "FAKE is an unknown API key type" in str(err.value)
 
     aresponses.assert_plan_strictly_followed()
+
+
+def test_get_map_url() -> None:
+    """Test getting the map URL for a sensor index."""
+    api = API(TEST_API_KEY)
+    map_url = api.get_map_url(12345)
+    assert map_url == "https://map.purpleair.com/1/mAQI/a10/p604800/cC0?select=12345"
