@@ -561,7 +561,7 @@ class GetSensorsResponse(BaseModel):
         """
         return {
             sensor_values[0]: SensorModel.parse_obj(
-                dict(zip(values["fields"], sensor_values))
+                dict(zip(values["fields"], sensor_values, strict=True))
             )
             for sensor_values in value
         }
