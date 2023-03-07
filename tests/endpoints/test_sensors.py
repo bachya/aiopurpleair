@@ -25,45 +25,37 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
-                        **{
-                            "sensor_index": 131077,
-                            "name": "BEE Patio",
-                            "latitude": 37.93273,
-                            "longitude": -122.03972,
-                        }
+                        sensor_index=131077,
+                        name="BEE Patio",
+                        latitude=37.93273,
+                        longitude=-122.03972,
                     ),
                     distance=2.2331696896024913,
                 ),
                 NearbySensorResult(
                     sensor=SensorModel(
-                        **{
-                            "sensor_index": 131079,
-                            "name": "BRSKBV-outside",
-                            "latitude": 37.75315,
-                            "longitude": -122.44364,
-                        }
+                        sensor_index=131079,
+                        name="BRSKBV-outside",
+                        latitude=37.75315,
+                        longitude=-122.44364,
                     ),
                     distance=41.766579532099314,
                 ),
                 NearbySensorResult(
                     sensor=SensorModel(
-                        **{
-                            "sensor_index": 131083,
-                            "name": "Test Sensor",
-                            "latitude": 38.287594,
-                            "longitude": -122.46281,
-                        }
+                        sensor_index=131083,
+                        name="Test Sensor",
+                        latitude=38.287594,
+                        longitude=-122.46281,
                     ),
                     distance=56.35082086588817,
                 ),
                 NearbySensorResult(
                     sensor=SensorModel(
-                        **{
-                            "sensor_index": 131075,
-                            "name": "Mariners Bluff",
-                            "latitude": 33.51511,
-                            "longitude": -117.67972,
-                        }
+                        sensor_index=131075,
+                        name="Mariners Bluff",
+                        latitude=33.51511,
+                        longitude=-117.67972,
                     ),
                     distance=627.8171580436522,
                 ),
@@ -74,12 +66,10 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
-                        **{
-                            "sensor_index": 131077,
-                            "name": "BEE Patio",
-                            "latitude": 37.93273,
-                            "longitude": -122.03972,
-                        }
+                        sensor_index=131077,
+                        name="BEE Patio",
+                        latitude=37.93273,
+                        longitude=-122.03972,
                     ),
                     distance=2.2331696896024913,
                 ),
@@ -316,36 +306,28 @@ async def test_get_sensors(aresponses: ResponsesMockServer) -> None:
         assert response.fields == ["sensor_index", "name", "latitude", "longitude"]
         assert response.data == {
             131075: SensorModel(
-                **{
-                    "sensor_index": 131075,
-                    "name": "Mariners Bluff",
-                    "latitude": 33.51511,
-                    "longitude": -117.67972,
-                }
+                sensor_index=131075,
+                name="Mariners Bluff",
+                latitude=33.51511,
+                longitude=-117.67972,
             ),
             131079: SensorModel(
-                **{
-                    "sensor_index": 131079,
-                    "name": "BRSKBV-outside",
-                    "latitude": 37.75315,
-                    "longitude": -122.44364,
-                }
+                sensor_index=131079,
+                name="BRSKBV-outside",
+                latitude=37.75315,
+                longitude=-122.44364,
             ),
             131077: SensorModel(
-                **{
-                    "sensor_index": 131077,
-                    "name": "BEE Patio",
-                    "latitude": 37.93273,
-                    "longitude": -122.03972,
-                }
+                sensor_index=131077,
+                name="BEE Patio",
+                latitude=37.93273,
+                longitude=-122.03972,
             ),
             131083: SensorModel(
-                **{
-                    "sensor_index": 131083,
-                    "name": "Test Sensor",
-                    "latitude": 38.287594,
-                    "longitude": -122.46281,
-                }
+                sensor_index=131083,
+                name="Test Sensor",
+                latitude=38.287594,
+                longitude=-122.46281,
             ),
         }
 
