@@ -16,12 +16,12 @@ def test_strenum() -> None:
         TEST = "test"
 
     assert str(TestEnum.TEST) == "test"
-    assert TestEnum.TEST == "test"  # type: ignore[comparison-overlap]
+    assert TestEnum.TEST == "test"
     assert TestEnum("test") is TestEnum.TEST
     assert TestEnum(TestEnum.TEST) is TestEnum.TEST
 
     with pytest.raises(ValueError):
-        TestEnum(42)  # type: ignore[arg-type]
+        TestEnum(42)
 
     with pytest.raises(ValueError):
         TestEnum("str but unknown")
