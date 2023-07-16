@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, validator
+from pydantic.v1 import BaseModel, validator
 
 from aiopurpleair.backports.enum import StrEnum
 from aiopurpleair.helpers.validators import validate_timestamp
