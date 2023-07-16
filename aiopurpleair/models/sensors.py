@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Optional
 
-from pydantic import BaseModel, root_validator, validator
+from pydantic.v1 import BaseModel, root_validator, validator
 
 from aiopurpleair.const import SENSOR_FIELDS, ChannelFlag, ChannelState, LocationType
 from aiopurpleair.helpers.validators import validate_timestamp

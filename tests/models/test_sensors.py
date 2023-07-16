@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any
 
 import pytest
-from pydantic import ValidationError
+from pydantic.v1 import ValidationError
 
 from aiopurpleair.models.sensors import (
     GetSensorsRequest,

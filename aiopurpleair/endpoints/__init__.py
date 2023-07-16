@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Iterable
 from typing import Any
 
-from pydantic import BaseModel, ValidationError
+from pydantic.v1 import BaseModel, ValidationError
 
 from aiopurpleair.errors import InvalidRequestError
 from aiopurpleair.helpers.typing import ModelT
