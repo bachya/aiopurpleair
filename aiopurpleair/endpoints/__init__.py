@@ -4,16 +4,18 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable, Iterable
 from typing import Any
 
-from pydantic.v1 import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from aiopurpleair.errors import InvalidRequestError
-from aiopurpleair.helpers.typing import ModelT
+from aiopurpleair.helpers.model import PurpleAirBaseModel, PurpleAirBaseModelT
 
 
 class APIEndpointsBase:  # pylint: disable=too-few-public-methods
     """Define a base API endpoints manager."""
 
-    def __init__(self, async_request: Callable[..., Awaitable[ModelT]]) -> None:
+    def __init__(
+        self, async_request: Callable[..., Awaitable[PurpleAirBaseModelT]]
+    ) -> None:
         """Initialize.
 
         Args:
@@ -25,9 +27,9 @@ class APIEndpointsBase:  # pylint: disable=too-few-public-methods
         self,
         endpoint: str,
         query_param_map: Iterable[tuple[str, Any]],
-        request_model: type[BaseModel],
-        response_model: type[BaseModel],
-    ) -> ModelT:
+        request_model: type[PurpleAirBaseModel],
+        response_model: type[PurpleAirBaseModel],
+    ) -> PurpleAirBaseModelT:
         """Perform an API endpoint request.
 
         Args:
@@ -43,7 +45,7 @@ class APIEndpointsBase:  # pylint: disable=too-few-public-methods
             InvalidRequestError: Raised on invalid parameters.
         """
         try:
-            request = request_model.parse_obj(
+            request = request_model.model_validate(
                 {
                     api_query_param: func_param
                     for api_query_param, func_param in query_param_map
@@ -54,5 +56,8 @@ class APIEndpointsBase:  # pylint: disable=too-few-public-methods
             raise InvalidRequestError(err) from err
 
         return await self._async_request(
-            "get", endpoint, response_model, params=request.dict(exclude_none=True)
+            "get",
+            endpoint,
+            response_model,
+            params=request.model_dump(exclude_none=True),
         )

@@ -3,10 +3,11 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic.v1 import BaseModel, validator
+from pydantic import Field, field_validator
 
 from aiopurpleair.backports.enum import StrEnum
-from aiopurpleair.helpers.validators import validate_timestamp
+from aiopurpleair.helpers.model import PurpleAirBaseModel
+from aiopurpleair.helpers.validator import validate_timestamp
 
 
 class ApiKeyType(StrEnum):
@@ -19,22 +20,14 @@ class ApiKeyType(StrEnum):
     WRITE_DISABLED = "WRITE_DISABLED"
 
 
-class GetKeysResponse(BaseModel):
+class GetKeysResponse(PurpleAirBaseModel):
     """Define a response to GET /v1/keys."""
 
     api_key_type: str
     api_version: str
-    timestamp_utc: datetime
+    timestamp_utc: datetime = Field(alias="time_stamp")
 
-    class Config:  # pylint: disable=too-few-public-methods
-        """Define configuration for this model."""
-
-        fields = {
-            "timestamp_utc": {"alias": "time_stamp"},
-        }
-        frozen = True
-
-    @validator("api_key_type")
+    @field_validator("api_key_type")
     @classmethod
     def validate_api_key_type(cls, value: str) -> ApiKeyType:
         """Validate the API key type.
@@ -53,6 +46,6 @@ class GetKeysResponse(BaseModel):
         except ValueError as err:
             raise ValueError(f"{value} is an unknown API key type") from err
 
-    validate_utc_timestamp = validator("timestamp_utc", allow_reuse=True, pre=True)(
+    validate_utc_timestamp = field_validator("timestamp_utc", mode="before")(
         validate_timestamp
     )

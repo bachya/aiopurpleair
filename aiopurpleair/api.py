@@ -5,12 +5,12 @@ from typing import Any, cast
 
 from aiohttp import ClientSession, ClientTimeout
 from aiohttp.client_exceptions import ClientError
-from pydantic.v1 import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from aiopurpleair.const import LOGGER
 from aiopurpleair.endpoints.sensors import SensorsEndpoints
 from aiopurpleair.errors import RequestError, raise_error
-from aiopurpleair.helpers.typing import ModelT
+from aiopurpleair.helpers.model import PurpleAirBaseModel, PurpleAirBaseModelT
 from aiopurpleair.models.keys import GetKeysResponse
 
 API_URL_BASE = "https://api.purpleair.com/v1"
@@ -52,9 +52,9 @@ class API:
         self,
         method: str,
         endpoint: str,
-        response_model: type[BaseModel],
+        response_model: type[PurpleAirBaseModel],
         **kwargs: dict[str, Any],
-    ) -> ModelT:
+    ) -> PurpleAirBaseModelT:
         """Make an API request.
 
         Args:
@@ -100,7 +100,7 @@ class API:
         LOGGER.debug("Data received for %s: %s", endpoint, data)
 
         try:
-            return cast(ModelT, response_model.parse_obj(data))
+            return cast(PurpleAirBaseModelT, response_model.model_validate(data))
         except ValidationError as err:
             raise RequestError(
                 f"Error while parsing response from {endpoint}: {err}"

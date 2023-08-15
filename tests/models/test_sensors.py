@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any
 
 import pytest
-from pydantic.v1 import ValidationError
+from pydantic import ValidationError
 
 from aiopurpleair.models.sensors import (
     GetSensorsRequest,
@@ -54,8 +54,8 @@ def test_get_sensors_request(
         input_payload: input_payload parameters for the model.
         output_payload: A parsed model dictionary output_payload.
     """
-    request = GetSensorsRequest.parse_obj(input_payload)
-    assert request.dict(exclude_none=True) == output_payload
+    request = GetSensorsRequest.model_validate(input_payload)
+    assert dict(request) == output_payload
 
 
 @pytest.mark.parametrize(
@@ -104,7 +104,7 @@ def test_get_sensors_request_errors(error_string: str, payload: dict[str, Any]) 
         payload: The payload to test.
     """
     with pytest.raises(ValidationError) as err:
-        _ = GetSensorsRequest.parse_obj(payload)
+        _ = GetSensorsRequest.model_validate(payload)
     assert error_string in str(err.value)
 
 
@@ -154,8 +154,8 @@ def test_get_sensors_response(
         input_payload: input_payload parameters for the model.
         output_payload: A parsed model dictionary output_payload.
     """
-    request = GetSensorsResponse.parse_obj(input_payload)
-    assert request.dict(exclude_none=True) == output_payload
+    request = GetSensorsResponse.model_validate(input_payload)
+    assert request.model_dump(exclude_none=True) == output_payload
 
 
 @pytest.mark.parametrize(
@@ -234,5 +234,5 @@ def test_get_sensors_response_errors(
         payload: The payload to test.
     """
     with pytest.raises(ValidationError) as err:
-        _ = GetSensorsResponse.parse_obj(payload)
+        _ = GetSensorsResponse.model_validate(payload)
     assert error_string in str(err.value)
