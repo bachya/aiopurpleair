@@ -1,5 +1,5 @@
 """Define Pydantic validator helpers."""
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def validate_timestamp(value: int) -> datetime:
@@ -11,4 +11,4 @@ def validate_timestamp(value: int) -> datetime:
     Returns:
         A parsed datetime.datetime object (UTC).
     """
-    return datetime.utcfromtimestamp(value)
+    return datetime.fromtimestamp(value, tz=timezone.utc).replace(tzinfo=None)
