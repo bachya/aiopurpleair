@@ -56,7 +56,7 @@ class SensorsEndpoints(APIEndpointsBase):
         )
         return response
 
-    async def async_get_sensors(
+    async def async_get_sensors(  # pylint: disable=too-many-arguments
         self,
         fields: list[str],
         *,
@@ -106,7 +106,7 @@ class SensorsEndpoints(APIEndpointsBase):
         )
         return response
 
-    async def async_get_nearby_sensors(
+    async def async_get_nearby_sensors(  # pylint: disable=too-many-arguments
         self,
         fields: list[str],
         latitude: float,
