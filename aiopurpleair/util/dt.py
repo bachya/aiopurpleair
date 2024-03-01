@@ -1,4 +1,5 @@
 """Define datetime utilities."""
+
 from datetime import datetime
 
 EPOCHORDINAL = datetime(1970, 1, 1).toordinal()

@@ -1,4 +1,5 @@
 """Define request and response models for sensors."""
+
 # pylint: disable=too-few-public-methods
 from __future__ import annotations
 

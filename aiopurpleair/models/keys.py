@@ -1,4 +1,5 @@
 """Define request and response models for keys."""
+
 from __future__ import annotations
 
 from datetime import datetime

@@ -1,4 +1,5 @@
 """Define datetime util tests."""
+
 from datetime import datetime
 
 from aiopurpleair.util.dt import utc_to_timestamp
