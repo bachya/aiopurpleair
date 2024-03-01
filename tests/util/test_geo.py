@@ -1,4 +1,5 @@
 """Define geographical util tests."""
+
 import pytest
 
 from aiopurpleair.util.geo import GeoLocation

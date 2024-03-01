@@ -1,4 +1,5 @@
 """Define reusable Pydantic validors for sensors."""
+
 from aiopurpleair.const import SENSOR_FIELDS, ChannelFlag
 
 

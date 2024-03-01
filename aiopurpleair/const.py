@@ -1,4 +1,5 @@
 """Define package constants."""
+
 import logging
 from enum import Enum
 

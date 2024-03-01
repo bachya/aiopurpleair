@@ -1,4 +1,5 @@
 """Define dynamic fixtures."""
+
 import json
 from typing import Any, cast
 

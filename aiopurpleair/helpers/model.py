@@ -1,4 +1,5 @@
 """Define model helpers."""
+
 from typing import TypeVar
 
 from pydantic import BaseModel, ConfigDict

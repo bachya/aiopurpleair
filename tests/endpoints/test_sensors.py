@@ -1,4 +1,5 @@
 """Define tests for sensor endpoints."""
+
 from __future__ import annotations
 
 import json
