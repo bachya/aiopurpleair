@@ -46,7 +46,7 @@ from aiopurpleair.util.geo import GeoLocation
         ),
     ],
 )
-def test_geo_location_bounding_box(  # pylint: disable=too-many-arguments
+def test_geo_location_bounding_box(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     distance_km: float,
     latitude: float,
     longitude: float,
