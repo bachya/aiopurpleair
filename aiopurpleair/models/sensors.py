@@ -51,7 +51,8 @@ class SensorModel(PurpleAirBaseModel):
     confidence: Optional[float] = None
     confidence_auto: Optional[float] = None
     confidence_manual: Optional[float] = None
-    date_created_utc: Optional[datetime] = Field(alias="date_created", default=None)
+    date_created_utc: Optional[datetime] = Field(
+        alias="date_created", default=None)
     deciviews: Optional[float] = None
     deciviews_a: Optional[float] = None
     deciviews_b: Optional[float] = None
@@ -63,7 +64,8 @@ class SensorModel(PurpleAirBaseModel):
     humidity_b: Optional[float] = None
     icon: Optional[int] = None
     is_owner: Optional[bool] = None
-    last_modified_utc: Optional[datetime] = Field(alias="last_modified", default=None)
+    last_modified_utc: Optional[datetime] = Field(
+        alias="last_modified", default=None)
     last_seen_utc: Optional[datetime] = Field(alias="last_seen", default=None)
     latitude: Optional[float] = None
     led_brightness: Optional[float] = None
@@ -75,11 +77,15 @@ class SensorModel(PurpleAirBaseModel):
     ozone1: Optional[float] = None
     pa_latency: Optional[int] = None
     pm0_3_um_count: Optional[float] = Field(alias="0.3_um_count", default=None)
-    pm0_3_um_count_a: Optional[float] = Field(alias="0.3_um_count_a", default=None)
-    pm0_3_um_count_b: Optional[float] = Field(alias="0.3_um_count_b", default=None)
+    pm0_3_um_count_a: Optional[float] = Field(
+        alias="0.3_um_count_a", default=None)
+    pm0_3_um_count_b: Optional[float] = Field(
+        alias="0.3_um_count_b", default=None)
     pm0_5_um_count: Optional[float] = Field(alias="0.5_um_count", default=None)
-    pm0_5_um_count_a: Optional[float] = Field(alias="0.5_um_count_a", default=None)
-    pm0_5_um_count_b: Optional[float] = Field(alias="0.5_um_count_b", default=None)
+    pm0_5_um_count_a: Optional[float] = Field(
+        alias="0.5_um_count_a", default=None)
+    pm0_5_um_count_b: Optional[float] = Field(
+        alias="0.5_um_count_b", default=None)
     pm10_0: Optional[float] = Field(alias="pm10.0", default=None)
     pm10_0_a: Optional[float] = Field(alias="pm10.0_a", default=None)
     pm10_0_atm: Optional[float] = Field(alias="pm10.0_atm", default=None)
@@ -89,9 +95,12 @@ class SensorModel(PurpleAirBaseModel):
     pm10_0_cf_1: Optional[float] = Field(alias="pm10.0_cf_1", default=None)
     pm10_0_cf_1_a: Optional[float] = Field(alias="pm10.0_cf_1_a", default=None)
     pm10_0_cf_1_b: Optional[float] = Field(alias="pm10.0_cf_1_b", default=None)
-    pm10_0_um_count: Optional[float] = Field(alias="10.0_um_count", default=None)
-    pm10_0_um_count_a: Optional[float] = Field(alias="10.0_um_count_a", default=None)
-    pm10_0_um_count_b: Optional[float] = Field(alias="10.0_um_count_b", default=None)
+    pm10_0_um_count: Optional[float] = Field(
+        alias="10.0_um_count", default=None)
+    pm10_0_um_count_a: Optional[float] = Field(
+        alias="10.0_um_count_a", default=None)
+    pm10_0_um_count_b: Optional[float] = Field(
+        alias="10.0_um_count_b", default=None)
     pm1_0: Optional[float] = Field(alias="pm1.0", default=None)
     pm1_0_a: Optional[float] = Field(alias="pm1.0_a", default=None)
     pm1_0_atm: Optional[float] = Field(alias="pm1.0_atm", default=None)
@@ -102,24 +111,37 @@ class SensorModel(PurpleAirBaseModel):
     pm1_0_cf_1_a: Optional[float] = Field(alias="pm1.0_cf_1_a", default=None)
     pm1_0_cf_1_b: Optional[float] = Field(alias="pm1.0_cf_1_b", default=None)
     pm1_0_um_count: Optional[float] = Field(alias="1.0_um_count", default=None)
-    pm1_0_um_count_a: Optional[float] = Field(alias="1.0_um_count_a", default=None)
-    pm1_0_um_count_b: Optional[float] = Field(alias="1.0_um_count_b", default=None)
+    pm1_0_um_count_a: Optional[float] = Field(
+        alias="1.0_um_count_a", default=None)
+    pm1_0_um_count_b: Optional[float] = Field(
+        alias="1.0_um_count_b", default=None)
     pm2_5: Optional[float] = Field(alias="pm2.5", default=None)
-    pm2_5_10minute: Optional[float] = Field(alias="pm2.5_10minute", default=None)
-    pm2_5_10minute_a: Optional[float] = Field(alias="pm2.5_10minute_a", default=None)
-    pm2_5_10minute_b: Optional[float] = Field(alias="pm2.5_10minute_b", default=None)
+    pm2_5_10minute: Optional[float] = Field(
+        alias="pm2.5_10minute", default=None)
+    pm2_5_10minute_a: Optional[float] = Field(
+        alias="pm2.5_10minute_a", default=None)
+    pm2_5_10minute_b: Optional[float] = Field(
+        alias="pm2.5_10minute_b", default=None)
     pm2_5_1week: Optional[float] = Field(alias="pm2.5_1week", default=None)
     pm2_5_1week_a: Optional[float] = Field(alias="pm2.5_1week_a", default=None)
     pm2_5_1week_b: Optional[float] = Field(alias="pm2.5_1week_b", default=None)
     pm2_5_24hour: Optional[float] = Field(alias="pm2.5_24hour", default=None)
-    pm2_5_24hour_a: Optional[float] = Field(alias="pm2.5_24hour_a", default=None)
-    pm2_5_24hour_b: Optional[float] = Field(alias="pm2.5_24hour_b", default=None)
-    pm2_5_30minute: Optional[float] = Field(alias="pm2.5_30minute", default=None)
-    pm2_5_30minute_a: Optional[float] = Field(alias="pm2.5_30minute_a", default=None)
-    pm2_5_30minute_b: Optional[float] = Field(alias="pm2.5_30minute_b", default=None)
-    pm2_5_60minute: Optional[float] = Field(alias="pm2.5_60minute", default=None)
-    pm2_5_60minute_a: Optional[float] = Field(alias="pm2.5_60minute_a", default=None)
-    pm2_5_60minute_b: Optional[float] = Field(alias="pm2.5_60minute_b", default=None)
+    pm2_5_24hour_a: Optional[float] = Field(
+        alias="pm2.5_24hour_a", default=None)
+    pm2_5_24hour_b: Optional[float] = Field(
+        alias="pm2.5_24hour_b", default=None)
+    pm2_5_30minute: Optional[float] = Field(
+        alias="pm2.5_30minute", default=None)
+    pm2_5_30minute_a: Optional[float] = Field(
+        alias="pm2.5_30minute_a", default=None)
+    pm2_5_30minute_b: Optional[float] = Field(
+        alias="pm2.5_30minute_b", default=None)
+    pm2_5_60minute: Optional[float] = Field(
+        alias="pm2.5_60minute", default=None)
+    pm2_5_60minute_a: Optional[float] = Field(
+        alias="pm2.5_60minute_a", default=None)
+    pm2_5_60minute_b: Optional[float] = Field(
+        alias="pm2.5_60minute_b", default=None)
     pm2_5_6hour: Optional[float] = Field(alias="pm2.5_6hour", default=None)
     pm2_5_6hour_a: Optional[float] = Field(alias="pm2.5_6hour_a", default=None)
     pm2_5_6hour_b: Optional[float] = Field(alias="pm2.5_6hour_b", default=None)
@@ -135,11 +157,15 @@ class SensorModel(PurpleAirBaseModel):
     pm2_5_cf_1_a: Optional[float] = Field(alias="pm2.5_cf_1_a", default=None)
     pm2_5_cf_1_b: Optional[float] = Field(alias="pm2.5_cf_1_b", default=None)
     pm2_5_um_count: Optional[float] = Field(alias="2.5_um_count", default=None)
-    pm2_5_um_count_a: Optional[float] = Field(alias="2.5_um_count_a", default=None)
-    pm2_5_um_count_b: Optional[float] = Field(alias="2.5_um_count_b", default=None)
+    pm2_5_um_count_a: Optional[float] = Field(
+        alias="2.5_um_count_a", default=None)
+    pm2_5_um_count_b: Optional[float] = Field(
+        alias="2.5_um_count_b", default=None)
     pm5_0_um_count: Optional[float] = Field(alias="5.0_um_count", default=None)
-    pm5_0_um_count_a: Optional[float] = Field(alias="5.0_um_count_a", default=None)
-    pm5_0_um_count_b: Optional[float] = Field(alias="5.0_um_count_b", default=None)
+    pm5_0_um_count_a: Optional[float] = Field(
+        alias="5.0_um_count_a", default=None)
+    pm5_0_um_count_b: Optional[float] = Field(
+        alias="5.0_um_count_b", default=None)
     position_rating: Optional[int] = None
     pressure: Optional[float] = None
     pressure_a: Optional[float] = None
@@ -244,7 +270,8 @@ class GetSensorRequest(PurpleAirBaseModel):
     fields: Optional[str] = None
     read_key: Optional[str] = None
 
-    validate_fields = field_validator("fields", mode="before")(validate_fields_request)
+    validate_fields = field_validator(
+        "fields", mode="before")(validate_fields_request)
 
 
 class GetSensorResponse(PurpleAirBaseModel):
@@ -271,13 +298,14 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     location_type: Optional[LocationType] = None
     max_age: Optional[int] = None
-    modified_since: Optional[datetime] = Field(alias="modified_since_utc", default=None)
+    modified_since: Optional[datetime] = Field(
+        alias="modified_since_utc", default=None)
     nwlat: Optional[float] = None
     nwlng: Optional[float] = None
-    read_keys: Optional[list[str]] = None
+    read_keys: Optional[str] = None
     selat: Optional[float] = None
     selng: Optional[float] = None
-    show_only: Optional[list[int]] = None
+    show_only: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
@@ -304,13 +332,15 @@ class GetSensorsRequest(PurpleAirBaseModel):
         )
 
         if num_of_keys not in (0, 4):
-            raise ValueError("must pass none or all of the bounding box coordinates")
+            raise ValueError(
+                "must pass none or all of the bounding box coordinates")
 
         return values
 
-    validate_fields = field_validator("fields", mode="before")(validate_fields_request)
+    validate_fields = field_validator(
+        "fields", mode="before")(validate_fields_request)
 
-    @field_validator("location_type")
+    @field_validator("location_type", mode="before")
     @classmethod
     def validate_location_type(cls, value: LocationType) -> int:
         """Validate the location type.
@@ -323,7 +353,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
         """
         return value.value
 
-    @field_validator("modified_since")
+    @field_validator("modified_since", mode="before")
     @classmethod
     def validate_modified_since(cls, value: datetime) -> int:
         """Validate the "modified since" datetime.
@@ -340,9 +370,9 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     validate_nwlng = field_validator("nwlng")(validate_longitude)
 
-    @field_validator("read_keys")
+    @field_validator("read_keys", mode="before")
     @classmethod
-    def validate_read_keys(cls, value: list[str]) -> str:
+    def validate_read_keys(cls, value: list[str] | str) -> str:
         """Validate the read keys.
 
         Args:
@@ -351,14 +381,16 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of read keys.
         """
-        return ",".join(value)
+        if isinstance(value, list):
+            return ",".join([str(v) for v in value])
+        return value
 
     validate_selat = field_validator("selat")(validate_latitude)
     validate_selng = field_validator("selng")(validate_longitude)
 
-    @field_validator("show_only")
+    @field_validator("show_only", mode="before")
     @classmethod
-    def validate_show_only(cls, value: list[int]) -> str:
+    def validate_show_only(cls, value: list[int] | str) -> str:
         """Validate the sensor ID list by which to filter the results.
 
         Args:
@@ -367,7 +399,9 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of sensor IDs.
         """
-        return ",".join([str(i) for i in value])
+        if isinstance(value, list):
+            return ",".join([str(v) for v in value])
+        return value
 
 
 class GetSensorsResponse(PurpleAirBaseModel):

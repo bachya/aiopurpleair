@@ -125,7 +125,7 @@ asyncio.run(main())
 
 - `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
-- `read_key` (optional): A read key for a private sensor.
+- `read_keys` (optional): Read keys for private sensors.
 
 ## Getting Nearby Sensors
 
@@ -159,11 +159,12 @@ asyncio.run(main())
 
 ### Method Parameters
 
-- `fields` (required): The sensor data fields to include
-- `latitude` (required): The latitude of the point to measure distance from
-- `longitude` (required): The longitude of the point to measure distance from
-- `distance` (required): The distance from the measured point to search (in kilometers)
-- `limit` (optional): Limit the results
+- `fields` (required): The sensor data fields to include.
+- `latitude` (required): The latitude of the point to measure distance from.
+- `longitude` (required): The longitude of the point to measure distance from.
+- `distance` (required): The distance from the measured point to search (in kilometers).
+- `limit` (optional): Limit the results.
+- `read_keys` (optional): Read keys for private sensors.
 
 ## Getting a Map URL
 

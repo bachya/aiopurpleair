@@ -28,7 +28,7 @@ class GetKeysResponse(PurpleAirBaseModel):
     api_version: str
     timestamp_utc: datetime = Field(alias="time_stamp")
 
-    @field_validator("api_key_type")
+    @field_validator("api_key_type", mode="before")
     @classmethod
     def validate_api_key_type(cls, value: str) -> ApiKeyType:
         """Validate the API key type.
