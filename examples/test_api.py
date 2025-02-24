@@ -11,8 +11,7 @@ from aiopurpleair.errors import PurpleAirError
 _LOGGER = logging.getLogger()
 
 API_KEY: str = "API_READ_KEY"
-# ["PRIVATE_SENSOR_READ_KEY", "PRIVATE_SENSOR_READ_KEY"]
-READ_KEYS: list[str] | None = None
+READ_KEYS: list[str] | None = None  # ["SENSOR_READ_KEY", "SENSOR_READ_KEY"]
 INDEXES: list[int] | None = None  # [SENSOR_INDEX, SENSOR_INDEX]
 LATITUDE: float = 51.5285582
 LONGITUDE: float = -0.2416796
