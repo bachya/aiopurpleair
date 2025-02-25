@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import cast
 
 from aiopurpleair.endpoints import APIEndpointsBase
 from aiopurpleair.models.sensors import (
@@ -135,8 +134,7 @@ class SensorsEndpoints(APIEndpointsBase):
                 the distance).
         """
         center = GeoLocation.from_degrees(latitude, longitude)
-        nw_coordinate_pair, se_coordinate_pair = center.bounding_box(
-            distance_km)
+        nw_coordinate_pair, se_coordinate_pair = center.bounding_box(distance_km)
 
         # Ensure that latitude and longitude are included in the fields no matter what:
         fields.extend(
@@ -155,18 +153,16 @@ class SensorsEndpoints(APIEndpointsBase):
         nearby_results = [
             NearbySensorResult(
                 sensor=sensor,
-                distance=center.distance_to(
-                    GeoLocation.from_degrees(
-                        cast(float, sensor.latitude), cast(
-                            float, sensor.longitude)
-                    )
+                distance=0
+                if sensor.latitude is None or sensor.longitude is None
+                else center.distance_to(
+                    GeoLocation.from_degrees(sensor.latitude, sensor.longitude)
                 ),
             )
             for sensor in list(sensors_response.data.values())
         ]
 
-        sorted_results = sorted(
-            nearby_results, key=lambda result: result.distance)
+        sorted_results = sorted(nearby_results, key=lambda result: result.distance)
 
         if limit_results:
             return sorted_results[:limit_results]

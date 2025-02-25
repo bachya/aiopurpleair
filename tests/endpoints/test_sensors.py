@@ -26,6 +26,15 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
+                        sensor_index=30303,
+                        name="\uc544\uac00\ud398_\uc2e4\ub0b4",
+                        latitude=None,
+                        longitude=None,
+                    ),
+                    distance=0,
+                ),
+                NearbySensorResult(
+                    sensor=SensorModel(
                         sensor_index=131077,
                         name="BEE Patio",
                         latitude=37.93273,
@@ -67,12 +76,12 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
-                        sensor_index=131077,
-                        name="BEE Patio",
-                        latitude=37.93273,
-                        longitude=-122.03972,
+                        sensor_index=30303,
+                        name="\uc544\uac00\ud398_\uc2e4\ub0b4",
+                        latitude=None,
+                        longitude=None,
                     ),
-                    distance=2.2331696896024913,
+                    distance=0,
                 ),
             ],
         ),
@@ -114,9 +123,7 @@ async def test_get_nearby_sensors(
 
 
 @pytest.mark.asyncio
-async def test_get_sensor(  # pylint: disable=too-many-statements
-    aresponses: ResponsesMockServer,
-) -> None:
+async def test_get_sensor(aresponses: ResponsesMockServer) -> None:  # pylint: disable=too-many-statements
     """Test the GET /sensors/:sensor_index endpoint.
 
     Args:
@@ -329,6 +336,12 @@ async def test_get_sensors(aresponses: ResponsesMockServer) -> None:
                 name="Test Sensor",
                 latitude=38.287594,
                 longitude=-122.46281,
+            ),
+            30303: SensorModel(
+                sensor_index=30303,
+                name="\uc544\uac00\ud398_\uc2e4\ub0b4",
+                latitude=None,
+                longitude=None,
             ),
         }
 

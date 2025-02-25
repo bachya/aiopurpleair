@@ -40,7 +40,7 @@ def validate_fields_request(value: list[str]) -> str:
     return ",".join(value)
 
 
-def validate_latitude(value: float | None) -> float:
+def validate_latitude(value: float | None) -> float | None:
     """Validate a latitude.
 
     Args:
@@ -52,14 +52,14 @@ def validate_latitude(value: float | None) -> float:
     Raises:
         ValueError: Raised on an invalid latitude.
     """
-    if not isinstance(value, float):
-        return 0.0
+    if value is None:
+        return None
     if value < -90 or value > 90:
         raise ValueError(f"{value} is an invalid latitude")
     return value
 
 
-def validate_longitude(value: float | None) -> float:
+def validate_longitude(value: float | None) -> float | None:
     """Validate a longitude.
 
     Args:
@@ -71,8 +71,8 @@ def validate_longitude(value: float | None) -> float:
     Raises:
         ValueError: Raised on an invalid longitude.
     """
-    if not isinstance(value, float):
-        return 0.0
+    if value is None:
+        return None
     if value < -180 or value > 180:
         raise ValueError(f"{value} is an invalid longitude")
     return value
