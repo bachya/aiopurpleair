@@ -16,8 +16,15 @@ INDEXES: list[int] | None = None  # [SENSOR_INDEX, SENSOR_INDEX]
 LATITUDE: float = 51.5285582
 LONGITUDE: float = -0.2416796
 DISTANCE: float = 10
-FIELDS: list[str] = ["name", "model", "location_type",
-                     "private", "latitude", "longitude"]
+LIMIT: int | None = 10
+FIELDS: list[str] = [
+    "name",
+    "model",
+    "location_type",
+    "private",
+    "latitude",
+    "longitude",
+]
 
 
 async def main() -> None:
@@ -28,9 +35,8 @@ async def main() -> None:
             api = API(API_KEY, session=session)
 
             sensors_response = await api.sensors.async_get_sensors(
-                fields=FIELDS,
-                read_keys=READ_KEYS,
-                sensor_indices=INDEXES)
+                fields=FIELDS, read_keys=READ_KEYS, sensor_indices=INDEXES
+            )
             _LOGGER.info(sensors_response)
 
             nearby_sensor_indices = await api.sensors.async_get_nearby_sensors(
@@ -38,7 +44,8 @@ async def main() -> None:
                 latitude=LATITUDE,
                 longitude=LONGITUDE,
                 distance_km=DISTANCE,
-                read_keys=READ_KEYS
+                limit_results=LIMIT,
+                read_keys=READ_KEYS,
             )
             _LOGGER.info(nearby_sensor_indices)
         except PurpleAirError as err:

@@ -26,15 +26,6 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
-                        sensor_index=30303,
-                        name="\uc544\uac00\ud398_\uc2e4\ub0b4",
-                        latitude=None,
-                        longitude=None,
-                    ),
-                    distance=0,
-                ),
-                NearbySensorResult(
-                    sensor=SensorModel(
                         sensor_index=131077,
                         name="BEE Patio",
                         latitude=37.93273,
@@ -76,12 +67,12 @@ from tests.common import TEST_API_KEY, load_fixture
             [
                 NearbySensorResult(
                     sensor=SensorModel(
-                        sensor_index=30303,
-                        name="\uc544\uac00\ud398_\uc2e4\ub0b4",
-                        latitude=None,
-                        longitude=None,
+                        sensor_index=131077,
+                        name="BEE Patio",
+                        latitude=37.93273,
+                        longitude=-122.03972,
                     ),
-                    distance=0,
+                    distance=2.2331696896024913,
                 ),
             ],
         ),

@@ -150,16 +150,22 @@ class SensorsEndpoints(APIEndpointsBase):
             read_keys=read_keys,
         )
 
+        withgeo_results = [
+            sensor
+            for sensor in sensors_response.data.values()
+            if sensor.latitude is not None and sensor.longitude is not None
+        ]
+
         nearby_results = [
             NearbySensorResult(
                 sensor=sensor,
-                distance=0
-                if sensor.latitude is None or sensor.longitude is None
-                else center.distance_to(
-                    GeoLocation.from_degrees(sensor.latitude, sensor.longitude)
+                distance=center.distance_to(
+                    GeoLocation.from_degrees(
+                        sensor.latitude or 0.0, sensor.longitude or 0.0
+                    )
                 ),
             )
-            for sensor in list(sensors_response.data.values())
+            for sensor in withgeo_results
         ]
 
         sorted_results = sorted(nearby_results, key=lambda result: result.distance)
