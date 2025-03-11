@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import cast
 
 from aiopurpleair.endpoints import APIEndpointsBase
 from aiopurpleair.models.sensors import (
@@ -148,16 +147,22 @@ class SensorsEndpoints(APIEndpointsBase):
             se_longitude=se_coordinate_pair.longitude_degrees,
         )
 
+        withgeo_results = [
+            sensor
+            for sensor in sensors_response.data.values()
+            if sensor.latitude is not None and sensor.longitude is not None
+        ]
+
         nearby_results = [
             NearbySensorResult(
                 sensor=sensor,
                 distance=center.distance_to(
                     GeoLocation.from_degrees(
-                        cast(float, sensor.latitude), cast(float, sensor.longitude)
+                        sensor.latitude or 0.0, sensor.longitude or 0.0
                     )
                 ),
             )
-            for sensor in list(sensors_response.data.values())
+            for sensor in withgeo_results
         ]
 
         sorted_results = sorted(nearby_results, key=lambda result: result.distance)
