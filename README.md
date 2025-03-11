@@ -7,10 +7,10 @@
 [![Code Coverage][codecov-badge]][codecov]
 [![Maintainability][maintainability-badge]][maintainability]
 
-<a href="https://www.buymeacoffee.com/bachya1208P" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+[![Buy Me A Coffee][buymecoffee-img]][buymecoffee]
 
 `aiopurpleair` is a Python3, asyncio-based library to interact with the
-[PurpleAir](https://www2.purpleair.com/) API.
+[PurpleAir][purpleair] API.
 
 - [Installation](#installation)
 - [Python Versions](#python-versions)
@@ -23,13 +23,13 @@
   - [Connection Pooling](#connection-pooling)
 - [Contributing](#contributing)
 
-# Installation
+## Installation
 
 ```bash
 pip install aiopurpleair
 ```
 
-# Python Versions
+## Python Versions
 
 `aiopurpleair` is currently supported on:
 
@@ -37,12 +37,12 @@ pip install aiopurpleair
 - Python 3.11
 - Python 3.12
 
-# Usage
+## Usage
 
 In-depth documentation on the API can be found [here][purpleair-api]. Unless otherwise
 noted, `aiopurpleair` endeavors to follow the API as closely as possible.
 
-## Checking an API Key
+### Checking an API Key
 
 To check whether an API key is valid and what properties it has:
 
@@ -64,7 +64,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## Getting Sensors
+### Getting Sensors
 
 ```python
 import asyncio
@@ -91,7 +91,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-### Method Parameters
+#### Method Parameters
 
 - `fields` (required): The sensor data fields to include
 - `location_type` (optional): An LocationType to filter by
@@ -100,7 +100,7 @@ asyncio.run(main())
 - `read_keys` (optional): Read keys for private sensors
 - `sensor_indices` (optional): Filter results by sensor index
 
-## Getting a Single Sensor
+### Getting a Single Sensor
 
 ```python
 import asyncio
@@ -121,13 +121,13 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-### Method Parameters
+#### Method Parameters
 
 - `sensor_index` (required): The sensor index of the sensor to retrieve.
 - `fields` (optional): The sensor data fields to include.
 - `read_key` (optional): A read key for a private sensor.
 
-## Getting Nearby Sensors
+### Getting Nearby Sensors
 
 This method returns a list of `NearbySensorResult` objects that are within a bounding box
 around a given latitude/longitude pair. The list is sorted from nearest to furthest
@@ -157,7 +157,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-### Method Parameters
+#### Method Parameters
 
 - `fields` (required): The sensor data fields to include
 - `latitude` (required): The latitude of the point to measure distance from
@@ -165,7 +165,7 @@ asyncio.run(main())
 - `distance` (required): The distance from the measured point to search (in kilometers)
 - `limit` (optional): Limit the results
 
-## Getting a Map URL
+### Getting a Map URL
 
 If you need to get the URL to a particular sensor index on the PurpleAir map website,
 simply pass the appropriate sensor index to the `get_map_url` method:
@@ -186,7 +186,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## Connection Pooling
+### Connection Pooling
 
 By default, the library creates a new connection to the PurpleAir API with each
 coroutine. If you are calling a large number of coroutines (or merely want to squeeze
@@ -212,7 +212,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-# Contributing
+## Contributing
 
 Thanks to all of [our contributors][contributors] so far!
 
@@ -228,6 +228,8 @@ Thanks to all of [our contributors][contributors] so far!
 10. Submit a pull request!
 
 [aiohttp]: https://github.com/aio-libs/aiohttp
+[buymecoffee-img]: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+[buymecoffee]: https://www.buymeacoffee.com/bachya1208P
 [ci-badge]: https://img.shields.io/github/actions/workflow/status/bachya/aiopurpleair/test.yml
 [ci]: https://github.com/bachya/aiopurpleair/actions
 [codecov-badge]: https://codecov.io/gh/bachya/aiopurpleair/branch/dev/graph/badge.svg
@@ -240,8 +242,6 @@ Thanks to all of [our contributors][contributors] so far!
 [maintainability-badge]: https://api.codeclimate.com/v1/badges/40e0f45570a0eb9aab24/maintainability
 [maintainability]: https://codeclimate.com/github/bachya/aiopurpleair/maintainability
 [new-issue]: https://github.com/bachya/aiopurpleair/issues/new
-[new-issue]: https://github.com/bachya/aiopurpleair/issues/new
-[notion]: https://getnotion.com
 [purpleair-api]: https://api.purpleair.com/#api-welcome
 [purpleair]: https://www2.purpleair.com/
 [pypi-badge]: https://img.shields.io/pypi/v/aiopurpleair.svg
