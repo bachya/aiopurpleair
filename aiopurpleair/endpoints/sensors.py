@@ -147,6 +147,15 @@ class SensorsEndpoints(APIEndpointsBase):
             se_longitude=se_coordinate_pair.longitude_degrees,
         )
 
+        sorted_results = await self._async_get_sorted_results(sensors_response, center)
+        if limit_results:
+            return sorted_results[:limit_results]
+        return sorted_results
+
+    async def _async_get_sorted_results(
+        self, sensors_response: GetSensorsResponse, center: GeoLocation
+    ) -> list[NearbySensorResult]:
+        """Sort the results by distance."""
         withgeo_results = [
             sensor
             for sensor in sensors_response.data.values()
@@ -166,8 +175,4 @@ class SensorsEndpoints(APIEndpointsBase):
             for sensor in withgeo_results
         ]
 
-        sorted_results = sorted(nearby_results, key=lambda result: result.distance)
-
-        if limit_results:
-            return sorted_results[:limit_results]
-        return sorted_results
+        return sorted(nearby_results, key=lambda result: result.distance)
