@@ -312,7 +312,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     @field_validator("location_type", mode="before")
     @classmethod
-    def validate_location_type(cls, value: int | LocationType) -> int:
+    def validate_location_type(cls, value: LocationType) -> int:
         """Validate the location type.
 
         Args:
@@ -321,13 +321,11 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             The integer-based interpretation of a location type.
         """
-        if isinstance(value, LocationType):
-            return value.value
-        return value
+        return value.value
 
     @field_validator("modified_since", mode="before")
     @classmethod
-    def validate_modified_since(cls, value: datetime | int) -> int:
+    def validate_modified_since(cls, value: datetime) -> int:
         """Validate the "modified since" datetime.
 
         Args:
@@ -336,9 +334,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             The timestamp of the datetime object.
         """
-        if isinstance(value, datetime):
-            return round(utc_to_timestamp(value))
-        return value
+        return round(utc_to_timestamp(value))
 
     validate_nwlat = field_validator("nwlat")(validate_latitude)
 
@@ -346,7 +342,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     @field_validator("read_keys", mode="before")
     @classmethod
-    def validate_read_keys(cls, value: list[str] | str) -> str:
+    def validate_read_keys(cls, value: list[str]) -> str:
         """Validate the read keys.
 
         Args:
@@ -355,16 +351,14 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of read keys.
         """
-        if isinstance(value, list):
-            return ",".join([str(v) for v in value])
-        return value
+        return ",".join([str(v) for v in value])
 
     validate_selat = field_validator("selat")(validate_latitude)
     validate_selng = field_validator("selng")(validate_longitude)
 
     @field_validator("show_only", mode="before")
     @classmethod
-    def validate_show_only(cls, value: list[int] | str) -> str:
+    def validate_show_only(cls, value: list[int]) -> str:
         """Validate the sensor ID list by which to filter the results.
 
         Args:
@@ -373,9 +367,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of sensor IDs.
         """
-        if isinstance(value, list):
-            return ",".join([str(v) for v in value])
-        return value
+        return ",".join([str(v) for v in value])
 
 
 class GetSensorsResponse(PurpleAirBaseModel):
