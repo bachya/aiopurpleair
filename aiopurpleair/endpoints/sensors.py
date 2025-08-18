@@ -167,8 +167,8 @@ class SensorsEndpoints(APIEndpointsBase):
                 sensor=sensor,
                 distance=center.distance_to(
                     GeoLocation.from_degrees(
-                        sensor.latitude,  # type: ignore
-                        sensor.longitude,  # type: ignore
+                        float(sensor.latitude) if sensor.latitude is not None else 0.0,
+                        float(sensor.longitude) if sensor.longitude is not None else 0.0,
                     )
                 ),
             )
