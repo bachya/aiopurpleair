@@ -367,7 +367,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of sensor IDs.
         """
-        return ",".join([str(v) for v in value])
+        return ",".join([str(i) for i in value])
 
 
 class GetSensorsResponse(PurpleAirBaseModel):
