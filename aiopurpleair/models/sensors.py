@@ -269,15 +269,15 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     fields: str
 
-    location_type: Optional[LocationType] = None
+    location_type: Optional[int] = None
     max_age: Optional[int] = None
-    modified_since: Optional[datetime] = Field(alias="modified_since_utc", default=None)
+    modified_since: Optional[int] = Field(alias="modified_since_utc", default=None)
     nwlat: Optional[float] = None
     nwlng: Optional[float] = None
-    read_keys: Optional[list[str]] = None
+    read_keys: Optional[str] = None
     selat: Optional[float] = None
     selng: Optional[float] = None
-    show_only: Optional[list[int]] = None
+    show_only: Optional[str] = None
 
     @model_validator(mode="before")
     @classmethod
@@ -310,7 +310,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     validate_fields = field_validator("fields", mode="before")(validate_fields_request)
 
-    @field_validator("location_type")
+    @field_validator("location_type", mode="before")
     @classmethod
     def validate_location_type(cls, value: LocationType) -> int:
         """Validate the location type.
@@ -323,7 +323,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
         """
         return value.value
 
-    @field_validator("modified_since")
+    @field_validator("modified_since", mode="before")
     @classmethod
     def validate_modified_since(cls, value: datetime) -> int:
         """Validate the "modified since" datetime.
@@ -340,7 +340,7 @@ class GetSensorsRequest(PurpleAirBaseModel):
 
     validate_nwlng = field_validator("nwlng")(validate_longitude)
 
-    @field_validator("read_keys")
+    @field_validator("read_keys", mode="before")
     @classmethod
     def validate_read_keys(cls, value: list[str]) -> str:
         """Validate the read keys.
@@ -351,12 +351,12 @@ class GetSensorsRequest(PurpleAirBaseModel):
         Returns:
             A comma-separate string of read keys.
         """
-        return ",".join(value)
+        return ",".join([str(v) for v in value])
 
     validate_selat = field_validator("selat")(validate_latitude)
     validate_selng = field_validator("selng")(validate_longitude)
 
-    @field_validator("show_only")
+    @field_validator("show_only", mode="before")
     @classmethod
     def validate_show_only(cls, value: list[int]) -> str:
         """Validate the sensor ID list by which to filter the results.
@@ -391,7 +391,7 @@ class GetSensorsResponse(PurpleAirBaseModel):
             values: The response payload.
 
         Returns:
-            The response paylioad with validated fields.
+            The response payload with validated fields.
 
         Raises:
             ValueError: An invalid API key type was received.
