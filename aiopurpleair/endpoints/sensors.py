@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import cast
 
 from aiopurpleair.endpoints import APIEndpointsBase
 from aiopurpleair.models.sensors import (
@@ -148,20 +147,34 @@ class SensorsEndpoints(APIEndpointsBase):
             se_longitude=se_coordinate_pair.longitude_degrees,
         )
 
+        sorted_results = await self._async_get_sorted_results(sensors_response, center)
+        if limit_results:
+            return sorted_results[:limit_results]
+        return sorted_results
+
+    async def _async_get_sorted_results(
+        self, sensors_response: GetSensorsResponse, center: GeoLocation
+    ) -> list[NearbySensorResult]:
+        """Sort the results by distance."""
+        withgeo_results = [
+            sensor
+            for sensor in sensors_response.data.values()
+            if sensor.latitude is not None and sensor.longitude is not None
+        ]
+
         nearby_results = [
             NearbySensorResult(
                 sensor=sensor,
                 distance=center.distance_to(
                     GeoLocation.from_degrees(
-                        cast(float, sensor.latitude), cast(float, sensor.longitude)
+                        float(sensor.latitude) if sensor.latitude is not None else 0.0,
+                        float(sensor.longitude)
+                        if sensor.longitude is not None
+                        else 0.0,
                     )
                 ),
             )
-            for sensor in list(sensors_response.data.values())
+            for sensor in withgeo_results
         ]
 
-        sorted_results = sorted(nearby_results, key=lambda result: result.distance)
-
-        if limit_results:
-            return sorted_results[:limit_results]
-        return sorted_results
+        return sorted(nearby_results, key=lambda result: result.distance)

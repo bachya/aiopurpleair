@@ -330,6 +330,12 @@ async def test_get_sensors(aresponses: ResponsesMockServer) -> None:
                 latitude=38.287594,
                 longitude=-122.46281,
             ),
+            30303: SensorModel(
+                sensor_index=30303,
+                name="\uc544\uac00\ud398_\uc2e4\ub0b4",
+                latitude=None,
+                longitude=None,
+            ),
         }
 
     aresponses.assert_plan_strictly_followed()

@@ -13,7 +13,7 @@ def validate_channel_flag(value: int) -> ChannelFlag:
         A ChannelFlag value.
 
     Raises:
-        ValueError: Raised upon an unknown location type.
+        ValueError: Raised upon an unknown channel flag.
     """
     try:
         return ChannelFlag(value)
@@ -40,7 +40,7 @@ def validate_fields_request(value: list[str]) -> str:
     return ",".join(value)
 
 
-def validate_latitude(value: float) -> float:
+def validate_latitude(value: float | None) -> float | None:
     """Validate a latitude.
 
     Args:
@@ -52,12 +52,14 @@ def validate_latitude(value: float) -> float:
     Raises:
         ValueError: Raised on an invalid latitude.
     """
+    if value is None:
+        return None
     if value < -90 or value > 90:
         raise ValueError(f"{value} is an invalid latitude")
     return value
 
 
-def validate_longitude(value: float) -> float:
+def validate_longitude(value: float | None) -> float | None:
     """Validate a longitude.
 
     Args:
@@ -69,6 +71,8 @@ def validate_longitude(value: float) -> float:
     Raises:
         ValueError: Raised on an invalid longitude.
     """
+    if value is None:
+        return None
     if value < -180 or value > 180:
         raise ValueError(f"{value} is an invalid longitude")
     return value
